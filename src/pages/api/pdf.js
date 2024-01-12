@@ -14,7 +14,8 @@ export default async (req, res) => {
 
   try {
     const data = await pdfParse(buffer);
-    res.status(200).json({ text: data.text, numPages: data.numPages });
+    // console.log(data.info.Title);
+    res.status(200).json({ text: data.text, numPages: data.numpages });
   } catch (error) {
     console.error('Error parsing PDF:', error);
     res.status(500).json({ error: 'Failed to parse PDF.' });

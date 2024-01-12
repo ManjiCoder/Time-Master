@@ -28,6 +28,7 @@ const PdfReader = () => {
           if (response.ok) {
             const data = await response.json();
             setPdfText(data.text);
+            console.log(data.text);
             setNumPages(data.numPages);
           } else {
             console.error('PDF processing failed.');
@@ -46,7 +47,7 @@ const PdfReader = () => {
       <input type="file" onChange={handleFileChange} />
       {pdfText && (
         <div>
-          <p>{pdfText}</p>
+          <pre>{pdfText}</pre>
           <p>
             Page {pageNumber} of {numPages}
           </p>

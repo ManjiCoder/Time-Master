@@ -1,4 +1,4 @@
-import PdfReader from '@/components/FileInputer';
+import PdfReader from '@/components/PdfReader';
 import React from 'react';
 
 export default function Setting() {
