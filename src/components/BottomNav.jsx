@@ -1,33 +1,33 @@
-import React from "react";
+import React from 'react';
 import {
   HomeIcon,
   IdentificationIcon,
   FilmIcon,
   CogIcon,
-} from "@heroicons/react/20/solid";
-import Link from "next/link";
-import { useRouter } from "next/router";
+} from '@heroicons/react/20/solid';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const navList = [
   {
-    linkName: "Home",
+    linkName: 'Home',
     icon: <HomeIcon />,
-    href: "/",
+    href: '/',
   },
   {
-    linkName: "Attendance",
+    linkName: 'Attendance',
     icon: <IdentificationIcon />,
-    href: "/attendance",
+    href: '/attendance',
   },
   {
-    linkName: "Records",
+    linkName: 'Records',
     icon: <FilmIcon />,
-    href: "/records",
+    href: '/records',
   },
   {
-    linkName: "Setting",
+    linkName: 'Setting',
     icon: <CogIcon />,
-    href: "/setting",
+    href: '/setting',
   },
 ];
 
@@ -41,7 +41,7 @@ export default function BottomNavbar() {
             <Link
               href={href}
               className={`flex flex-col justify-center items-center text-xs ${
-                pathname === href ? "text-slate-800" : "text-gray-400"
+                pathname === href ? 'text-slate-800' : 'text-gray-400'
               }`}
             >
               <span className="h-7 w-7">{icon}</span>
