@@ -26,7 +26,7 @@ const attendanceSlice = createSlice({
     },
     setPdfData: (state, action) => {
       const { year, month, data } = action.payload;
-      console.log(year, month);
+      // console.log(year, month);
       // if date is not present
       if (!state[year]) {
         state[year] = {};
@@ -46,9 +46,13 @@ const attendanceSlice = createSlice({
         }
       });
     },
+    deleteByDate: (state, action) => {
+      const { year, month, date } = action.payload;
+      delete state[year][month][date];
+    },
   },
 });
 
-export const { setLogin, setPdfData } = attendanceSlice.actions;
+export const { setLogin, setPdfData, deleteByDate } = attendanceSlice.actions;
 
 export default attendanceSlice.reducer;

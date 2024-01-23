@@ -2,11 +2,13 @@ import TimeSpentIndicator from '@/components/TimeSpentIndicator';
 import { formattedTime } from '@/utils/dateService';
 import { format, getDate } from 'date-fns';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/20/solid';
+import { deleteByDate } from '@/redux/slices/attendanceSlice';
 
 export default function Attendance() {
   const attendance = useSelector((state) => state.attendance);
+  const dispatch = useDispatch();
   const year = '2024';
   const month = 'January';
   if (attendance[year] === undefined || attendance[year][month] === undefined) {
@@ -79,7 +81,18 @@ export default function Attendance() {
                     <PencilSquareIcon className="w-5" />
                   </button>
                   {/* Delete-Btn */}
-                  <button className="text-red-500 absolute left-3 ">
+                  <button
+                    className="text-red-500 absolute left-3 "
+                    onClick={() =>
+                      dispatch(
+                        deleteByDate({
+                          year,
+                          month,
+                          date,
+                        })
+                      )
+                    }
+                  >
                     <TrashIcon className="w-5" />
                   </button>
                 </div>

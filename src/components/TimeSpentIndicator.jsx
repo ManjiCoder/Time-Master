@@ -47,20 +47,30 @@ export default function TimeSpentIndicator({ year, month }) {
   const { days, hrs, mins } = totalTimeSpent;
   const minsToHrs = mins / 60;
   const todayHrs = Math.floor(hrs + minsToHrs);
+  const timeDiffMins = totalTimeSpent.hrs * 60 - totalTimeSpent.mins;
+
   return (
     <header className="sticky top-0 w-full z-10  p-2 text-lg text-center shadow-md indicator text-white">
-      {/* <h1>
-        Time: <span>{totalTimeSpent.days} Days</span>
-        <span> {totalTimeSpent.hrs} hrs</span>
-        <span> {totalTimeSpent.mins} mins</span>
-      </h1> */}
-
       <h1>
         {month} {year}
         <span className="ml-2 font-bold text-red-500">
           - {mins % 60 !== 0 ? days * 9 - todayHrs - 1 : days * 9 - todayHrs}{' '}
-          hrs : {mins % 60} mins
+          hrs : {timeDiffMins % 60} mins
         </span>
+      </h1>
+      <h1 className="text-xs font-extralight flex justify-between px-5">
+        <p>
+          Time: <span>{totalTimeSpent.days} Days</span>
+          <span> {totalTimeSpent.hrs} hrs</span>
+          <span> {totalTimeSpent.mins} mins </span>
+        </p>
+        <p>
+          Avg:{' '}
+          <span>
+            {(totalTimeSpent.hrs / totalTimeSpent.days).toFixed(2)} hrs,
+          </span>
+          <span> {(totalTimeSpent.mins / 60).toFixed(2)} mins</span>
+        </p>
       </h1>
     </header>
   );
