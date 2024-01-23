@@ -1,15 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-  2024: "",
-};
+const initialState = {};
 
 const attendanceSlice = createSlice({
-  name: "attendance",
+  name: 'attendance',
   initialState,
   reducers: {
     setLogin: (state, action) => {
       const { year, month, date } = action.payload;
+      console.log(year, month);
       // if date is not present
       if (!state[year]) {
         state[year] = {};
@@ -26,12 +25,26 @@ const attendanceSlice = createSlice({
       }
     },
     setPdfData: (state, action) => {
-      let arr = Object.keys(action.payload);
-      let newObj = {};
-      arr.map((v) => {
-        newObj[v] = action.payload[v];
+      const { year, month, data } = action.payload;
+      console.log(year, month);
+      // if date is not present
+      if (!state[year]) {
+        state[year] = {};
+      }
+      if (!state[year][month]) {
+        state[year][month] = {};
+      }
+
+      Object?.keys(data).map((v) => {
+        // console.log(v);
+        if (!state[year][month][v]) {
+          state[year][month][v] = data[v];
+        }
+        // // Check if the day already exists
+        if (state[year][month][v]) {
+          state[year][month][v] = data[v];
+        }
       });
-      // return {...state,...newObj}
     },
   },
 });
