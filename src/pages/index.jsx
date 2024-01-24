@@ -6,7 +6,11 @@ import { useRouter } from 'next/router';
 import { format } from 'date-fns';
 import { setLogin } from '@/redux/slices/attendanceSlice';
 import CurrentTimeSpent from '@/components/CurrentTimeSpent';
-import { calculateTimeSpent, isLoginTime } from '@/utils/dateService';
+import {
+  calculateTimeSpent,
+  formattedTime24,
+  isLoginTime,
+} from '@/utils/dateService';
 
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 
@@ -22,6 +26,7 @@ export default function Home() {
   const [logoutTime, setLogoutTime] = useState('');
   const dispatch = useDispatch();
   const router = useRouter();
+  // console.log(loginTime);
 
   const handleSubmit = (e) => {
     e.preventDefault();

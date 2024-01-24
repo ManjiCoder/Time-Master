@@ -1,7 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { format } from "date-fns";
 
 const initialState = {
   isOfficeMode: false,
+  year: new Date().getFullYear(),
+  month: format(new Date(), "MMMM"),
 };
 
 const userSettings = createSlice({

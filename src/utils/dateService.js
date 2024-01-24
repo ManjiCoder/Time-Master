@@ -50,20 +50,40 @@ export const isLoginTime = (year, month, timeStamp, timeLog) => {
   }
 };
 
-export const formattedTime = (timeStr) => {
-  // try {
-  //   if (timeStr.includes('AM') || timeStr.includes('PM')) {
-  //     return timeStr.toLowerCase();
-  //   } else if (timeStr === '-') {
-  //     return timeStr;
-  //   }
-  //   const parsedTime = parse(timeStr, 'hh:mm', new Date());
-  //   const formattedTime = format(parsedTime, 'hh:mm a').toLowerCase();
-  //   return formattedTime;
-  // } catch (error) {
-  //   return false;
-  // }
-  return timeStr;
+export const formattedTime24 = (timeStr) => {
+  try {
+    if (timeStr.includes('AM')) {
+      return timeStr.replace(' AM', '').trim();
+    } else if (timeStr === '-') {
+      return timeStr;
+    }
+  } catch (error) {
+    return timeStr;
+  }
+};
+export const formattedTime12 = (timeStr) => {
+  try {
+    if (timeStr.includes('AM') || timeStr.includes('PM')) {
+      return timeStr;
+    } else if (timeStr === '-') {
+      return timeStr;
+    }
+    const parsedTime = parse(timeStr, 'HH:mm', new Date());
+    const formattedTime = format(parsedTime, 'hh:mm a');
+    // console.log({ parsedTime, formattedTime });
+    return formattedTime;
+  } catch (error) {
+    return timeStr;
+  }
+};
+
+export const format24To12 = (timeStr) => {
+  if (timeStr.includes('pm') || timeStr.includes('am')) {
+    return timeStr;
+  }
+  const parsedTime = parse(timeStr, 'HH:mm', new Date());
+  const formattedTime = format(parsedTime, 'hh:mm a');
+  return formattedTime;
 };
 
 export const getUsersInfoText = (txt) => {

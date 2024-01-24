@@ -1,8 +1,8 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import UserSettings from './slices/UserSettings';
-import attendanceSlice from './slices/attendanceSlice';
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import UserSettings from "./slices/UserSettings";
+import attendanceSlice from "./slices/attendanceSlice";
 
-import storage from 'redux-persist/lib/storage';
+import storage from "redux-persist/lib/storage";
 import {
   FLUSH,
   PAUSE,
@@ -12,16 +12,18 @@ import {
   REHYDRATE,
   persistReducer,
   persistStore,
-} from 'redux-persist';
+} from "redux-persist";
+import dateSlice from "./slices/dateSlice";
 const persistConfig = {
-  key: 'root',
+  key: "root",
   storage,
-  whitelist: ['userSettings', 'attendance'],
+  whitelist: ["userSettings", "attendance"],
 };
 
 const rootReducer = combineReducers({
   userSettings: UserSettings,
   attendance: attendanceSlice,
+  dateSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
