@@ -15,15 +15,18 @@ export default function EditModal({ isOpen, setIsOpen }) {
   const [loginTime, setLoginTime] = useState(removeAMorPM(login));
   const [logoutTime, setLogoutTime] = useState(removeAMorPM(logout));
   const [hoursTime, setHoursTime] = useState(hours);
-  const [isCalculateTime, setIsCalculateTime] = useState(true);
+  // const [isCalculateTime, setIsCalculateTime] = useState(true);
 
   function closeModal() {
     setIsOpen(false);
   }
 
-  const calculateTimeSpentInHrsMins = () => {
-    const { hrs, mins } = calculateTimeSpent(loginTime, logoutTime);
-    return isCalculateTime ? `${hrs}:${mins}`.padStart(5, '0') : hoursTime;
+  const calculateTimeSpentInHrsMins = (login, logout) => {
+    const diffObj = calculateTimeSpent(login, logout);
+    const { hrs, mins } = diffObj;
+    return `${hrs.toString().padStart(2, '0')}:${mins
+      .toString()
+      .padStart(2, '0')}`;
   };
 
   const handleEdit = (e) => {
@@ -106,7 +109,15 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         id="login"
                         // step={300}
                         // pattern="(?:1[012]|0[0-9]):[0-5][0-9] (?:AM|PM)"
-                        onChange={(e) => setLoginTime(e.target.value)}
+                        onChange={(e) => {
+                          setLoginTime(e.target.value);
+                          setHoursTime(
+                            calculateTimeSpentInHrsMins(
+                              e.target.value,
+                              logoutTime
+                            )
+                          );
+                        }}
                         placeholder="hh:mm AM/PM"
                         value={loginTime}
                       />
@@ -145,7 +156,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
 
                       <h4 className="text-lg font-medium">Time-Spent</h4>
                     </div>
-                    <div class="flex items-center">
+                    {/* <div class="flex items-center">
                       <input
                         checked={isCalculateTime}
                         id="checked-checkbox"
@@ -159,7 +170,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
                       >
                         Calculate Time Difference
                       </label>
-                    </div>
+                    </div> */}
                     <button
                       type="submit"
                       className="col-span-2 mx-auto bg-slate-700 px-4 py-2 rounded-md shadow-md text-white"
