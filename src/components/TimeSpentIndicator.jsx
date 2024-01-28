@@ -68,12 +68,12 @@ export default function TimeSpentIndicator({
   const totalHrsR = parseInt(Math.abs(timeDiffMins / 60));
   const rawAvg = totalTimeSpendInMins / 60 / days;
   const avg = Math.floor(rawAvg * 100) / 100;
+  const salaryAmount = Math.round(totalTimeSpendInMins * minRate);
+  const expectedSalaryAmount = Math.round(
+    totalExpectedTimeSpendInMins * minRate
+  );
+  const detuctedAmount = expectedSalaryAmount - salaryAmount;
 
-  // const expectedRs = getDaysInMonth(monthNameToIndex[month]) * 9 * 60 * minRate;
-  // console.log(
-  //   totalExpectedTimeSpendInMins * minRate -
-  //     Math.round(totalTimeSpendInMins * minRate)
-  // );
   return (
     <header className="sticky top-0 w-full z-10 text-lg space-x-1 p-2 text-center shadow-md flex indicator items-center justify-evenly text-slate-950">
       <h1 className="flex flex-1 space-x-1 justify-evenly items-center">
@@ -106,6 +106,8 @@ export default function TimeSpentIndicator({
         <p>
           Avg: <span className="font-bold">{avg}</span>
         </p>
+        {/* <p className="text-green-500 font-semibold">Rs.{salaryAmount}/-</p>
+        <p className="text-red-500 font-semibold">Rs.{-detuctedAmount}/-</p> */}
       </h1>
       {isYearMonthPickerVisible && (
         <>

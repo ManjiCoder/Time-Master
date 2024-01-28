@@ -76,7 +76,7 @@ export default function Home() {
       </h1>
       <div className="p-4">
         <section className="flex justify-between items-center">
-          <h3 className="text-xl font-medium">Welcome Naresh!</h3>
+          <h3 className="text-xl font-medium">Welcome </h3>
           {/* ToggleBtn */}
           <ToogleBtn />
         </section>
