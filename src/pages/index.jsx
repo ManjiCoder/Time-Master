@@ -12,6 +12,7 @@ import {
   isLoginTime,
   removeAMorPM,
 } from '@/utils/dateService';
+import TimeSpentIndicator from '@/components/TimeSpentIndicator';
 
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 
@@ -23,7 +24,9 @@ export default function Home() {
   const month = format(currentDate, 'MMMM');
 
   const isLogin = isLoginTime(year, month, currentDate, attendance);
-  const [loginTime, setLoginTime] = useState(isLogin ? removeAMorPM(isLogin) : '');
+  const [loginTime, setLoginTime] = useState(
+    isLogin ? removeAMorPM(isLogin) : ''
+  );
   const [logoutTime, setLogoutTime] = useState('');
   const dispatch = useDispatch();
   const router = useRouter();
@@ -68,6 +71,9 @@ export default function Home() {
     <main
       className={`bg-slate-300 text-slate-800 min-h-screen pb-10 ${inter.className}`}
     >
+      <h1 className="text-xl bg-white">
+        <TimeSpentIndicator isYearMonthPickerVisible={false} />
+      </h1>
       <div className="p-4">
         <section className="flex justify-between items-center">
           <h3 className="text-xl font-medium">Welcome Naresh!</h3>

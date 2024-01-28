@@ -98,7 +98,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
                   </h2>
 
                   <form
-                    className="grid grid-cols-2 text-gray-900 my-5 gap-3 justify-evenly items-center"
+                    className="grid grid-cols-2 text-gray-900 my-5 gap-4 justify-evenly items-center"
                     onSubmit={handleEdit}
                   >
                     <div className="time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200">
@@ -144,18 +144,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
 
                       <h4 className="text-lg font-medium">Log-Out</h4>
                     </div>
-                    <div className="time col-span-2 self-center inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200">
-                      <input
-                        className="outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 w-20 text-center"
-                        type="text"
-                        onChange={(e) => setHoursTime(e.target.value)}
-                        placeholder="hh:mm"
-                        maxLength={5}
-                        value={hoursTime}
-                      />
 
-                      <h4 className="text-lg font-medium">Time-Spent</h4>
-                    </div>
                     {/* <div class="flex items-center">
                       <input
                         checked={isCalculateTime}
@@ -171,6 +160,18 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         Calculate Time Difference
                       </label>
                     </div> */}
+                    <div className="time w-44 mx-auto col-span-2 flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200">
+                      <input
+                        className="outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 w-20 text-center"
+                        type="text"
+                        onChange={(e) => setHoursTime(e.target.value)}
+                        placeholder="hh:mm"
+                        maxLength={5}
+                        value={hoursTime}
+                      />
+
+                      <h4 className="text-lg font-medium">Time-Spent</h4>
+                    </div>
                     <button
                       type="submit"
                       className="col-span-2 mx-auto bg-slate-700 px-4 py-2 rounded-md shadow-md text-white"
