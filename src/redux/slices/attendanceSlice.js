@@ -1,14 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {};
 
 const attendanceSlice = createSlice({
-  name: "attendance",
+  name: 'attendance',
   initialState,
   reducers: {
     setLogin: (state, action) => {
       const { year, month, date } = action.payload;
-      console.log(year, month);
+      // console.log(year, month);
       // if date is not present
       if (!state[year]) {
         state[year] = {};
@@ -50,9 +50,15 @@ const attendanceSlice = createSlice({
       const { year, month, date } = action.payload;
       delete state[year][month][date];
     },
+    editByDate: (state, action) => {
+      const { year, month, date, data } = action.payload;
+      // console.log(state[year][month][date]);
+      state[year][month][date] = data;
+    },
   },
 });
 
-export const { setLogin, setPdfData, deleteByDate } = attendanceSlice.actions;
+export const { setLogin, setPdfData, deleteByDate, editByDate } =
+  attendanceSlice.actions;
 
 export default attendanceSlice.reducer;

@@ -19,7 +19,7 @@ const PdfReader = () => {
     // Handle the dropped file(s)
     const file = acceptedFiles[0];
     setSelectedFile(file);
-    console.log(file);
+    // console.log(file);
     handleFileChangeUpload(file);
   };
 

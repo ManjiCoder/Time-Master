@@ -10,6 +10,7 @@ import {
   calculateTimeSpent,
   formattedTime24,
   isLoginTime,
+  removeAMorPM,
 } from '@/utils/dateService';
 
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
@@ -22,7 +23,7 @@ export default function Home() {
   const month = format(currentDate, 'MMMM');
 
   const isLogin = isLoginTime(year, month, currentDate, attendance);
-  const [loginTime, setLoginTime] = useState(isLogin ? isLogin : '');
+  const [loginTime, setLoginTime] = useState(isLogin ? removeAMorPM(isLogin) : '');
   const [logoutTime, setLogoutTime] = useState('');
   const dispatch = useDispatch();
   const router = useRouter();
