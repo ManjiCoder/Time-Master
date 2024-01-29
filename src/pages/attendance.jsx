@@ -20,7 +20,9 @@ export default function Attendance() {
 
   if (attendance[year] === undefined || attendance[year][month] === undefined) {
     return (
-      <main className="bg-slate-300 text-slate-800 min-h-screen pb-16">
+      <main
+        className={`bg-slate-300 dark:bg-slate-900 dark:text-white text-slate-800 min-h-screen pb-16 ${inter.className}`}
+      >
         <TimeSpentIndicator year={year} month={month} />
         <h2 className="text-xl text-center mt-5">No Data Found!</h2>
       </main>

@@ -23,7 +23,7 @@ body {
       rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
 }
 
-.indicator {
+/* .indicator {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: saturate(180%) blur(4px);
-}
+} */

@@ -69,7 +69,7 @@ export default function EditAmountModal({ isOpen, setIsOpen }) {
                   >
                     <div className="time inline-flex flex-col justify-center items-center gap-2 rounded-md shadow-md bg-slate-50 dark:bg-slate-800">
                       <input
-                        className="outline-none focus-within:ring-2 p-4 rounded-md shadow-md bg-slate-700"
+                        className="outline-none focus-within:ring-2 p-4 rounded-md shadow-md dark:bg-slate-700"
                         type="tel"
                         placeholder="Enter your salary amount"
                         onChange={(e) => setSalaryAmt(e.target.value)}

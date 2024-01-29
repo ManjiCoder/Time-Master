@@ -86,7 +86,7 @@ export default function TimeSpentIndicator({
 
   return (
     <header
-      className={`sticky top-0 w-full z-10 space-x-1 p-2 text-center shadow-md flex indicator items-center justify-evenly text-slate-950 ${extraStyle}`}
+      className={`sticky top-0 w-full z-10 space-x-1 p-2 text-center shadow-md flex items-center justify-evenly text-slate-950 dark:text-white backdrop-blur  backdrop-brightness-125 ${extraStyle}`}
     >
       <h1 className="flex flex-1 space-x-1 justify-evenly items-center">
         {/* <span className="w-8 p-0.5 h-8 grid place-items-center text-sm font-semibold bg-white text-gray-900 rounded-full shadow-md">
