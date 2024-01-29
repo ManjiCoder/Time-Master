@@ -1,8 +1,8 @@
-import { deleteByDate } from "@/redux/slices/attendanceSlice";
-import { Dialog, Transition } from "@headlessui/react";
-import { format } from "date-fns";
-import { Fragment } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { deleteByDate } from '@/redux/slices/attendanceSlice';
+import { Dialog, Transition } from '@headlessui/react';
+import { format } from 'date-fns';
+import { Fragment } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function DeleteModal({ isOpen, setIsOpen }) {
   const attendance = useSelector((state) => state.attendance);
@@ -49,19 +49,19 @@ export default function DeleteModal({ isOpen, setIsOpen }) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-slate-800 p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-2xl font-medium text-center mb-3 leading-6 text-gray-900"
+                    className="text-2xl font-medium text-center mb-3 leading-6 text-gray-900 dark:text-white"
                   >
                     Are you sure?
                   </Dialog.Title>
-                  <h2 className="text-center font-medium mb-4 text-gray-900">
-                    Do you want to delete the{" "}
+                  <h2 className="text-center font-medium mb-4 text-gray-900 dark:text-white">
+                    Do you want to delete the{' '}
                     {format(
                       attendance[year][month][targetDate].date,
-                      "dd-MMM-yyyy"
-                    )}{" "}
+                      'dd-MMM-yyyy'
+                    )}{' '}
                     TimeLog?
                   </h2>
 

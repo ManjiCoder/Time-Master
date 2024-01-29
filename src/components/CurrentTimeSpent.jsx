@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { setLogin } from "../redux/slices/attendanceSlice";
-import { format } from "date-fns";
-import { calculateTimeSpent } from "@/utils/dateService";
+import { setLogin } from '../redux/slices/attendanceSlice';
+import { format } from 'date-fns';
+import { calculateTimeSpent } from '@/utils/dateService';
 
 export default function CurrentTimeSpent({ loginTime, logoutTime }) {
   const attendance = useSelector((state) => state.attendance);
@@ -22,10 +22,10 @@ export default function CurrentTimeSpent({ loginTime, logoutTime }) {
     if (loginTime.length !== 0 && isOfficeMode) {
       let intervalId = setInterval(() => {
         const currentDate = new Date();
-        const year = format(currentDate, "yyyy");
-        const month = format(currentDate, "MMMM");
+        const year = format(currentDate, 'yyyy');
+        const month = format(currentDate, 'MMMM');
         const date = currentDate.setHours(0, 0, 0, 0);
-        const logout = isOfficeMode ? format(new Date(), "HH:mm") : logoutTime;
+        const logout = isOfficeMode ? format(new Date(), 'HH:mm') : logoutTime;
         let timeSpendPayload = calculateTimeSpent(loginTime, logout);
         seTimeSpent(timeSpendPayload);
         const payload = {
@@ -34,11 +34,11 @@ export default function CurrentTimeSpent({ loginTime, logoutTime }) {
           logout,
           hours: `${timeSpendPayload.hrs
             .toString()
-            .padStart(2, "0")}:${timeSpendPayload.mins
+            .padStart(2, '0')}:${timeSpendPayload.mins
             .toString()
-            .padStart(2, "0")}`,
+            .padStart(2, '0')}`,
         };
-        if (loginTime !== "") {
+        if (loginTime !== '') {
           dispatch(
             setLogin({
               year,
@@ -104,7 +104,7 @@ export default function CurrentTimeSpent({ loginTime, logoutTime }) {
             strokeLinecap="round"
             style={{
               strokeDashoffset: `calc(848 - (848 * ${
-                timeSpent?.percent > 100 ? 100 : Math.floor(timeSpent.percent)
+                timeSpent?.percent > 100 ? 100 : timeSpent.percent
               }) / 100)`,
             }}
             strokeWidth={16}
@@ -117,13 +117,13 @@ export default function CurrentTimeSpent({ loginTime, logoutTime }) {
             {/* <sub>{timeSpent.secs}</sub> */}
           </span>
 
-          <span className="text-sm text-green-900">
+          <span className="text-sm text-green-900 dark:text-green-400">
             {`+${timeSpent?.hrs} hr : ${timeSpent?.mins} min `}
           </span>
           {timeSpent?.hrs <= 8 && (
-            <span className="text-sm text-red-900">
-              {`${-(8 - timeSpent?.hrs) + " hr"} : ${
-                60 - timeSpent?.mins + " min "
+            <span className="text-sm text-red-900 dark:text-red-500">
+              {`${-(8 - timeSpent?.hrs) + ' hr'} : ${
+                60 - timeSpent?.mins + ' min '
               }`}
             </span>
           )}

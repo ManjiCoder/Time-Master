@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import Modal from "./HeadlessUI/Modal";
-import { useDispatch, useSelector } from "react-redux";
-import { toggleIsShowAmt } from "@/redux/slices/UserSettings";
+import React, { useState } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleIsShowAmt } from '@/redux/slices/UserSettings';
+import EditAmountModal from './EditAmountModal';
 
 export default function ToggleCheckBox() {
   const {
@@ -14,9 +15,9 @@ export default function ToggleCheckBox() {
 
   const handleClick = () => {
     dispatch(toggleIsShowAmt());
-    
+
     if (!salaryAmount) {
-        setIsOpen(!isOpen);
+      setIsOpen(!isOpen);
     }
   };
   return (
@@ -29,9 +30,9 @@ export default function ToggleCheckBox() {
           className=""
           onClick={handleClick}
         />
-        <span className="mt-1">{!isChecked ? "Show" : "hide"} Amount</span>
+        <span className="mt-1">{!isChecked ? 'Show' : 'hide'} Amount</span>
       </label>
-      {isOpen && <Modal isOpen={isOpen} setIsOpen={setIsOpen} />}
+      {isOpen && <EditAmountModal isOpen={isOpen} setIsOpen={setIsOpen} />}
     </>
   );
 }

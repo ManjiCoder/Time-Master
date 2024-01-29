@@ -29,7 +29,7 @@ export default function Attendance() {
 
   return (
     <main
-      className={`bg-slate-300 text-slate-800 min-h-screen pb-10 ${inter.className}`}
+      className={`bg-slate-300 dark:bg-slate-900 text-slate-800 min-h-screen pb-16 ${inter.className}`}
     >
       <TimeSpentIndicator />
 

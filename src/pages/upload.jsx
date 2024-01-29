@@ -1,16 +1,16 @@
 // PdfReader.js
-import { setPdfData } from "@/redux/slices/attendanceSlice";
-import { getUserInfo } from "@/utils/dateService";
-import { Baloo_Bhai_2 } from "next/font/google";
-import React, { useState } from "react";
-import { useDropzone } from "react-dropzone";
-import { useDispatch } from "react-redux";
+import { setPdfData } from '@/redux/slices/attendanceSlice';
+import { getUserInfo } from '@/utils/dateService';
+import { Baloo_Bhai_2 } from 'next/font/google';
+import React, { useState } from 'react';
+import { useDropzone } from 'react-dropzone';
+import { useDispatch } from 'react-redux';
 
-const inter = Baloo_Bhai_2({ subsets: ["latin"] });
+const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 
 const PdfReader = () => {
   const dispatch = useDispatch();
-  const [pdfText, setPdfText] = useState("");
+  const [pdfText, setPdfText] = useState('');
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -32,13 +32,13 @@ const PdfReader = () => {
       const reader = new FileReader();
 
       reader.onload = async (e) => {
-        const pdfData = e.target.result.split("base64,")[1];
+        const pdfData = e.target.result.split('base64,')[1];
 
         try {
-          const response = await fetch("/api/pdf", {
-            method: "POST",
+          const response = await fetch('/api/pdf', {
+            method: 'POST',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify({ pdfData }),
           });
@@ -50,10 +50,10 @@ const PdfReader = () => {
             dispatch(setPdfData(payload));
             setNumPages(data.numPages);
           } else {
-            console.error("PDF processing failed.");
+            console.error('PDF processing failed.');
           }
         } catch (error) {
-          console.error("Error processing PDF:", error);
+          console.error('Error processing PDF:', error);
         }
       };
 
@@ -66,13 +66,13 @@ const PdfReader = () => {
       const reader = new FileReader();
 
       reader.onload = async (e) => {
-        const pdfData = e.target.result.split("base64,")[1];
+        const pdfData = e.target.result.split('base64,')[1];
 
         try {
-          const response = await fetch("/api/pdf", {
-            method: "POST",
+          const response = await fetch('/api/pdf', {
+            method: 'POST',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify({ pdfData }),
           });
@@ -84,10 +84,10 @@ const PdfReader = () => {
             dispatch(setPdfData(payload));
             setNumPages(data.numPages);
           } else {
-            console.error("PDF processing failed.");
+            console.error('PDF processing failed.');
           }
         } catch (error) {
-          console.error("Error processing PDF:", error);
+          console.error('Error processing PDF:', error);
         }
       };
 
@@ -97,21 +97,21 @@ const PdfReader = () => {
 
   return (
     <main
-      className={`bg-slate-300 text-slate-800 min-h-screen pb-10 ${inter.className} p-4`}
+      className={`bg-slate-300 dark:bg-slate-800 dark:text-white text-slate-800 min-h-screen pb-10 ${inter.className} p-4`}
     >
       <h2 className="text-2xl font-semibold">Upload</h2>
       <div className="container mx-auto mt-5">
         <div
           {...getRootProps()}
           className={`p-6 border-4 border-dashed rounded-md ${
-            isDragActive ? "border-green-500" : "border-gray-400"
+            isDragActive ? 'border-green-500' : 'border-gray-400'
           }`}
         >
           <input {...getInputProps()} />
           <p className="text-center">
             {isDragActive
-              ? "Drop the file here"
-              : "Drag and drop a file here, or click to select a file"}
+              ? 'Drop the file here'
+              : 'Drag and drop a file here, or click to select a file'}
           </p>
         </div>
 

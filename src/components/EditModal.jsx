@@ -78,17 +78,17 @@ export default function EditModal({ isOpen, setIsOpen }) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-slate-900 p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-2xl font-medium text-center mb-3 leading-6 text-gray-900"
+                    className="text-2xl font-medium text-center mb-3 leading-6 text-gray-900 dark:text-white"
                   >
                     Are you sure?
                   </Dialog.Title>
                   <button onClick={closeModal}>
-                    <XMarkIcon className="absolute top-5 right-4 w-7 text-gray-900 text-xl" />
+                    <XMarkIcon className="absolute top-5 right-4 w-7 text-gray-900 dark:text-white text-xl" />
                   </button>
-                  <h2 className="text-center font-medium mb-4 text-gray-900">
+                  <h2 className="text-center font-medium mb-4 text-gray-900 dark:text-white">
                     Do you want to edit the{' '}
                     {format(
                       attendance[year][month][targetDate].date,
@@ -98,12 +98,12 @@ export default function EditModal({ isOpen, setIsOpen }) {
                   </h2>
 
                   <form
-                    className="grid grid-cols-2 text-gray-900 my-5 gap-4 justify-evenly items-center"
+                    className="grid grid-cols-2 text-gray-900 dark:text-white my-5 gap-4 justify-evenly items-center"
                     onSubmit={handleEdit}
                   >
-                    <div className="time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200">
+                    <div className="time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800">
                       <input
-                        className="outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2"
+                        className="outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700 w-36"
                         type="time"
                         name="login"
                         id="login"
@@ -123,9 +123,9 @@ export default function EditModal({ isOpen, setIsOpen }) {
                       />
                       <h4 className="text-lg font-medium">Log-In</h4>
                     </div>
-                    <div className="time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200">
+                    <div className="time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800">
                       <input
-                        className="outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2"
+                        className="outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700 w-36"
                         type="time"
                         name="logout"
                         id="logout"
@@ -145,24 +145,9 @@ export default function EditModal({ isOpen, setIsOpen }) {
                       <h4 className="text-lg font-medium">Log-Out</h4>
                     </div>
 
-                    {/* <div class="flex items-center">
+                    <div className="time w-44 mx-auto col-span-2 flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800">
                       <input
-                        checked={isCalculateTime}
-                        id="checked-checkbox"
-                        onChange={(e) => setIsCalculateTime(!isCalculateTime)}
-                        type="checkbox"
-                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                      />
-                      <label
-                        for="checked-checkbox"
-                        class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                      >
-                        Calculate Time Difference
-                      </label>
-                    </div> */}
-                    <div className="time w-44 mx-auto col-span-2 flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200">
-                      <input
-                        className="outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 w-20 text-center"
+                        className="outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 w-36 dark:bg-slate-700 text-center"
                         type="text"
                         onChange={(e) => setHoursTime(e.target.value)}
                         placeholder="hh:mm"
