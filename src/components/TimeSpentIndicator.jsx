@@ -2,15 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import ListBoxMonths from './ListBoxMonths';
 import ListBoxYears from './ListBoxYears';
+import { useRouter } from 'next/router';
 
-const minRate = 0.9259259259259259;
+export const formatAmt = {
+  style: 'currency',
+  currency: 'INR',
+  currencyDisplay: 'symbol',
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 2,
+};
 
 export default function TimeSpentIndicator({
   isYearMonthPickerVisible = true,
+  extraStyle = '',
 }) {
   const attendance = useSelector((state) => state.attendance);
+  const { isShowAmt, minRate } = useSelector((state) => state.userSettings);
   const { year, month } = useSelector((state) => state.dateSlice);
   const years = Object.keys(attendance).reverse();
+  const { pathname } = useRouter();
 
   // const [minsRate, setMinsRate] = useState(second)
 
@@ -75,7 +85,9 @@ export default function TimeSpentIndicator({
   const detuctedAmount = expectedSalaryAmount - salaryAmount;
 
   return (
-    <header className="sticky top-0 w-full z-10 text-lg space-x-1 p-2 text-center shadow-md flex indicator items-center justify-evenly text-slate-950">
+    <header
+      className={`sticky top-0 w-full z-10 space-x-1 p-2 text-center shadow-md flex indicator items-center justify-evenly text-slate-950 ${extraStyle}`}
+    >
       <h1 className="flex flex-1 space-x-1 justify-evenly items-center">
         {/* <span className="w-8 p-0.5 h-8 grid place-items-center text-sm font-semibold bg-white text-gray-900 rounded-full shadow-md">
           {days.toString().padStart(2, "0")}
@@ -104,10 +116,18 @@ export default function TimeSpentIndicator({
           Days: <span className="font-bold">{days}</span>
         </p>
         <p>
-          Avg: <span className="font-bold">{avg}</span>
+          Avg: <span className="font-bold">{isNaN(avg) ? 0 : avg}</span>
         </p>
-        {/* <p className="text-green-500 font-semibold">Rs.{salaryAmount}/-</p>
-        <p className="text-red-500 font-semibold">Rs.{-detuctedAmount}/-</p> */}
+        {isShowAmt && pathname === '/' && !isNaN(salaryAmount) && (
+          <>
+            <p className="text-green-500 font-semibold">
+              {salaryAmount.toLocaleString('en-IN', formatAmt)}
+            </p>
+            <p className="text-red-500 font-semibold">
+              -{detuctedAmount.toLocaleString('en-IN', formatAmt)}
+            </p>
+          </>
+        )}
       </h1>
       {isYearMonthPickerVisible && (
         <>

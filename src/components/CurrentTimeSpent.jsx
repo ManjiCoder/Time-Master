@@ -104,7 +104,7 @@ export default function CurrentTimeSpent({ loginTime, logoutTime }) {
             strokeLinecap="round"
             style={{
               strokeDashoffset: `calc(848 - (848 * ${
-                timeSpent?.percent > 100 ? 100 : timeSpent.percent
+                timeSpent?.percent > 100 ? 100 : Math.floor(timeSpent.percent)
               }) / 100)`,
             }}
             strokeWidth={16}
@@ -114,15 +114,16 @@ export default function CurrentTimeSpent({ loginTime, logoutTime }) {
           <span className="text-4xl font-semibold mt-9">
             {timeSpent?.percent}
             <span className="text-3xl pb-2">%</span>
+            {/* <sub>{timeSpent.secs}</sub> */}
           </span>
 
           <span className="text-sm text-green-900">
-            {`+${timeSpent?.hrs} hr : ${timeSpent?.mins} min`}
+            {`+${timeSpent?.hrs} hr : ${timeSpent?.mins} min `}
           </span>
           {timeSpent?.hrs <= 8 && (
             <span className="text-sm text-red-900">
               {`${-(8 - timeSpent?.hrs) + " hr"} : ${
-                60 - timeSpent?.mins + " min"
+                60 - timeSpent?.mins + " min "
               }`}
             </span>
           )}

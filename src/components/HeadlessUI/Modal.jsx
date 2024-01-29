@@ -1,30 +1,31 @@
-import { deleteByDate } from "@/redux/slices/attendanceSlice";
-import { Dialog, Transition } from "@headlessui/react";
-import { format } from "date-fns";
-import { Fragment } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {
+  setMinRate,
+  setSalaryAmount,
+  toggleIsShowAmt,
+} from '@/redux/slices/UserSettings';
+import { Dialog, Transition } from '@headlessui/react';
+import { XMarkIcon } from '@heroicons/react/20/solid';
+import { Fragment, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function Modal({ isOpen, setIsOpen }) {
-  const attendance = useSelector((state) => state.attendance);
-  const { year, month, targetDate } = useSelector((state) => state.dateSlice);
   const dispatch = useDispatch();
+  const { salaryAmount } = useSelector((state) => state.userSettings);
+  const [salaryAmt, setSalaryAmt] = useState(salaryAmount);
 
   function closeModal() {
     setIsOpen(false);
+    dispatch(toggleIsShowAmt());
   }
-  const handleDelete = () => {
-    const payload = {
-      year,
-      month,
-      date: targetDate,
-    };
-    dispatch(deleteByDate(payload));
+  const handleEdit = () => {
+    dispatch(setSalaryAmount(salaryAmt));
+    dispatch(setMinRate(salaryAmt / 30 / 9 / 60));
     closeModal();
   };
 
   return (
     <>
-      <Transition appear show={true} as={Fragment}>
+      <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
           <Transition.Child
             as={Fragment}
@@ -54,34 +55,35 @@ export default function Modal({ isOpen, setIsOpen }) {
                     as="h3"
                     className="text-2xl font-medium text-center mb-3 leading-6 text-gray-900"
                   >
-                    Are you sure?
+                    Set Your Salary Amount.
                   </Dialog.Title>
-                  <h2 className="text-center font-medium mb-4 text-gray-900">
-                    Do you want to delete the{" "}
-                    {format(
-                      attendance[year][month][targetDate].date,
-                      "dd-MMM-yyyy"
-                    )}{" "}
-                    TimeLog?
-                  </h2>
+                  <button onClick={closeModal}>
+                    <XMarkIcon className="absolute top-5 right-4 w-7 text-gray-900 text-xl" />
+                  </button>
+                  {/* <h2 className="text-center font-medium mb-4 text-gray-900">
+                    Do you want to delete the TimeLog?
+                  </h2> */}
+                  <form
+                    className="flex flex-col text-gray-900 my-5 gap-4 justify-evenly items-center"
+                    onSubmit={handleEdit}
+                  >
+                    <div className="time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-50">
+                      <input
+                        className="outline-none focus-within:ring-2 rounded-md shadow-md px-2 py-2"
+                        type="tel"
+                        placeholder="Enter your salary amount"
+                        onChange={(e) => setSalaryAmt(e.target.value)}
+                        value={salaryAmt}
+                      />
+                    </div>
 
-                  <div className="w-full mt-4 flex justify-evenly">
                     <button
-                      type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-700 focus-visible:ring-offset-2"
-                      onClick={handleDelete}
+                      type="submit"
+                      className="col-span-2 mx-auto bg-slate-700 px-4 py-2 rounded-md shadow-md text-white"
                     >
-                      Yes,I&apos;m sure!
+                      Submit
                     </button>
-                    <button
-                      type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      // formAction={() => removeCard(deleteCard._id)}
-                      onClick={closeModal}
-                    >
-                      No, cancel!
-                    </button>
-                  </div>
+                  </form>
                 </Dialog.Panel>
               </Transition.Child>
             </div>

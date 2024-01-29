@@ -1,46 +1,46 @@
-import { Baloo_Bhai_2 } from 'next/font/google';
-import ToogleBtn from '@/components/HeadlessUI/ToggleBtn';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
-import { format } from 'date-fns';
-import { setLogin } from '@/redux/slices/attendanceSlice';
-import CurrentTimeSpent from '@/components/CurrentTimeSpent';
+import { Baloo_Bhai_2 } from "next/font/google";
+import ToogleBtn from "@/components/HeadlessUI/ToggleBtn";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import { format } from "date-fns";
+import { setLogin } from "@/redux/slices/attendanceSlice";
+import CurrentTimeSpent from "@/components/CurrentTimeSpent";
 import {
   calculateTimeSpent,
   formattedTime24,
   isLoginTime,
   removeAMorPM,
-} from '@/utils/dateService';
-import TimeSpentIndicator from '@/components/TimeSpentIndicator';
+} from "@/utils/dateService";
+import TimeSpentIndicator from "@/components/TimeSpentIndicator";
+import ToggleCheckBox from "@/components/ToggleCheckBox";
 
-const inter = Baloo_Bhai_2({ subsets: ['latin'] });
+const inter = Baloo_Bhai_2({ subsets: ["latin"] });
 
 export default function Home() {
   const { isOfficeMode } = useSelector((state) => state.userSettings);
   const attendance = useSelector((state) => state.attendance);
   const currentDate = new Date().setHours(0, 0, 0, 0);
   const year = new Date().getFullYear();
-  const month = format(currentDate, 'MMMM');
+  const month = format(currentDate, "MMMM");
 
   const isLogin = isLoginTime(year, month, currentDate, attendance);
   const [loginTime, setLoginTime] = useState(
-    isLogin ? removeAMorPM(isLogin) : ''
+    isLogin ? removeAMorPM(isLogin) : ""
   );
-  const [logoutTime, setLogoutTime] = useState('');
+  const [logoutTime, setLogoutTime] = useState("");
   const dispatch = useDispatch();
   const router = useRouter();
-  // console.log(loginTime);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const currentDate = new Date();
-    const year = format(currentDate, 'yyyy');
-    const month = format(currentDate, 'MMMM');
+    const year = format(currentDate, "yyyy");
+    const month = format(currentDate, "MMMM");
     const date = currentDate.setHours(0, 0, 0, 0);
     let timeSpendPayload = calculateTimeSpent(
       loginTime,
-      isOfficeMode ? format(new Date(), 'HH:mm') : logoutTime
+      isOfficeMode ? format(new Date(), "HH:mm") : logoutTime
     );
     const payload = {
       date: currentDate.toISOString(),
@@ -48,9 +48,9 @@ export default function Home() {
       logout: logoutTime,
       hours: `${timeSpendPayload.hrs
         .toString()
-        .padStart(2, '0')}:${timeSpendPayload.mins
+        .padStart(2, "0")}:${timeSpendPayload.mins
         .toString()
-        .padStart(2, '0')}`,
+        .padStart(2, "0")}`,
       // logout: isOfficeMode ? format(new Date(), "HH:mm") : logoutTime,
     };
     if (loginTime.trim().length !== 0 && logoutTime.trim().length !== 0) {
@@ -63,7 +63,7 @@ export default function Home() {
           [date]: payload,
         })
       );
-      router.push('/attendance');
+      router.push("/attendance");
     }
   };
   return (
@@ -71,9 +71,10 @@ export default function Home() {
     <main
       className={`bg-slate-300 text-slate-800 min-h-screen pb-10 ${inter.className}`}
     >
-      <h1 className="text-xl bg-white">
-        <TimeSpentIndicator isYearMonthPickerVisible={false} />
-      </h1>
+      <TimeSpentIndicator
+        isYearMonthPickerVisible={false}
+        extraStyle="text-lg"
+      />
       <div className="p-4">
         <section className="flex justify-between items-center">
           <h3 className="text-xl font-medium">Welcome </h3>
@@ -110,6 +111,9 @@ export default function Home() {
               value={logoutTime}
             />
             <h4 className="text-lg font-medium">Log-Out</h4>
+          </div>
+          <div className="pl-3 col-span-2 flex items-center text-sm">
+            <ToggleCheckBox />
           </div>
           <button
             type="submit"
