@@ -8,7 +8,6 @@ import { setLogin } from '@/redux/slices/attendanceSlice';
 import CurrentTimeSpent from '@/components/CurrentTimeSpent';
 import {
   calculateTimeSpent,
-  formattedTime24,
   isLoginTime,
   removeAMorPM,
 } from '@/utils/dateService';
