@@ -67,14 +67,14 @@ export default function CurrentTimeSpent({ loginTime, logoutTime }) {
 
   if (loginTime.length === 0) {
     return (
-      <p className="text-red-700 text-sm capitalize">
+      <p className='text-red-700 text-sm capitalize'>
         Select the time first & then try again!
       </p>
     );
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className='flex flex-col gap-4'>
       {/* <h2 className="text-lg">
         Your current time spend:{" "}
         <b className="text-red-600">
@@ -82,26 +82,26 @@ export default function CurrentTimeSpent({ loginTime, logoutTime }) {
         </b>
       </h2> */}
 
-      <section className="grid place-items-center">
+      <section className='grid place-items-center'>
         <svg
-          className="fill-none -rotate-90 scale-90 "
+          className='fill-none -rotate-90 scale-90 '
           height={300}
           width={300}
         >
           <circle
-            className="stroke-slate-700"
+            className='stroke-slate-700'
             cx={150}
             cy={150}
             r={135}
             strokeWidth={12}
           ></circle>
           <circle
-            className="stroke-green-600 transition-all duration-500 ease-in-out"
+            className='stroke-green-600 transition-all duration-500 ease-in-out'
             cx={150}
             cy={150}
             r={135}
             strokeDasharray={848}
-            strokeLinecap="round"
+            strokeLinecap='round'
             style={{
               strokeDashoffset: `calc(848 - (848 * ${
                 timeSpent?.percent > 100 ? 100 : timeSpent.percent
@@ -109,19 +109,36 @@ export default function CurrentTimeSpent({ loginTime, logoutTime }) {
             }}
             strokeWidth={16}
           ></circle>
+          {/* Start After 100% */}
+          {timeSpent.percent > 100 && (
+            <circle
+              className='stroke-green-800 dark:stroke-green-900 transition-all duration-500 ease-in-out'
+              cx={150}
+              cy={150}
+              r={135}
+              strokeDasharray={848}
+              strokeLinecap='round'
+              style={{
+                strokeDashoffset: `calc(848 - (848 * ${
+                  timeSpent?.percent - 100
+                }) / 100)`,
+              }}
+              strokeWidth={16}
+            ></circle>
+          )}
         </svg>
-        <div className="absolute text-center justify-center items-center flex flex-col">
-          <span className="text-4xl font-semibold mt-9">
+        <div className='absolute text-center justify-center items-center flex flex-col'>
+          <span className='text-4xl font-semibold mt-9'>
             {timeSpent?.percent}
-            <span className="text-3xl pb-2">%</span>
+            <span className='text-3xl pb-2'>%</span>
             {/* <sub>{timeSpent.secs}</sub> */}
           </span>
 
-          <span className="text-sm text-green-900 dark:text-green-400">
+          <span className='text-sm text-green-900 dark:text-green-400'>
             {`+${timeSpent?.hrs} hr : ${timeSpent?.mins} min `}
           </span>
           {timeSpent?.hrs <= 8 && (
-            <span className="text-sm text-red-900 dark:text-red-500">
+            <span className='text-sm text-red-900 dark:text-red-500'>
               {`${-(8 - timeSpent?.hrs) + ' hr'} : ${
                 60 - timeSpent?.mins + ' min '
               }`}

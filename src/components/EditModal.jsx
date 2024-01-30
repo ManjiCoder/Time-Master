@@ -14,7 +14,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
   const { login, logout, hours } = data;
   const [loginTime, setLoginTime] = useState(removeAMorPM(login));
   const [logoutTime, setLogoutTime] = useState(removeAMorPM(logout));
-  const [hoursTime, setHoursTime] = useState(hours);
+  const [hoursTime, setHoursTime] = useState(hours === '-' ? null : hours);
   // const [isCalculateTime, setIsCalculateTime] = useState(true);
 
   function closeModal() {
@@ -150,7 +150,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         className="outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 w-36 dark:bg-slate-700 text-center"
                         type="text"
                         onChange={(e) => setHoursTime(e.target.value)}
-                        placeholder="hh:mm"
+                        placeholder="HH:MM"
                         maxLength={5}
                         value={hoursTime}
                       />

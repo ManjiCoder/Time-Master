@@ -42,22 +42,17 @@ export default function Attendance() {
           let loginTime = obj.login;
           let logoutTime = obj.logout;
           loginTime = loginTime ? formattedTime12(loginTime) : '00:00';
-          if (!obj.logout.includes(':')) {
-            logoutTime = '00:00';
-          }
           logoutTime = logoutTime ? format24To12(logoutTime) : '00:00';
-          if (!obj.hours.includes('-')) {
-            obj.hours.split(':').map((v, i) => {
-              v = parseInt(v);
-              if (i == 0) {
-                // hr = hr + v;
-              } else {
-                // min = min + v;
-              }
-            });
+
+          if (!obj.login.includes(':')) {
+            loginTime = '-';
           }
-          if (obj.present === '-') return;
-          // TODO: total days
+          if (!obj.logout.includes(':')) {
+            logoutTime = '-';
+          }
+
+          // if (obj.present === '-') return;
+          // // TODO: total days
 
           return (
             <section
@@ -106,22 +101,29 @@ export default function Attendance() {
                 <div className="flex text-center gap-1">
                   <div>
                     <div
-                      className={`bg-slate-600 flex place-items-center w-[5rem] md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 `}
+                      className={`bg-slate-600 flex items-center justify-center w-[5rem] md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 `}
                     >
                       {loginTime?.toLowerCase().includes('am')
                         ? loginTime.slice(0, loginTime.length - 3)
                         : loginTime?.toLowerCase().includes('pm')
                         ? loginTime.slice(0, loginTime.length - 3)
                         : loginTime}
-                      {loginTime?.toLowerCase().includes('am') ? (
-                        <span className="ml-0.5 -mb-1.5 text-xs font-light">
-                          AM
-                        </span>
-                      ) : (
+                      {/* {loginTime?.toLowerCase().includes('pm') ? (
                         <span className="ml-0.5 -mb-1.5 text-xs font-light">
                           PM
                         </span>
-                      )}
+                      ) : (
+                        <span className="ml-0.5 -mb-1.5 text-xs font-light">
+                          AM
+                        </span>
+                      )} */}
+                      <span className="ml-0.5 -mb-1.5 text-xs font-light">
+                        {loginTime == '-'
+                          ? ''
+                          : loginTime?.toLowerCase().includes('pm')
+                          ? 'PM'
+                          : 'AM'}
+                      </span>
                     </div>
                     <div className="w-[5rem] md:w-28 max-w-full rounded-md shadow-md font-semibold">
                       Login
@@ -136,15 +138,22 @@ export default function Attendance() {
                         : logoutTime.toLowerCase().includes('am')
                         ? loginTime.slice(0, loginTime.length - 3)
                         : loginTime}
-                      {logoutTime?.toLowerCase().includes('pm') ? (
-                        <span className="ml-0.5 -mb-1.5 text-xs font-light">
-                          PM
-                        </span>
-                      ) : (
+                      {/* {logoutTime?.toLowerCase().includes('am') ? (
                         <span className="ml-0.5 -mb-1.5 text-xs font-light">
                           AM
                         </span>
-                      )}
+                      ) : (
+                        <span className="ml-0.5 -mb-1.5 text-xs font-light">
+                          PM
+                        </span>
+                      )} */}
+                      <span className="ml-0.5 -mb-1.5 text-xs font-light">
+                        {logoutTime == '-'
+                          ? ''
+                          : logoutTime?.toLowerCase().includes('pm')
+                          ? 'PM'
+                          : 'AM'}
+                      </span>
                     </div>
                     <div className="w-[5rem] md:w-28 max-w-full rounded-md shadow-md font-semibold">
                       Logout

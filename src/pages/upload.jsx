@@ -2,6 +2,7 @@
 import { setPdfData } from '@/redux/slices/attendanceSlice';
 import { getUserInfo } from '@/utils/dateService';
 import { Baloo_Bhai_2 } from 'next/font/google';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useDispatch } from 'react-redux';
@@ -10,6 +11,7 @@ const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 
 const PdfReader = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const [pdfText, setPdfText] = useState('');
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
@@ -83,6 +85,7 @@ const PdfReader = () => {
             const payload = getUserInfo(data.text);
             dispatch(setPdfData(payload));
             setNumPages(data.numPages);
+            router.push('/attendance');
           } else {
             console.error('PDF processing failed.');
           }
