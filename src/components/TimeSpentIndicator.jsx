@@ -86,14 +86,10 @@ export default function TimeSpentIndicator({
 
   return (
     <header
-      className={`sticky top-0 w-full z-10 space-x-1 p-2 text-center shadow-md flex items-center justify-evenly text-slate-950 dark:text-white backdrop-blur  backdrop-brightness-125 ${extraStyle}`}
+      className={`sticky top-0 w-full z-10 space-x-1 p-2 text-center shadow-md flex items-center justify-evenly text-slate-950 dark:text-white bg-white/70 dark:bg-slate-700/40 backdrop-blur-sm dark:backdrop-brightness-75 ${extraStyle}`}
     >
-      <h1 className="flex flex-1 space-x-1 justify-evenly items-center">
-        {/* <span className="w-8 p-0.5 h-8 grid place-items-center text-sm font-semibold bg-white text-gray-900 rounded-full shadow-md">
-          {days.toString().padStart(2, "0")}
-        </span>{" "}
-        <span className="text-sm ml-1">Days</span> */}
-        <p
+      <h1 className="flex flex-1 xs:text-lg space-x-1 justify-evenly items-center">
+        <span
           className={`font-bold ${
             Math.sign(timeDiffMins) === -1 ? 'text-red-500' : 'text-green-500'
           }`}
@@ -107,25 +103,36 @@ export default function TimeSpentIndicator({
           </span>
           {totalHrsR > 0 && totalHrsR + 'hr : '}
           {totalMinsR}min
-        </p>
-        {/* <span className="text-sm mr-1">Avg</span>
-        <span className="w-8 p-0.5 h-8 grid place-items-center text-sm font-semibold bg-white text-gray-900 rounded-full shadow-md">
-          {avg}
-        </span>{" "} */}
-        <p>
+        </span>
+
+        <span>
           Days: <span className="font-bold">{days}</span>
-        </p>
-        <p>
+        </span>
+        <span>
           Avg: <span className="font-bold">{isNaN(avg) ? 0 : avg}</span>
-        </p>
+        </span>
         {isShowAmt && pathname === '/' && !isNaN(salaryAmount) && (
           <>
-            <p className="text-green-500 font-semibold">
+            <span className="text-green-500 font-semibold">
               {salaryAmount.toLocaleString('en-IN', formatAmt)}
-            </p>
-            <p className="text-red-500 font-semibold">
+            </span>
+            <span className="text-red-500 font-semibold">
               -{detuctedAmount.toLocaleString('en-IN', formatAmt)}
-            </p>
+            </span>
+          </>
+        )}
+        {!isShowAmt && pathname === '/' && (
+          <>
+            <span>
+              Hr:{' '}
+              <span className="font-bold">
+                {Math.floor(totalTimeSpendInMins / 60)}
+              </span>
+            </span>
+            <span>
+              Min:{' '}
+              <span className="font-bold">{totalTimeSpendInMins % 60}</span>
+            </span>
           </>
         )}
       </h1>

@@ -117,15 +117,15 @@ const PdfReader = () => {
               : 'Drag and drop a file here, or click to select a file'}
           </p>
         </div>
-
-        {selectedFile && (
-          <div className="mt-4">
-            <p>Selected File: {selectedFile.name}</p>
-            {/* You can display additional file information here */}
-          </div>
-        )}
       </div>
-      {/* <input type="file" onChange={handleFileChange} /> */}
+
+      {selectedFile && (
+        <div className="mt-4">
+          <p>Selected File: {selectedFile.name}</p>
+          {/* You can display additional file information here */}
+        </div>
+      )}
+
       {pdfText && (
         <div>
           <pre className="text-balance">{pdfText}</pre>

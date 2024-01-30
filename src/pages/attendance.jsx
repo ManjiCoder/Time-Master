@@ -2,10 +2,14 @@ import { Baloo_Bhai_2 } from 'next/font/google';
 import TimeSpentIndicator from '@/components/TimeSpentIndicator';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { format, getDate } from 'date-fns';
+import { format, getDate, isSaturday } from 'date-fns';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/20/solid';
 import { setTargetDate } from '@/redux/slices/dateSlice';
-import { format24To12, formattedTime12 } from '@/utils/dateService';
+import {
+  format24To12,
+  formattedTime12,
+  isFirstOrThirdSaturday,
+} from '@/utils/dateService';
 import DeleteModal from '@/components/DeleteModal';
 import EditModal from '@/components/EditModal';
 
@@ -38,6 +42,10 @@ export default function Attendance() {
       {Object.keys(attendance[year][month])
         .sort((a, b) => parseInt(b) - parseInt(a))
         .map((date) => {
+          const day = format(parseInt(date), 'EEEE');
+          const dayNum = getDate(parseInt(date));
+
+          const isHoliday = day === 'Sunday';
           const obj = attendance[year][month][date];
           let loginTime = obj.login;
           let logoutTime = obj.logout;
@@ -61,12 +69,14 @@ export default function Attendance() {
             >
               <div className="bg-cyan-800 w-[30%] flex flex-col items-center justify-center rounded-l-lg">
                 <div className="bg-slate-50 w-[70%] rounded-tr-lg rounded-tl-lg h-6 mb-0.5 text-sm font-bold grid place-items-center">
-                  {format(parseInt(date), 'EEEE')}
+                  {day}
                 </div>
                 <div
-                  className={`bg-slate-100 w-[70%] rounded-br-lg rounded-bl-lg h-16 grid place-items-center font-bold text-4xl `}
+                  className={`bg-slate-100 w-[70%] rounded-br-lg rounded-bl-lg h-16 grid place-items-center font-bold text-4xl ${
+                    isHoliday && 'text-red-500'
+                  } `}
                 >
-                  {getDate(parseInt(date)).toString().padStart(2, '0')}
+                  {dayNum.toString().padStart(2, '0')}
                 </div>
               </div>
 
@@ -108,15 +118,6 @@ export default function Attendance() {
                         : loginTime?.toLowerCase().includes('pm')
                         ? loginTime.slice(0, loginTime.length - 3)
                         : loginTime}
-                      {/* {loginTime?.toLowerCase().includes('pm') ? (
-                        <span className="ml-0.5 -mb-1.5 text-xs font-light">
-                          PM
-                        </span>
-                      ) : (
-                        <span className="ml-0.5 -mb-1.5 text-xs font-light">
-                          AM
-                        </span>
-                      )} */}
                       <span className="ml-0.5 -mb-1.5 text-xs font-light">
                         {loginTime == '-'
                           ? ''
@@ -138,15 +139,6 @@ export default function Attendance() {
                         : logoutTime.toLowerCase().includes('am')
                         ? loginTime.slice(0, loginTime.length - 3)
                         : loginTime}
-                      {/* {logoutTime?.toLowerCase().includes('am') ? (
-                        <span className="ml-0.5 -mb-1.5 text-xs font-light">
-                          AM
-                        </span>
-                      ) : (
-                        <span className="ml-0.5 -mb-1.5 text-xs font-light">
-                          PM
-                        </span>
-                      )} */}
                       <span className="ml-0.5 -mb-1.5 text-xs font-light">
                         {logoutTime == '-'
                           ? ''

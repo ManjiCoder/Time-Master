@@ -72,10 +72,7 @@ export default function Home() {
     <main
       className={`bg-slate-300 dark:bg-slate-900 dark:text-white text-slate-800 min-h-screen pb-10 ${inter.className}`}
     >
-      <TimeSpentIndicator
-        isYearMonthPickerVisible={false}
-        extraStyle={!isShowAmt ? 'text-xl' : 'text-lg'}
-      />
+      <TimeSpentIndicator isYearMonthPickerVisible={false} />
       <div className="p-4">
         <section className="flex justify-between items-center">
           <h3 className="text-xl font-medium">Welcome </h3>

@@ -2,7 +2,7 @@ import { editByDate } from '@/redux/slices/attendanceSlice';
 import { calculateTimeSpent, removeAMorPM } from '@/utils/dateService';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/20/solid';
-import { format } from 'date-fns';
+import { format, isMatch } from 'date-fns';
 import { Fragment, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -24,6 +24,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
   const calculateTimeSpentInHrsMins = (login, logout) => {
     const diffObj = calculateTimeSpent(login, logout);
     const { hrs, mins } = diffObj;
+    if (isNaN(hrs) || isNaN(mins)) return '-';
     return `${hrs.toString().padStart(2, '0')}:${mins
       .toString()
       .padStart(2, '0')}`;
@@ -39,7 +40,9 @@ export default function EditModal({ isOpen, setIsOpen }) {
       login: loginTime,
       logout: logoutTime,
       hours: hoursTime,
+      present: loginTime.includes(':') && logoutTime.includes(':') ? '1' : '-',
     };
+
     const payload = {
       year,
       month,
@@ -152,7 +155,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         onChange={(e) => setHoursTime(e.target.value)}
                         placeholder="HH:MM"
                         maxLength={5}
-                        value={hoursTime}
+                        value={hoursTime === '-' ? null : hoursTime}
                       />
 
                       <h4 className="text-lg font-medium">Time-Spent</h4>
