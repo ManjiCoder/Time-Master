@@ -82,7 +82,7 @@ export default function CurrentTimeSpent({ loginTime, logoutTime }) {
         </b>
       </h2> */}
 
-      <section className='grid place-items-center'>
+      <section className='flex justify-center items-center'>
         <svg
           className='fill-none -rotate-90 scale-90 '
           height={300}

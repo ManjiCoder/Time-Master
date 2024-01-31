@@ -39,21 +39,20 @@ export default function TimeSpentIndicator({
     };
 
     try {
-      Object?.keys(attendance[year][month]).filter((v, i, a) => {
+      const timeLog = attendance[year][month];
+      Object?.keys(timeLog).filter((v, i, a) => {
         v = parseInt(v);
-        if (attendance[year][month][v].present !== '-') {
+        if (timeLog[v].present !== '-') {
           payload.days += 1;
 
-          let timeInHrsMin = attendance[year][month][v].hours
-            .split(':')
-            .filter((v, i) => {
-              v = parseInt(v);
-              if (i === 0) {
-                payload.hrs = payload.hrs + v;
-              } else {
-                payload.mins = payload.mins + v;
-              }
-            });
+          let timeInHrsMin = timeLog[v].hours.split(':').filter((v, i) => {
+            v = parseInt(v);
+            if (i === 0) {
+              payload.hrs = payload.hrs + v;
+            } else {
+              payload.mins = payload.mins + v;
+            }
+          });
         }
       });
       return payload;
@@ -78,17 +77,34 @@ export default function TimeSpentIndicator({
   const totalHrsR = parseInt(Math.abs(timeDiffMins / 60));
   const rawAvg = totalTimeSpendInMins / 60 / days;
   const avg = Math.floor(rawAvg * 100) / 100;
-  const salaryAmount = Math.round(totalTimeSpendInMins * minRate);
+  const salaryAmount = Math.round(
+    totalTimeSpendInMins > totalExpectedTimeSpendInMins
+      ? totalExpectedTimeSpendInMins * minRate
+      : totalTimeSpendInMins * minRate
+  );
   const expectedSalaryAmount = Math.round(
     totalExpectedTimeSpendInMins * minRate
   );
-  const detuctedAmount = expectedSalaryAmount - salaryAmount;
+  // const salaryAmount = isShowAmt
+  //   ? Math.round(
+  //       totalTimeSpendInMins * minRate + (30 - days) * 9 * 60 * minRate
+  //     )
+  //   : Math.round(totalTimeSpendInMins * minRate);
+  // const expectedSalaryAmount = isShowAmt
+  //   ? Math.round(
+  //       totalExpectedTimeSpendInMins * minRate + (30 - days) * 9 * 60 * minRate
+  //     )
+  //   : Math.round(totalExpectedTimeSpendInMins * minRate);
+  const detuctedAmount =
+    Math.sign(expectedSalaryAmount - salaryAmount) === -1
+      ? 0
+      : -(expectedSalaryAmount - salaryAmount);
 
   return (
     <header
       className={`sticky top-0 w-full z-10 space-x-1 p-2 text-center shadow-md flex items-center justify-evenly text-slate-950 dark:text-white bg-white/70 dark:bg-slate-700/40 backdrop-blur-sm dark:backdrop-brightness-75 ${extraStyle}`}
     >
-      <h1 className="flex flex-1 xs:text-lg space-x-1 justify-evenly items-center">
+      <h1 className='flex flex-1 xs:text-lg space-x-1 justify-evenly items-center'>
         <span
           className={`font-bold ${
             Math.sign(timeDiffMins) === -1 ? 'text-red-500' : 'text-green-500'
@@ -106,18 +122,18 @@ export default function TimeSpentIndicator({
         </span>
 
         <span>
-          Days: <span className="font-bold">{days}</span>
+          Days: <span className='font-bold'>{days}</span>
         </span>
         <span>
-          Avg: <span className="font-bold">{isNaN(avg) ? 0 : avg}</span>
+          Avg: <span className='font-bold'>{isNaN(avg) ? 0 : avg}</span>
         </span>
         {isShowAmt && pathname === '/' && !isNaN(salaryAmount) && (
           <>
-            <span className="text-green-500 font-semibold">
+            <span className='text-green-500 font-semibold'>
               {salaryAmount.toLocaleString('en-IN', formatAmt)}
             </span>
-            <span className="text-red-500 font-semibold">
-              -{detuctedAmount.toLocaleString('en-IN', formatAmt)}
+            <span className='text-red-500 font-semibold'>
+              {detuctedAmount.toLocaleString('en-IN', formatAmt)}
             </span>
           </>
         )}
@@ -125,13 +141,13 @@ export default function TimeSpentIndicator({
           <>
             <span>
               Hr:{' '}
-              <span className="font-bold">
+              <span className='font-bold'>
                 {Math.floor(totalTimeSpendInMins / 60)}
               </span>
             </span>
             <span>
               Min:{' '}
-              <span className="font-bold">{totalTimeSpendInMins % 60}</span>
+              <span className='font-bold'>{totalTimeSpendInMins % 60}</span>
             </span>
           </>
         )}

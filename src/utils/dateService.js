@@ -244,3 +244,35 @@ export const monthNameToIndex = {
   November: 10,
   December: 11,
 };
+
+export function getHolidaysList(str) {
+  let holidays = {};
+  let year = str.indexOf('year');
+  year =
+    year !== -1
+      ? str
+          .slice(year, year + 10)
+          .replace('year', '')
+          .trim()
+      : new Date().getFullYear().toString();
+  let startIndex = str.indexOf('DateDayHolidays');
+  let endIndex = str.lastIndexOf('DateDayHolidays');
+  let filterArr = str
+    .slice(startIndex, endIndex)
+    .trim()
+    .split('\n')
+    .filter((v) => v.includes('-'));
+  let arr = filterArr.map((v) => {
+    const parsedDate = parse(
+      v.slice(0, v.indexOf(year) + 4),
+      'dd-MMM-yyyy',
+      new Date()
+    );
+    holidays[parsedDate.setHours(0, 0, 0, 0)] = format(
+      parsedDate,
+      'dd-MMM-yyyy'
+    );
+    // return parsedDate.getTime();
+  });
+  return holidays;
+}

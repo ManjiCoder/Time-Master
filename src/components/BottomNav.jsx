@@ -34,7 +34,7 @@ const navList = [
 export default function BottomNavbar() {
   const { pathname } = useRouter();
   return (
-    <nav className="fixed border border-b-0  bottom-0 py-2 z-50 bg-slate-200 dark:bg-slate-900 w-full dark:text-white border-white dark:border-slate-400">
+    <nav className="print:hidden fixed border-t-[1px]  bottom-0 py-2 z-50 bg-slate-200 dark:bg-slate-900 w-full dark:text-white border-white dark:border-slate-400">
       <hr className="hidden bg-slate-200 dark:bg-white mb-2" />
       <ul className="flex gap-2 items-center justify-evenly">
         {navList.map(({ linkName, icon, href }) => (

@@ -8,6 +8,7 @@ import EditAmountModal from '@/components/EditAmountModal';
 import { formatAmt } from '@/components/TimeSpentIndicator';
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
 import ToggleThemeBtn from '@/components/ToggleThemeBtn';
+import ExportData from '@/components/ExportDataBtn';
 
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 
@@ -47,6 +48,9 @@ export default function Setting() {
         </li>
         <li className='bg-slate-200 dark:bg-slate-800 shadow-md rounded-md py-4 px-4 border border-slate-400 flex space-x-2 items-center justify-start'>
           Theme Mode - <ToggleThemeBtn />
+        </li>
+        <li className='bg-slate-200 dark:bg-slate-800 shadow-md rounded-md py-4 px-4 border border-slate-400 flex space-x-2 items-center justify-start'>
+          Export Data - <ExportData/>
         </li>
       </ol>
 

@@ -9,12 +9,8 @@ export default function ToogleBtn() {
   // Office Mode
   const handleOfficeMode = () => {
     dispatch(toggleOfficeMode());
-    if (!isOfficeMode) {
-      // let currentDate = new Date().setHours(0, 0, 0, 0);
-      // let data = attendance[currentDate];
-      // setLoginTime(data?.loginTime);
-    }
   };
+
   return (
     <div className="flex items-center">
       <Switch

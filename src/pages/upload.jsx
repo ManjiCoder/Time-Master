@@ -1,6 +1,7 @@
 // PdfReader.js
 import { setPdfData } from '@/redux/slices/attendanceSlice';
-import { getUserInfo } from '@/utils/dateService';
+import { setHolidays } from '@/redux/slices/holidaysSlice';
+import { getHolidaysList, getUserInfo } from '@/utils/dateService';
 import { Baloo_Bhai_2 } from 'next/font/google';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -82,9 +83,15 @@ const PdfReader = () => {
           if (response.ok) {
             const data = await response.json();
             setPdfText(data.text);
-            const payload = getUserInfo(data.text);
-            dispatch(setPdfData(payload));
-            setNumPages(data.numPages);
+            if (data.text.toLowerCase().includes('holiday list')) {
+              const payload = getHolidaysList(data.text);
+              dispatch(setHolidays(payload));
+              // setNumPages(data.numPages);
+            } else {
+              const payload = getUserInfo(data.text);
+              dispatch(setPdfData(payload));
+              setNumPages(data.numPages);
+            }
             router.push('/attendance');
           } else {
             console.error('PDF processing failed.');
@@ -102,8 +109,8 @@ const PdfReader = () => {
     <main
       className={`bg-slate-300 dark:bg-slate-900 dark:text-white text-slate-800 min-h-screen pb-10 ${inter.className} p-4`}
     >
-      <h2 className="text-2xl font-semibold">Upload</h2>
-      <div className="container mx-auto mt-5 bg-slate-200 dark:bg-slate-950">
+      <h2 className='text-2xl font-semibold'>Upload</h2>
+      <div className='container mx-auto mt-5 bg-slate-200 dark:bg-slate-950'>
         <div
           {...getRootProps()}
           className={`p-6 border-4 border-dashed rounded-md ${
@@ -111,7 +118,7 @@ const PdfReader = () => {
           }`}
         >
           <input {...getInputProps()} />
-          <p className="text-center">
+          <p className='text-center'>
             {isDragActive
               ? 'Drop the file here'
               : 'Drag and drop a file here, or click to select a file'}
@@ -120,7 +127,7 @@ const PdfReader = () => {
       </div>
 
       {selectedFile && (
-        <div className="mt-4">
+        <div className='mt-4'>
           <p>Selected File: {selectedFile.name}</p>
           {/* You can display additional file information here */}
         </div>
@@ -128,7 +135,7 @@ const PdfReader = () => {
 
       {pdfText && (
         <div>
-          <pre className="text-balance">{pdfText}</pre>
+          <pre className='text-balance'>{pdfText}</pre>
           <p>
             Page {pageNumber} of {numPages}
           </p>

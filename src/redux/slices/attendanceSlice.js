@@ -6,6 +6,14 @@ const attendanceSlice = createSlice({
   name: 'attendance',
   initialState,
   reducers: {
+    setCurrentTimeSpent: (state, action) => {
+      try {
+        const { year, month, date } = action.payload;
+        state[year][month][date] = action.payload[date];
+      } catch (error) {
+        console.log(error);
+      }
+    },
     setLogin: (state, action) => {
       const { year, month, date } = action.payload;
       // console.log(year, month);
@@ -58,7 +66,12 @@ const attendanceSlice = createSlice({
   },
 });
 
-export const { setLogin, setPdfData, deleteByDate, editByDate } =
-  attendanceSlice.actions;
+export const {
+  setCurrentTimeSpent,
+  setLogin,
+  setPdfData,
+  deleteByDate,
+  editByDate,
+} = attendanceSlice.actions;
 
 export default attendanceSlice.reducer;
