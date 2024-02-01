@@ -87,7 +87,7 @@ export default function Attendance() {
         className={`bg-slate-300 dark:bg-slate-900 dark:text-white text-slate-800 min-h-screen pb-16 ${inter.className}`}
       >
         <TimeSpentIndicator year={year} month={month} />
-        <h2 className='text-xl text-center mt-5'>No Data Found!</h2>
+        <h2 className="text-xl text-center mt-5">No Data Found!</h2>
       </main>
     );
   }
@@ -119,9 +119,9 @@ export default function Attendance() {
           if (!obj.login.includes(':')) {
             loginTime = '-';
           }
-          // if (!obj.logout.includes(':')) {
-          //   logoutTime = '-';
-          // }
+          if (!obj.logout.includes(':')) {
+            logoutTime = '-';
+          }
 
           // if (obj.present === '-') return;
           // // TODO: total days
@@ -129,10 +129,10 @@ export default function Attendance() {
           return (
             <section
               key={date}
-              className='h-36 md:h-44 w-full md:max-w-xl lg:max-w-2xl p-2 flex m-auto'
+              className="h-36 md:h-44 w-full md:max-w-xl lg:max-w-2xl p-2 flex m-auto"
             >
-              <div className='bg-cyan-800 w-[30%] flex flex-col items-center justify-center rounded-l-lg'>
-                <div className='bg-slate-50 w-[70%] rounded-tr-lg rounded-tl-lg h-6 mb-0.5 text-sm font-bold grid place-items-center'>
+              <div className="bg-cyan-800 w-[30%] flex flex-col items-center justify-center rounded-l-lg">
+                <div className="bg-slate-50 w-[70%] rounded-tr-lg rounded-tl-lg h-6 mb-0.5 text-sm font-bold grid place-items-center">
                   {day}
                 </div>
                 <div
@@ -144,35 +144,35 @@ export default function Attendance() {
                 </div>
               </div>
 
-              <div className='bg-slate-800 w-[70%] rounded-r-lg grid items-center justify-center font-bold text-white flex-col relative pt-2'>
-                <div className='flex justify-center text-sm md:text-base md:pb-2'>
+              <div className="bg-slate-800 w-[70%] rounded-r-lg grid items-center justify-center font-bold text-white flex-col relative pt-2">
+                <div className="flex justify-center text-sm md:text-base md:pb-2">
                   <p>
-                    <span className='font-semibold'>
+                    <span className="font-semibold">
                       {format(parseDate, 'dd-MMM-yyyy')}
                     </span>
                   </p>
                   {/* Edit-Btn */}
                   <button
-                    className='text-blue-500 absolute right-3 hover:text-blue-400'
+                    className="text-blue-500 absolute right-3 hover:text-blue-400"
                     onClick={() => {
                       setIsEditOpen(!isEditOpen);
                       dispatch(setTargetDate(date));
                     }}
                   >
-                    <PencilSquareIcon className='w-5' />
+                    <PencilSquareIcon className="w-5" />
                   </button>
                   {/* Delete-Btn */}
                   <button
-                    className='text-red-500 absolute left-3 hover:text-red-400'
+                    className="text-red-500 absolute left-3 hover:text-red-400"
                     onClick={() => {
                       setIsDeleteOpen(!isDeleteOpen);
                       dispatch(setTargetDate(date));
                     }}
                   >
-                    <TrashIcon className='w-5' />
+                    <TrashIcon className="w-5" />
                   </button>
                 </div>
-                <div className='flex text-center gap-1'>
+                <div className="flex text-center gap-1">
                   <div>
                     <div
                       className={`bg-slate-600 flex items-center justify-center w-[5rem] md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 `}
@@ -182,7 +182,7 @@ export default function Attendance() {
                         : loginTime?.toLowerCase().includes('pm')
                         ? loginTime.slice(0, loginTime.length - 3)
                         : loginTime}
-                      <span className='ml-0.5 -mb-1.5 text-xs font-light'>
+                      <span className="ml-0.5 -mb-1.5 text-xs font-light">
                         {loginTime == '-'
                           ? ''
                           : loginTime?.toLowerCase().includes('pm')
@@ -190,7 +190,7 @@ export default function Attendance() {
                           : 'AM'}
                       </span>
                     </div>
-                    <div className='w-[5rem] md:w-28 max-w-full rounded-md shadow-md font-semibold'>
+                    <div className="w-[5rem] md:w-28 max-w-full rounded-md shadow-md font-semibold">
                       Login
                     </div>
                   </div>
@@ -203,7 +203,7 @@ export default function Attendance() {
                         : logoutTime.toLowerCase().includes('am')
                         ? loginTime.slice(0, loginTime.length - 3)
                         : loginTime}
-                      <span className='ml-0.5 -mb-1.5 text-xs font-light'>
+                      <span className="ml-0.5 -mb-1.5 text-xs font-light">
                         {logoutTime == '-'
                           ? ''
                           : logoutTime?.toLowerCase().includes('pm')
@@ -211,7 +211,7 @@ export default function Attendance() {
                           : 'AM'}
                       </span>
                     </div>
-                    <div className='w-[5rem] md:w-28 max-w-full rounded-md shadow-md font-semibold'>
+                    <div className="w-[5rem] md:w-28 max-w-full rounded-md shadow-md font-semibold">
                       Logout
                     </div>
                   </div>
@@ -221,16 +221,16 @@ export default function Attendance() {
                     >
                       {obj?.hours}
                     </div>
-                    <div className='w-[5rem] md:w-28 max-w-full rounded-md shadow-md font-semibold'>
+                    <div className="w-[5rem] md:w-28 max-w-full rounded-md shadow-md font-semibold">
                       Time
                     </div>
                   </div>
                 </div>
                 {/* For IMP Note */}
                 {obj.remark && (
-                  <p className='ml-1 -mb-0.5 flex text-sm font-semibold items-center justify-center text-balance capitalize'>
+                  <p className="ml-1 -mb-0.5 flex text-sm font-semibold items-center justify-center text-balance capitalize">
                     Remark :
-                    <span className='text-yellow-400 ml-1'> {obj.remark}</span>
+                    <span className="text-yellow-400 ml-1"> {obj.remark}</span>
                   </p>
                 )}
               </div>
