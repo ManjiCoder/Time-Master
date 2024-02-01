@@ -5,6 +5,7 @@ import { XMarkIcon } from '@heroicons/react/20/solid';
 import { format, isMatch } from 'date-fns';
 import { Fragment, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 export default function EditModal({ isOpen, setIsOpen }) {
   const attendance = useSelector((state) => state.attendance);
@@ -56,6 +57,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
     // console.table(payload.data);
     dispatch(editByDate(payload));
     closeModal();
+    toast.success('TimeLog Updated Successfully!');
   };
 
   return (

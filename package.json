@@ -20,6 +20,7 @@
     "react-dom": "^18",
     "react-dropzone": "^14.2.3",
     "react-redux": "^9.0.4",
+    "react-toastify": "^10.0.4",
     "redux-persist": "^6.0.0"
   },
   "devDependencies": {

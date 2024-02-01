@@ -2,11 +2,13 @@
 import { setPdfData } from '@/redux/slices/attendanceSlice';
 import { setHolidays } from '@/redux/slices/holidaysSlice';
 import { getHolidaysList, getUserInfo } from '@/utils/dateService';
+import { toastifyOptions } from '@/utils/toastify';
 import { Baloo_Bhai_2 } from 'next/font/google';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 
@@ -65,6 +67,7 @@ const PdfReader = () => {
   };
 
   const handleFileChangeUpload = async (file) => {
+    const toastId = toast.loading('Please wait...');
     if (file) {
       const reader = new FileReader();
 
@@ -92,11 +95,24 @@ const PdfReader = () => {
               dispatch(setPdfData(payload));
               setNumPages(data.numPages);
             }
+
+            toast.update(
+              toastId,
+              toastifyOptions('success', 'PDF Uploaded Successfully!')
+            );
             router.push('/attendance');
           } else {
+            toast.update(
+              toastId,
+              toastifyOptions('error', 'PDF processing failed.')
+            );
             console.error('PDF processing failed.');
           }
         } catch (error) {
+          toast.update(
+            toastId,
+            toastifyOptions('error', 'Error processing PDF')
+          );
           console.error('Error processing PDF:', error);
         }
       };

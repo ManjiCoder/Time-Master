@@ -1,5 +1,6 @@
 import BottomNavbar from '@/components/BottomNav';
 import CustomHead from '@/components/CustomHead';
+import Toastify from '@/components/Toastify';
 import store, { persistor } from '@/redux/store';
 import '@/styles/globals.css';
 import { ThemeProvider } from 'next-themes';
@@ -15,6 +16,7 @@ export default function App({ Component, pageProps }) {
           <ThemeProvider attribute='class'>
             <Component {...pageProps} />
             <BottomNavbar />
+            <Toastify />
           </ThemeProvider>
         </PersistGate>
       </Provider>
