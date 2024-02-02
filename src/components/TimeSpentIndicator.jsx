@@ -19,7 +19,7 @@ export default function TimeSpentIndicator({
   const attendance = useSelector((state) => state.attendance);
   const { isShowAmt, minRate } = useSelector((state) => state.userSettings);
   const { year, month } = useSelector((state) => state.dateSlice);
-  const years = Object.keys(attendance).reverse();
+  const years = Object.keys(attendance).filter((v)=>v!==undefined).reverse();
   const { pathname } = useRouter();
 
   // const [minsRate, setMinsRate] = useState(second)
