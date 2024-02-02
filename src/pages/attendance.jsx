@@ -204,8 +204,8 @@ export default function Attendance() {
                       {logoutTime?.toLowerCase().includes('pm')
                         ? logoutTime.slice(0, logoutTime.length - 3)
                         : logoutTime.toLowerCase().includes('am')
-                        ? loginTime.slice(0, loginTime.length - 3)
-                        : loginTime}
+                        ? logoutTime.slice(0, logoutTime.length - 3)
+                        : logoutTime}
                       <span className='ml-0.5 -mb-1.5 text-xs font-light'>
                         {logoutTime == '-'
                           ? ''
