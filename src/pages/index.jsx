@@ -13,6 +13,7 @@ import {
 } from '@/utils/dateService';
 import TimeSpentIndicator from '@/components/TimeSpentIndicator';
 import ToggleCheckBox from '@/components/ToggleCheckBox';
+import { setIsOfficeMode, toggleOfficeMode } from '@/redux/slices/UserSettings';
 
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 
@@ -73,49 +74,74 @@ export default function Home() {
       className={`bg-slate-300 dark:bg-slate-900 dark:text-white text-slate-800 min-h-screen pb-10 ${inter.className}`}
     >
       <TimeSpentIndicator isYearMonthPickerVisible={false} />
-      <div className="p-4">
-        <section className="flex justify-between items-center">
-          <h3 className="text-xl font-medium">Welcome </h3>
+      <div className='p-4'>
+        <section className='flex justify-between items-center'>
+          <h3 className='text-xl font-medium'>Welcome </h3>
           {/* ToggleBtn */}
           <ToogleBtn />
         </section>
 
         <form
-          className="grid grid-cols-2 my-5 gap-3 justify-evenly items-center"
+          className='grid grid-cols-2 my-5 gap-3 justify-evenly items-center'
           onSubmit={handleSubmit}
         >
-          <div className="time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800">
+          <div className='time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
             <input
-              className="outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700"
-              type="time"
-              name="login"
-              id="login"
+              className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700'
+              type='time'
+              name='login'
+              id='login'
               // step={300}
               // pattern="(?:1[012]|0[0-9]):[0-5][0-9] (?:AM|PM)"
               onChange={(e) => setLoginTime(e.target.value)}
-              placeholder="hh:mm AM/PM"
+              placeholder='hh:mm AM/PM'
               value={loginTime}
             />
-            <h4 className="text-lg font-medium">Log-In</h4>
+            <button
+              type='button'
+              onClick={() => {
+                setLoginTime(format(new Date(), 'hh:mm'));
+                setLogoutTime('');
+                dispatch(setIsOfficeMode(true));
+              }}
+              className={`text-lg text-white font-medium shadow-md w-28 text-center py-1.5 rounded-md hover:bg-slate-800 hover:dark:bg-slate-900 ${
+                isOfficeMode ? 'bg-slate-800 dark:bg-slate-900' : 'bg-slate-700'
+              }`}
+            >
+              Log-In
+            </button>
           </div>
-          <div className="time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800">
+          <div className='time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
             <input
-              className="outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700"
-              type="time"
-              name="logout"
-              id="logout"
+              className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700'
+              type='time'
+              name='logout'
+              id='logout'
               onChange={(e) => setLogoutTime(e.target.value)}
-              placeholder="hh:mm AM/PM"
+              placeholder='hh:mm AM/PM'
               value={logoutTime}
             />
-            <h4 className="text-lg font-medium">Log-Out</h4>
+            <button
+              type='button'
+              onClick={() => {
+                setLogoutTime(format(new Date(), 'hh:mm'));
+                dispatch(setIsOfficeMode(false));
+              }}
+              className={`text-lg text-white font-medium shadow-md w-28 text-center py-1.5 rounded-md hover:bg-slate-800 hover:dark:bg-slate-900 ${
+                !isOfficeMode
+                  ? 'bg-slate-800 dark:bg-slate-900'
+                  : 'bg-slate-700'
+              }`}
+            >
+              Log-Out
+            </button>
           </div>
-          <div className="pl-3 col-span-2 flex items-center text-sm">
+          <div className='pl-3 col-span-2 flex items-center text-sm'>
             <ToggleCheckBox />
           </div>
           <button
-            type="submit"
-            className="col-span-2 mx-auto bg-slate-700 px-4 py-2 rounded-md shadow-md text-white"
+            type='submit'
+            className='col-span-2 mx-auto bg-slate-700 px-4 py-2 rounded-md shadow-md text-white'
           >
             Submit
           </button>

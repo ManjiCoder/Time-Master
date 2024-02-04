@@ -12,7 +12,7 @@ export default function ToogleBtn() {
   };
 
   return (
-    <div className="flex items-center">
+    <div className='flex items-center'>
       <Switch
         checked={isOfficeMode}
         onChange={handleOfficeMode}
@@ -31,17 +31,17 @@ export default function ToogleBtn() {
             Office
           </span>
         )}
-        <span className="sr-only">Use setting</span>
+        <span className='sr-only'>Use setting</span>
 
         <span
-          aria-hidden="true"
+          aria-hidden='true'
           className={`${isOfficeMode ? 'translate-x-9' : 'translate-x-0'}
             pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
         />
 
         {!isOfficeMode && (
           <span
-            className={`text-[7px] w-5 capitalize text-white mr-1.5 ${
+            className={`text-[7px] w-5 capitalize text-white mr-1.5 animate-bounce mt-2.5 ${
               !isOfficeMode ? 'grid place-items-center' : 'hidden'
             }`}
           >

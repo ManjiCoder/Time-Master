@@ -102,7 +102,7 @@ export default function Attendance() {
       className={`bg-slate-300 dark:bg-slate-900 text-slate-800 min-h-screen pb-16 ${inter.className}`}
     >
       <TimeSpentIndicator />
-      <section className='flex justify-end mx-2 mt-2 space-x-1 items-center dark:text-white'>
+      <section className='flex font-semibold justify-end mx-2 mt-2 space-x-1 items-center dark:text-white'>
         <span>Sort By Date : </span>
         <ListBoxFilter />
       </section>
@@ -248,6 +248,14 @@ export default function Attendance() {
                   <p className='ml-1 -mb-0.5 flex text-sm font-semibold items-center justify-center text-balance capitalize'>
                     Remark :
                     <span className='text-yellow-400 ml-1'> {obj.remark}</span>
+                  </p>
+                )}
+
+                {/* For Holidays */}
+                {isHoliday && (
+                  <p className='ml-1 -mb-0.5 flex text-sm font-semibold items-center justify-center text-balance capitalize'>
+                    Remark :
+                    <span className='text-yellow-400 ml-1'> Holiday</span>
                   </p>
                 )}
               </div>

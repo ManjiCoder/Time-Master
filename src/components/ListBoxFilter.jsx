@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
+import { ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterObj, setSortBy } from '@/redux/slices/UserSettings';
 
@@ -18,7 +18,7 @@ export default function ListBoxFilter() {
         <div className='relative text-sm'>
           <Listbox.Button className='relative w-full cursor-default rounded-lg bg-white dark:bg-slate-700 py-1.5 pl-3 pr-8 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm'>
             <span className='block truncate dark:text-white text-gray-900 font-semibold'>
-              {selected}
+              {selected || filterObj.ascending}
             </span>
             <span className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2'>
               <ChevronUpDownIcon

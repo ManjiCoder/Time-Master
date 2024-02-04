@@ -26,6 +26,9 @@ const userSettings = createSlice({
     toggleOfficeMode: (state, action) => {
       state.isOfficeMode = !state.isOfficeMode;
     },
+    setIsOfficeMode: (state, action) => {
+      state.isOfficeMode = action.payload;
+    },
     toggleIsShowAmt: (state, action) => {
       state.isShowAmt = !state.isShowAmt;
     },
@@ -47,6 +50,7 @@ const userSettings = createSlice({
 // Action creators are generated for each case reducer function
 export const {
   toggleOfficeMode,
+  setIsOfficeMode,
   toggleIsShowAmt,
   setSalaryAmount,
   setMinRate,
