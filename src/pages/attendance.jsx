@@ -13,6 +13,8 @@ import {
 import DeleteModal from '@/components/DeleteModal';
 import EditModal from '@/components/EditModal';
 import { setCurrentTimeSpent, setLogin } from '@/redux/slices/attendanceSlice';
+import { filterObj } from '@/redux/slices/UserSettings';
+import ListBoxFilter from '@/components/ListBoxFilter';
 
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 
@@ -32,7 +34,7 @@ const holidays = {
 
 export default function Attendance() {
   const attendance = useSelector((state) => state.attendance);
-  const { isOfficeMode } = useSelector((state) => state.userSettings);
+  const { isOfficeMode, sortBy } = useSelector((state) => state.userSettings);
   const { year, month } = useSelector((state) => state.dateSlice);
   const dispatch = useDispatch();
 
@@ -100,9 +102,21 @@ export default function Attendance() {
       className={`bg-slate-300 dark:bg-slate-900 text-slate-800 min-h-screen pb-16 ${inter.className}`}
     >
       <TimeSpentIndicator />
+      <section className='flex justify-end mx-2 mt-2 space-x-1 items-center dark:text-white'>
+        <span>Sort By Date : </span>
+        <ListBoxFilter />
+      </section>
 
       {Object.keys(attendance[year][month])
-        .sort((a, b) => parseInt(b) - parseInt(a))
+        .sort((a, b) => {
+          a = parseInt(a);
+          b = parseInt(b);
+          if (sortBy === filterObj.ascending) {
+            return a - b;
+          } else if (sortBy === filterObj.descending) {
+            return b - a;
+          }
+        })
         .map((date) => {
           const parseDate = new Date(parseInt(date));
           const day = format(parseDate, 'EEEE');

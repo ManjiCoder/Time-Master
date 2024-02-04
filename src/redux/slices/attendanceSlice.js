@@ -63,6 +63,10 @@ const attendanceSlice = createSlice({
       // console.log(state[year][month][date]);
       state[year][month][date] = data;
     },
+    filterDate: (state, action) => {
+      const { year, month } = action.payload;
+      // state[year][month] =
+    },
   },
 });
 
@@ -72,6 +76,7 @@ export const {
   setPdfData,
   deleteByDate,
   editByDate,
+  filterDate,
 } = attendanceSlice.actions;
 
 export default attendanceSlice.reducer;

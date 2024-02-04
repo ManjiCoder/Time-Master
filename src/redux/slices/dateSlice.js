@@ -1,9 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { format } from "date-fns";
+import { createSlice } from '@reduxjs/toolkit';
+import { format } from 'date-fns';
 
 const initialState = {
   year: new Date().getFullYear(),
-  month: format(new Date(), "MMMM"),
+  month: format(new Date(), 'MMMM'),
   targetDate: null,
 };
 
@@ -14,7 +14,7 @@ const initialState = {
 // };
 
 const dateSlice = createSlice({
-  name: "dateSlice",
+  name: 'dateSlice',
   initialState,
   reducers: {
     setYear: (state, action) => {
