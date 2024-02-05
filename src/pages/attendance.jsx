@@ -45,7 +45,6 @@ const holidays = {
 };
 
 export default function Attendance() {
-  const todayDate = new Date().setHours(0, 0, 0, 0);
   const attendance = useSelector((state) => state.attendance);
   const { isOfficeMode, sortBy, order } = useSelector(
     (state) => state.userSettings
@@ -56,14 +55,15 @@ export default function Attendance() {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
+  const currentDate = new Date();
+  const date = currentDate.setHours(0, 0, 0, 0);
+
   useEffect(() => {
-    if (isOfficeMode) {
+    if (isOfficeMode && attendance[year][month][date]?.login !== '-') {
       let intervalId = setInterval(() => {
         try {
-          const currentDate = new Date();
           const year = format(currentDate, 'yyyy');
           const month = format(currentDate, 'MMMM');
-          const date = currentDate.setHours(0, 0, 0, 0);
 
           const todayDateObj = attendance[year][month][date];
           const { login: loginRaw } = todayDateObj;
@@ -109,7 +109,10 @@ export default function Attendance() {
       <main
         className={`bg-slate-300 dark:bg-slate-900 dark:text-white text-slate-800 min-h-screen pb-16 ${inter.className}`}
       >
-        <TimeSpentIndicator year={year} month={month} />
+        <TimeSpentIndicator
+          year={year}
+          month={month}
+        />
         <h2 className='text-xl text-center mt-5'>No Data Found!</h2>
       </main>
     );
@@ -121,10 +124,10 @@ export default function Attendance() {
   );
   const showDates = sortBy === filterObj.present ? tillTodayDates : allDates;
   const data = calculateTimeSpent(
-    attendance[year][month][todayDate]?.login,
-    attendance[year][month][todayDate]?.logout
+    removeAMorPM(attendance[year][month][date]?.login),
+    removeAMorPM(attendance[year][month][date]?.logout)
   );
-
+  // console.log(data);
   return (
     <main
       className={`bg-slate-300 dark:bg-slate-900 text-slate-800 min-h-screen pb-16 ${inter.className}`}
@@ -333,10 +336,16 @@ export default function Attendance() {
           );
         })}
       {isDeleteOpen && (
-        <DeleteModal isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} />
+        <DeleteModal
+          isOpen={isDeleteOpen}
+          setIsOpen={setIsDeleteOpen}
+        />
       )}
       {isEditOpen && (
-        <EditModal isOpen={isEditOpen} setIsOpen={setIsEditOpen} />
+        <EditModal
+          isOpen={isEditOpen}
+          setIsOpen={setIsEditOpen}
+        />
       )}
     </main>
   );

@@ -49,7 +49,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
 
     if (isLeave) {
       editedData.isLeave = true;
-      editedData.remark = 'Leave';
+      editedData.remark = note;
     }
     if (!isLeave) {
       delete editedData?.isLeave;
@@ -77,8 +77,16 @@ export default function EditModal({ isOpen, setIsOpen }) {
 
   return (
     <>
-      <Transition appear show={true} as={Fragment}>
-        <Dialog as='div' className='relative z-10' onClose={closeModal}>
+      <Transition
+        appear
+        show={true}
+        as={Fragment}
+      >
+        <Dialog
+          as='div'
+          className='relative z-10'
+          onClose={closeModal}
+        >
           <Transition.Child
             as={Fragment}
             enter='ease-out duration-300'
@@ -204,13 +212,14 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         id='leave'
                         className=''
                         onClick={() => {
+                          setIsLeave(!isLeave);
                           setLoginTime('09:00');
                           setLogoutTime('18:00');
                           setHoursTime('09:00');
-                          setIsLeave(!isLeave);
+                          setNote('Leave');
                         }}
                       />
-                      <span className='mt-1'>Mark as Leave?</span>
+                      <p className='mt-0.5 lg:-mt-0.5'>Mark as Leave?</p>
                     </label>
 
                     <button

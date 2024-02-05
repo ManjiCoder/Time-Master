@@ -40,16 +40,16 @@ export const calculateTimeSpent = (login, logout) => {
       secs: new Date().getSeconds(),
       percent,
     };
-    // TODO: Set on time
-    if (timeSpent.hrs === 9 && timeSpent.mins === 0 && timeSpent.secs === 0) {
-      try {
-        new Notification('Jai Shree Ram', {
-          body: 'test',
-          icon: '/favicon.ico',
-          vibrate: 500,
-        });
-      } catch (error) {}
-    }
+    // // TODO: Set on time
+    // if (timeSpent.hrs === 9 && timeSpent.mins === 0 && timeSpent.secs === 0) {
+    //   try {
+    //     new Notification('Jai Shree Ram', {
+    //       body: 'test',
+    //       icon: '/favicon.ico',
+    //       vibrate: 500,
+    //     });
+    //   } catch (error) {}
+    // }
     // console.log(percent, secs);
     return timeSpent;
   } catch (error) {
