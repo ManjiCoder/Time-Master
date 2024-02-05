@@ -1,8 +1,8 @@
 import {
   setMinRate,
   setSalaryAmount,
-  toggleIsShowAmt,
 } from '@/redux/slices/UserSettings';
+import { toggleIsShowAmt } from '@/redux/slices/dateSlice';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/20/solid';
 import { Fragment, useState } from 'react';

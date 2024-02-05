@@ -13,7 +13,7 @@ export const filterOrder = Object.freeze({
 
 const initialState = {
   isOfficeMode: false,
-  isShowAmt: false,
+  // isShowAmt: false,
   year: new Date().getFullYear(),
   month: format(new Date(), 'MMMM'),
   salaryAmount: null,
@@ -34,9 +34,9 @@ const userSettings = createSlice({
     setIsOfficeMode: (state, action) => {
       state.isOfficeMode = action.payload;
     },
-    toggleIsShowAmt: (state, action) => {
-      state.isShowAmt = !state.isShowAmt;
-    },
+    // toggleIsShowAmt: (state, action) => {
+    //   state.isShowAmt = !state.isShowAmt;
+    // },
     setSalaryAmount: (state, action) => {
       state.salaryAmount = action.payload;
     },
@@ -59,7 +59,7 @@ const userSettings = createSlice({
 export const {
   toggleOfficeMode,
   setIsOfficeMode,
-  toggleIsShowAmt,
+  // toggleIsShowAmt,
   setSalaryAmount,
   setMinRate,
   updateTheme,

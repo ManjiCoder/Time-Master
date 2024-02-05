@@ -5,6 +5,7 @@ const initialState = {
   year: new Date().getFullYear(),
   month: format(new Date(), 'MMMM'),
   targetDate: null,
+  isShowAmt: false,
 };
 
 // const initialState = {
@@ -26,10 +27,14 @@ const dateSlice = createSlice({
     setTargetDate: (state, action) => {
       state.targetDate = action.payload;
     },
+    toggleIsShowAmt: (state, action) => {
+      state.isShowAmt = !state.isShowAmt;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setYear, setMonth, setTargetDate } = dateSlice.actions;
+export const { setYear, setMonth, setTargetDate, toggleIsShowAmt } =
+  dateSlice.actions;
 
 export default dateSlice.reducer;

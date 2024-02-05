@@ -9,6 +9,7 @@ import CurrentTimeSpent from '@/components/CurrentTimeSpent';
 import {
   calculateTimeSpent,
   isLoginTime,
+  isLogoutTime,
   removeAMorPM,
 } from '@/utils/dateService';
 import TimeSpentIndicator from '@/components/TimeSpentIndicator';
@@ -18,19 +19,21 @@ import { setIsOfficeMode, toggleOfficeMode } from '@/redux/slices/UserSettings';
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 
 export default function Home() {
-  const { isOfficeMode, isShowAmt } = useSelector(
-    (state) => state.userSettings
-  );
+  const { isOfficeMode } = useSelector((state) => state.userSettings);
+  const { isShowAmt } = useSelector((state) => state.dateSlice);
   const attendance = useSelector((state) => state.attendance);
   const currentDate = new Date().setHours(0, 0, 0, 0);
   const year = new Date().getFullYear();
   const month = format(currentDate, 'MMMM');
 
   const isLogin = isLoginTime(year, month, currentDate, attendance);
+  const isLogout = isLogoutTime(year, month, currentDate, attendance);
   const [loginTime, setLoginTime] = useState(
     isLogin ? removeAMorPM(isLogin) : ''
   );
-  const [logoutTime, setLogoutTime] = useState('');
+  const [logoutTime, setLogoutTime] = useState(
+    isLogout ? removeAMorPM(isLogout) : ''
+  );
   const dispatch = useDispatch();
   const router = useRouter();
 

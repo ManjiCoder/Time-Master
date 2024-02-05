@@ -65,6 +65,14 @@ export const isLoginTime = (year, month, timeStamp, timeLog) => {
     return false;
   }
 };
+export const isLogoutTime = (year, month, timeStamp, timeLog) => {
+  try {
+    const logoutTime = timeLog[year][month][timeStamp].logout;
+    return logoutTime === '-' ? false : logoutTime;
+  } catch (error) {
+    return false;
+  }
+};
 
 export const formattedTime24 = (timeStr) => {
   try {

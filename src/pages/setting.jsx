@@ -2,13 +2,13 @@ import { Baloo_Bhai_2 } from 'next/font/google';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleIsShowAmt } from '@/redux/slices/UserSettings';
 
 import EditAmountModal from '@/components/EditAmountModal';
 import { formatAmt } from '@/components/TimeSpentIndicator';
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
 import ToggleThemeBtn from '@/components/ToggleThemeBtn';
 import ExportData from '@/components/ExportDataBtn';
+import { toggleIsShowAmt } from '@/redux/slices/dateSlice';
 
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 

@@ -26,6 +26,7 @@ import {
 } from '@/redux/slices/UserSettings';
 import ListBoxFilter from '@/components/ListBoxFilter';
 import ToogleBtn from '@/components/HeadlessUI/ToggleBtn';
+import { toast } from 'react-toastify';
 
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 
@@ -58,37 +59,41 @@ export default function Attendance() {
   useEffect(() => {
     if (isOfficeMode) {
       let intervalId = setInterval(() => {
-        const currentDate = new Date();
-        const year = format(currentDate, 'yyyy');
-        const month = format(currentDate, 'MMMM');
-        const date = currentDate.setHours(0, 0, 0, 0);
+        try {
+          const currentDate = new Date();
+          const year = format(currentDate, 'yyyy');
+          const month = format(currentDate, 'MMMM');
+          const date = currentDate.setHours(0, 0, 0, 0);
 
-        const todayDateObj = attendance[year][month][date];
-        const { login: loginRaw } = todayDateObj;
-        const login = removeAMorPM(loginRaw);
-        const logout = format(new Date(), 'HH:mm');
-        let timeSpendPayload = calculateTimeSpent(login, logout);
+          const todayDateObj = attendance[year][month][date];
+          const { login: loginRaw } = todayDateObj;
+          const login = removeAMorPM(loginRaw);
+          const logout = format(new Date(), 'HH:mm');
+          let timeSpendPayload = calculateTimeSpent(login, logout);
 
-        const payload = {
-          ...todayDateObj,
-          date,
-          login,
-          logout,
-          hours: `${timeSpendPayload.hrs
-            .toString()
-            .padStart(2, '0')}:${timeSpendPayload.mins
-            .toString()
-            .padStart(2, '0')}`,
-        };
-
-        dispatch(
-          setCurrentTimeSpent({
-            year,
-            month,
+          const payload = {
+            ...todayDateObj,
             date,
-            [date]: payload,
-          })
-        );
+            login,
+            logout,
+            hours: `${timeSpendPayload.hrs
+              .toString()
+              .padStart(2, '0')}:${timeSpendPayload.mins
+              .toString()
+              .padStart(2, '0')}`,
+          };
+
+          dispatch(
+            setCurrentTimeSpent({
+              year,
+              month,
+              date,
+              [date]: payload,
+            })
+          );
+        } catch (error) {
+          // TODO
+        }
         // console.log(payload);
       }, 1000);
 
@@ -153,8 +158,8 @@ export default function Attendance() {
             onClick={() => dispatch(setSortByOrder(filterOrder.ascending))}
           >
             <ArrowUpCircleIcon
-              className={`h-6 w-6 brightness-90 text-white dark:text-slate-800 bg-slate-800 dark:bg-white rounded-full shadow-md ${
-                order === filterOrder.ascending && 'brightness-100'
+              className={`h-6 w-6 text-white dark:text-slate-800 bg-slate-800 dark:bg-white rounded-full shadow-md ${
+                order === filterOrder.ascending ? 'opacity-100' : 'opacity-70'
               }`}
             />
           </button>
@@ -164,8 +169,8 @@ export default function Attendance() {
             onClick={() => dispatch(setSortByOrder(filterOrder.descending))}
           >
             <ArrowDownCircleIcon
-              className={`h-6 w-6 brightness-90 text-white dark:text-slate-800 bg-slate-800 dark:bg-white rounded-full shadow-md ${
-                order === filterOrder.descending && 'brightness-100'
+              className={`h-6 w-6 text-white dark:text-slate-800 bg-slate-800 dark:bg-white rounded-full shadow-md ${
+                order === filterOrder.descending ? 'opacity-100' : 'opacity-70'
               }`}
             />
           </button>
