@@ -2,9 +2,13 @@ import { createSlice } from '@reduxjs/toolkit';
 import { format } from 'date-fns';
 
 export const filterObj = Object.freeze({
+  date: 'Date',
+  present: 'Today',
+});
+
+export const filterOrder = Object.freeze({
   ascending: 'Ascending',
   descending: 'Descending',
-  // present: 'Present',
 });
 
 const initialState = {
@@ -16,7 +20,8 @@ const initialState = {
   // minRate: 0.9259259259259259,
   minRate: null,
   theme: 'system',
-  sortBy: filterObj.ascending,
+  sortBy: filterObj.date,
+  order: filterOrder.ascending,
 };
 
 const userSettings = createSlice({
@@ -44,6 +49,9 @@ const userSettings = createSlice({
     setSortBy: (state, action) => {
       state.sortBy = action.payload;
     },
+    setSortByOrder: (state, action) => {
+      state.order = action.payload;
+    },
   },
 });
 
@@ -56,6 +64,7 @@ export const {
   setMinRate,
   updateTheme,
   setSortBy,
+  setSortByOrder,
 } = userSettings.actions;
 
 export default userSettings.reducer;

@@ -44,6 +44,9 @@ export default function Home() {
       loginTime,
       isOfficeMode ? format(new Date(), 'HH:mm') : logoutTime
     );
+
+    const isTodayData = attendance[year][month][date];
+    // console.log(isTodayData);
     const payload = {
       date: currentDate.toISOString(),
       login: loginTime,
@@ -56,15 +59,25 @@ export default function Home() {
       // logout: isOfficeMode ? format(new Date(), "HH:mm") : logoutTime,
     };
     if (loginTime.trim().length !== 0 && logoutTime.trim().length !== 0) {
-      // alert(JSON.stringify({ loginTime, logoutTime }));
-      dispatch(
-        setLogin({
-          year: year,
-          month,
-          date,
-          [date]: payload,
-        })
-      );
+      try {
+        dispatch(
+          setLogin({
+            year,
+            month,
+            date,
+            [date]: { ...isTodayData, ...payload },
+          })
+        );
+      } catch (error) {
+        dispatch(
+          setLogin({
+            year,
+            month,
+            date,
+            [date]: payload,
+          })
+        );
+      }
       router.push('/attendance');
     }
   };
@@ -100,7 +113,7 @@ export default function Home() {
             <button
               type='button'
               onClick={() => {
-                setLoginTime(format(new Date(), 'hh:mm'));
+                setLoginTime(format(new Date(), 'HH:mm'));
                 setLogoutTime('');
                 dispatch(setIsOfficeMode(true));
               }}

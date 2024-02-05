@@ -21,26 +21,40 @@ export const showPercentage = (secs) => {
 };
 
 export const calculateTimeSpent = (login, logout) => {
-  // console.log(login, logout)
-  const loginTime = parse(login, 'HH:mm', new Date());
-  const logoutTime = logout ? parse(logout, 'HH:mm', new Date()) : new Date();
+  try {
+    // console.log(login, logout)
+    const loginTime = parse(login, 'HH:mm', new Date());
+    const logoutTime = logout ? parse(logout, 'HH:mm', new Date()) : new Date();
 
-  const hrs = differenceInHours(logoutTime, loginTime);
-  const mins = differenceInMinutes(logoutTime, loginTime);
-  const secs = differenceInSeconds(
-    logoutTime.setSeconds(new Date().getSeconds()),
-    loginTime
-  );
+    const hrs = differenceInHours(logoutTime, loginTime);
+    const mins = differenceInMinutes(logoutTime, loginTime);
+    const secs = differenceInSeconds(
+      logoutTime.setSeconds(new Date().getSeconds()),
+      loginTime
+    );
 
-  const percent = showPercentage(secs);
-  const timeSpent = {
-    hrs,
-    mins: mins % 60,
-    secs: new Date().getSeconds(),
-    percent,
-  };
-  // console.log(percent, secs);
-  return timeSpent;
+    const percent = showPercentage(secs);
+    const timeSpent = {
+      hrs,
+      mins: mins % 60,
+      secs: new Date().getSeconds(),
+      percent,
+    };
+    // TODO: Set on time
+    if (timeSpent.hrs === 9 && timeSpent.mins === 0 && timeSpent.secs === 0) {
+      try {
+        new Notification('Jai Shree Ram', {
+          body: 'test',
+          icon: '/favicon.ico',
+          vibrate: 500,
+        });
+      } catch (error) {}
+    }
+    // console.log(percent, secs);
+    return timeSpent;
+  } catch (error) {
+    return false;
+  }
 };
 
 export const isLoginTime = (year, month, timeStamp, timeLog) => {

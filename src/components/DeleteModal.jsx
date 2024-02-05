@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 
 export default function DeleteModal({ isOpen, setIsOpen }) {
   const attendance = useSelector((state) => state.attendance);
+  const {isOfficeMode} = useSelector((state) => state.userSettings);
   const { year, month, targetDate } = useSelector((state) => state.dateSlice);
   const dispatch = useDispatch();
 
@@ -19,6 +20,9 @@ export default function DeleteModal({ isOpen, setIsOpen }) {
       month,
       date: targetDate,
     };
+    if(isOfficeMode){
+      return toast.warn('Disable Office Mode!')
+    }
     dispatch(deleteByDate(payload));
     closeModal();
     toast.success('TimeLog Deleted Successfully!');

@@ -28,6 +28,9 @@ export default function CurrentTimeSpent({ loginTime, logoutTime }) {
         const logout = isOfficeMode ? format(new Date(), 'HH:mm') : logoutTime;
         let timeSpendPayload = calculateTimeSpent(loginTime, logout);
         seTimeSpent(timeSpendPayload);
+
+        const isTodayData = attendance[year][month][date];
+      
         const payload = {
           date: currentDate.toISOString(),
           login: loginTime,
@@ -39,14 +42,27 @@ export default function CurrentTimeSpent({ loginTime, logoutTime }) {
             .padStart(2, '0')}`,
         };
         if (loginTime !== '') {
-          dispatch(
-            setLogin({
-              year,
-              month,
-              date,
-              [date]: payload,
-            })
-          );
+          try {
+            dispatch(
+              setLogin({
+                year,
+                month,
+                date,
+                [date]: {...isTodayData,...payload},
+              })
+            );
+            
+          } catch (error) {
+            
+            dispatch(
+              setLogin({
+                year,
+                month,
+                date,
+                [date]: payload,
+              })
+            );
+          }
         }
 
         // console.log(timeSpendPayload.percent);
@@ -62,6 +78,7 @@ export default function CurrentTimeSpent({ loginTime, logoutTime }) {
       let timeSpendPayload = calculateTimeSpent(loginTime, logoutTime);
       seTimeSpent(timeSpendPayload);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOfficeMode, loginTime, logoutTime]);
 

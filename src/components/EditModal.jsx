@@ -10,12 +10,14 @@ import { toast } from 'react-toastify';
 export default function EditModal({ isOpen, setIsOpen }) {
   const attendance = useSelector((state) => state.attendance);
   const { year, month, targetDate } = useSelector((state) => state.dateSlice);
+  const { isOfficeMode } = useSelector((state) => state.userSettings);
   const dispatch = useDispatch();
   const data = attendance[year][month][targetDate];
   const { login, logout, hours } = data;
   const [loginTime, setLoginTime] = useState(removeAMorPM(login));
   const [logoutTime, setLogoutTime] = useState(removeAMorPM(logout));
   const [hoursTime, setHoursTime] = useState(hours === '-' ? null : hours);
+  const [isLeave, setIsLeave] = useState(data.isLeave || false);
   const [note, setNote] = useState(data.remark || '');
   // const [isCalculateTime, setIsCalculateTime] = useState(true);
 
@@ -45,6 +47,19 @@ export default function EditModal({ isOpen, setIsOpen }) {
       present: loginTime.includes(':') && logoutTime.includes(':') ? '1' : '-',
     };
 
+    if (isLeave) {
+      editedData.isLeave = true;
+      editedData.remark = 'Leave';
+    }
+    if (!isLeave) {
+      delete editedData?.isLeave;
+      delete editedData?.remark;
+    }
+
+    if (isOfficeMode) {
+      return toast.warn('Disable Office Mode!');
+    }
+
     if (note.trim().length !== 0) {
       editedData.remark = note;
     }
@@ -62,16 +77,8 @@ export default function EditModal({ isOpen, setIsOpen }) {
 
   return (
     <>
-      <Transition
-        appear
-        show={true}
-        as={Fragment}
-      >
-        <Dialog
-          as='div'
-          className='relative z-10'
-          onClose={closeModal}
-        >
+      <Transition appear show={true} as={Fragment}>
+        <Dialog as='div' className='relative z-10' onClose={closeModal}>
           <Transition.Child
             as={Fragment}
             enter='ease-out duration-300'
@@ -186,6 +193,26 @@ export default function EditModal({ isOpen, setIsOpen }) {
 
                       <h4 className='text-lg font-medium'>Remark</h4>
                     </div>
+
+                    <label
+                      htmlFor='leave'
+                      className='flex items-center space-x-1.5'
+                    >
+                      <input
+                        type='checkbox'
+                        checked={isLeave}
+                        id='leave'
+                        className=''
+                        onClick={() => {
+                          setLoginTime('09:00');
+                          setLogoutTime('18:00');
+                          setHoursTime('09:00');
+                          setIsLeave(!isLeave);
+                        }}
+                      />
+                      <span className='mt-1'>Mark as Leave?</span>
+                    </label>
+
                     <button
                       type='submit'
                       className='col-span-2 mx-auto bg-slate-700 px-4 py-2 rounded-md shadow-md text-white'

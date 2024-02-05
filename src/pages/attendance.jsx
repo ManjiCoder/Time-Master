@@ -3,18 +3,29 @@ import TimeSpentIndicator from '@/components/TimeSpentIndicator';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { format, getDate, isSaturday, isSunday } from 'date-fns';
-import { PencilSquareIcon, TrashIcon } from '@heroicons/react/20/solid';
+import {
+  ArrowDownCircleIcon,
+  ArrowUpCircleIcon,
+  PencilSquareIcon,
+  TrashIcon,
+} from '@heroicons/react/20/solid';
 import { setTargetDate } from '@/redux/slices/dateSlice';
 import {
   calculateTimeSpent,
   format24To12,
   formattedTime12,
+  removeAMorPM,
 } from '@/utils/dateService';
 import DeleteModal from '@/components/DeleteModal';
 import EditModal from '@/components/EditModal';
 import { setCurrentTimeSpent, setLogin } from '@/redux/slices/attendanceSlice';
-import { filterObj } from '@/redux/slices/UserSettings';
+import {
+  filterObj,
+  filterOrder,
+  setSortByOrder,
+} from '@/redux/slices/UserSettings';
 import ListBoxFilter from '@/components/ListBoxFilter';
+import ToogleBtn from '@/components/HeadlessUI/ToggleBtn';
 
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 
@@ -33,8 +44,11 @@ const holidays = {
 };
 
 export default function Attendance() {
+  const todayDate = new Date().setHours(0, 0, 0, 0);
   const attendance = useSelector((state) => state.attendance);
-  const { isOfficeMode, sortBy } = useSelector((state) => state.userSettings);
+  const { isOfficeMode, sortBy, order } = useSelector(
+    (state) => state.userSettings
+  );
   const { year, month } = useSelector((state) => state.dateSlice);
   const dispatch = useDispatch();
 
@@ -50,13 +64,15 @@ export default function Attendance() {
         const date = currentDate.setHours(0, 0, 0, 0);
 
         const todayDateObj = attendance[year][month][date];
-        const { login } = todayDateObj;
+        const { login: loginRaw } = todayDateObj;
+        const login = removeAMorPM(loginRaw);
         const logout = format(new Date(), 'HH:mm');
         let timeSpendPayload = calculateTimeSpent(login, logout);
 
         const payload = {
           ...todayDateObj,
           date,
+          login,
           logout,
           hours: `${timeSpendPayload.hrs
             .toString()
@@ -88,32 +104,81 @@ export default function Attendance() {
       <main
         className={`bg-slate-300 dark:bg-slate-900 dark:text-white text-slate-800 min-h-screen pb-16 ${inter.className}`}
       >
-        <TimeSpentIndicator
-          year={year}
-          month={month}
-        />
+        <TimeSpentIndicator year={year} month={month} />
         <h2 className='text-xl text-center mt-5'>No Data Found!</h2>
       </main>
     );
   }
+
+  const allDates = Object.keys(attendance[year][month]);
+  const tillTodayDates = Object.keys(attendance[year][month]).filter(
+    (v) => v <= new Date().setHours(0, 0, 0, 0)
+  );
+  const showDates = sortBy === filterObj.present ? tillTodayDates : allDates;
+  const data = calculateTimeSpent(
+    attendance[year][month][todayDate]?.login,
+    attendance[year][month][todayDate]?.logout
+  );
 
   return (
     <main
       className={`bg-slate-300 dark:bg-slate-900 text-slate-800 min-h-screen pb-16 ${inter.className}`}
     >
       <TimeSpentIndicator />
-      <section className='flex font-semibold justify-end mx-2 mt-2 space-x-1 items-center dark:text-white'>
-        <span>Sort By Date : </span>
-        <ListBoxFilter />
+      <section className='flex font-semibold justify-between mx-2 mt-2 space-x-1 items-center dark:text-white'>
+        {/* <span>Sort By Date : </span> */}
+        <div className='flex items-center space-x-1'>
+          <ToogleBtn />
+          {data && !Object.values(data).includes(NaN) && (
+            <>
+              <p className='flex flex-col items-center justify-center text-center'>
+                <span className='font-semibold text-[18px] w-16'>
+                  {data.hrs}:{data.mins.toString().padStart(2, '0')}:
+                  {data.secs.toString().padStart(2, '0')}
+                </span>
+                <span className='text-[0.57rem] -mt-1.5'>Time Spend</span>
+              </p>
+              <span className='font-semibold pl-2 text-green-700 dark:text-green-400 text-xl'>
+                {data.percent}%
+              </span>
+            </>
+          )}
+        </div>
+
+        <div className='flex space-x-1'>
+          <ListBoxFilter />
+
+          <button
+            type='button'
+            onClick={() => dispatch(setSortByOrder(filterOrder.ascending))}
+          >
+            <ArrowUpCircleIcon
+              className={`h-6 w-6 brightness-90 text-white dark:text-slate-800 bg-slate-800 dark:bg-white rounded-full shadow-md ${
+                order === filterOrder.ascending && 'brightness-100'
+              }`}
+            />
+          </button>
+
+          <button
+            type='button'
+            onClick={() => dispatch(setSortByOrder(filterOrder.descending))}
+          >
+            <ArrowDownCircleIcon
+              className={`h-6 w-6 brightness-90 text-white dark:text-slate-800 bg-slate-800 dark:bg-white rounded-full shadow-md ${
+                order === filterOrder.descending && 'brightness-100'
+              }`}
+            />
+          </button>
+        </div>
       </section>
 
-      {Object.keys(attendance[year][month])
+      {showDates
         .sort((a, b) => {
           a = parseInt(a);
           b = parseInt(b);
-          if (sortBy === filterObj.ascending) {
+          if (order === filterOrder.ascending) {
             return a - b;
-          } else if (sortBy === filterObj.descending) {
+          } else if (order === filterOrder.descending) {
             return b - a;
           }
         })
@@ -263,16 +328,10 @@ export default function Attendance() {
           );
         })}
       {isDeleteOpen && (
-        <DeleteModal
-          isOpen={isDeleteOpen}
-          setIsOpen={setIsDeleteOpen}
-        />
+        <DeleteModal isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} />
       )}
       {isEditOpen && (
-        <EditModal
-          isOpen={isEditOpen}
-          setIsOpen={setIsEditOpen}
-        />
+        <EditModal isOpen={isEditOpen} setIsOpen={setIsEditOpen} />
       )}
     </main>
   );
