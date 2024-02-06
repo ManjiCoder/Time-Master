@@ -56,8 +56,10 @@ export default function EditModal({ isOpen, setIsOpen }) {
       delete editedData?.remark;
     }
 
-    if (isOfficeMode) {
-      return toast.warn('Disable Office Mode!');
+    if (isOfficeMode && targetDate == new Date().setHours(0, 0, 0, 0)) {
+      toast.warn('Disable Office Mode!');
+      closeModal();
+      return;
     }
 
     if (note.trim().length !== 0) {
@@ -73,6 +75,35 @@ export default function EditModal({ isOpen, setIsOpen }) {
     dispatch(editByDate(payload));
     closeModal();
     toast.success('TimeLog Updated Successfully!');
+  };
+
+  const handleReset = () => {
+    const targetDateData = attendance[year][month][targetDate];
+
+    const editedData = {
+      ...targetDateData,
+      login: '-',
+      logout: '-',
+      hours: '-',
+      present: '-',
+    };
+
+    if (isOfficeMode && targetDate == new Date().setHours(0, 0, 0, 0)) {
+      toast.warn('Disable Office Mode!');
+      closeModal();
+      return;
+    }
+
+    const payload = {
+      year,
+      month,
+      date: targetDate,
+      data: editedData,
+    };
+    // console.table(payload.data);
+    dispatch(editByDate(payload));
+    closeModal();
+    toast.success('TimeLog Resetted Successfully!');
   };
 
   return (
@@ -222,12 +253,21 @@ export default function EditModal({ isOpen, setIsOpen }) {
                       <p className='mt-0.5 lg:-mt-0.5'>Mark as Leave?</p>
                     </label>
 
-                    <button
-                      type='submit'
-                      className='col-span-2 mx-auto bg-slate-700 px-4 py-2 rounded-md shadow-md text-white'
-                    >
-                      Submit
-                    </button>
+                    <section className='flex col-span-2'>
+                      <button
+                        type='submit'
+                        className='col-span-2 mx-auto w-28 font-bold bg-slate-700 px-4 py-2 rounded-md shadow-md text-white'
+                      >
+                        Submit
+                      </button>
+                      <button
+                        type='button'
+                        className='col-span-2 mx-auto w-28 font-bold bg-red-700 dark:bg-red-800 px-4 py-2 rounded-md shadow-md text-white'
+                        onClick={handleReset}
+                      >
+                        Reset
+                      </button>
+                    </section>
                   </form>
                 </Dialog.Panel>
               </Transition.Child>
