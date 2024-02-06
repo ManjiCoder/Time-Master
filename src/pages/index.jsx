@@ -141,7 +141,7 @@ export default function Home() {
             <button
               type='button'
               onClick={() => {
-                setLogoutTime(format(new Date(), 'hh:mm'));
+                setLogoutTime(format(new Date(), 'HH:mm'));
                 dispatch(setIsOfficeMode(false));
               }}
               className={`text-lg text-white font-medium shadow-md w-28 text-center py-1.5 rounded-md hover:bg-slate-800 hover:dark:bg-slate-900 ${
