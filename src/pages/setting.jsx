@@ -40,9 +40,13 @@ export default function Setting() {
         <li className='bg-slate-200 dark:bg-slate-800 shadow-md rounded-md py-4 px-4 border border-slate-400 flex space-x-2 items-center justify-start'>
           Salary Amount :
           <span className='ml-1 font-semibold'>
-            {Number(salaryAmount).toLocaleString('en-IN', formatAmt)}
+            {!isNaN(salaryAmount) &&
+              Number(salaryAmount).toLocaleString('en-IN', formatAmt)}
           </span>
-          <button type='button' onClick={handleClick}>
+          <button
+            type='button'
+            onClick={handleClick}
+          >
             <PencilSquareIcon className='w-5 mb-1 text-blue-600' />
           </button>
         </li>
@@ -50,12 +54,17 @@ export default function Setting() {
           Theme Mode - <ToggleThemeBtn />
         </li>
         <li className='bg-slate-200 dark:bg-slate-800 shadow-md rounded-md py-4 px-4 border border-slate-400 flex space-x-2 items-center justify-start'>
-          Export Data - <ExportData/>
+          Export Data - <ExportData />
         </li>
       </ol>
 
       {/* Set Amount Modal */}
-      {isOpen && <EditAmountModal isOpen={isOpen} setIsOpen={setIsOpen} />}
+      {isOpen && (
+        <EditAmountModal
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+        />
+      )}
     </main>
   );
 }

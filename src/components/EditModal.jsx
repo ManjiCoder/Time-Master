@@ -1,5 +1,9 @@
 import { editByDate } from '@/redux/slices/attendanceSlice';
-import { calculateTimeSpent, removeAMorPM } from '@/utils/dateService';
+import {
+  calculateTimeSpent,
+  isHolidays,
+  removeAMorPM,
+} from '@/utils/dateService';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/20/solid';
 import { format } from 'date-fns';
@@ -18,6 +22,19 @@ export default function EditModal({ isOpen, setIsOpen }) {
   const [logoutTime, setLogoutTime] = useState(removeAMorPM(logout));
   const [hoursTime, setHoursTime] = useState(hours === '-' ? null : hours);
   const [isLeave, setIsLeave] = useState(data.isLeave || false);
+
+  // const checkHolidays = () => {
+  //   try {
+  //     isHolidays(
+  //       new Date(parseInt(data.date)),
+  //       new Date(parseInt(data.date)).getDate()
+  //     );
+  //     return 'Holiday';
+  //   } catch (error) {
+  //     return false;
+  //   }
+  // };
+
   const [note, setNote] = useState(data.remark || '');
   // const [isCalculateTime, setIsCalculateTime] = useState(true);
 
@@ -79,7 +96,11 @@ export default function EditModal({ isOpen, setIsOpen }) {
 
   const handleReset = () => {
     const targetDateData = attendance[year][month][targetDate];
-
+    setLoginTime('-');
+    setLogoutTime('-');
+    setHoursTime('');
+    setIsLeave('');
+    setNote('');
     const editedData = {
       ...targetDateData,
       login: '-',
@@ -94,16 +115,16 @@ export default function EditModal({ isOpen, setIsOpen }) {
       return;
     }
 
-    const payload = {
-      year,
-      month,
-      date: targetDate,
-      data: editedData,
-    };
-    // console.table(payload.data);
-    dispatch(editByDate(payload));
-    closeModal();
-    toast.success('TimeLog Resetted Successfully!');
+    // const payload = {
+    //   year,
+    //   month,
+    //   date: targetDate,
+    //   data: editedData,
+    // };
+    // // console.table(payload.data);
+    // dispatch(editByDate(payload));
+    // closeModal();
+    // toast.success('TimeLog Resetted Successfully!');
   };
 
   return (

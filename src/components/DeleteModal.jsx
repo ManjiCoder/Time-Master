@@ -1,4 +1,4 @@
-import { deleteByDate } from '@/redux/slices/attendanceSlice';
+import { deleteByDate, editByDate } from '@/redux/slices/attendanceSlice';
 import { Dialog, Transition } from '@headlessui/react';
 import { format } from 'date-fns';
 import { Fragment } from 'react';
@@ -15,17 +15,33 @@ export default function DeleteModal({ isOpen, setIsOpen }) {
     setIsOpen(false);
   }
   const handleDelete = () => {
-    const payload = {
-      year,
-      month,
-      date: targetDate,
+    const targetDateData = attendance[year][month][targetDate];
+    const editedData = {
+      ...targetDateData,
+      login: '-',
+      logout: '-',
+      hours: '-',
+      present: '-',
     };
+
+    if (targetDateData.remark !== undefined) {
+      delete editedData.remark;
+    }
+
     if (isOfficeMode && targetDate == new Date().setHours(0, 0, 0, 0)) {
       toast.warn('Disable Office Mode!');
       closeModal();
       return;
     }
-    dispatch(deleteByDate(payload));
+
+    const payload = {
+      year,
+      month,
+      date: targetDate,
+      data: editedData,
+    };
+    // console.table(payload.data);
+    dispatch(editByDate(payload));
     closeModal();
     toast.success('TimeLog Deleted Successfully!');
   };

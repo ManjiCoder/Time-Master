@@ -14,6 +14,7 @@ import {
   calculateTimeSpent,
   format24To12,
   formattedTime12,
+  isHolidays,
   removeAMorPM,
 } from '@/utils/dateService';
 import DeleteModal from '@/components/DeleteModal';
@@ -31,7 +32,7 @@ import { toast } from 'react-toastify';
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 
 // Holidays List
-const holidays = {
+export const holidays = {
   1706207400000: '26-Jan-2024',
   1711305000000: '25-Mar-2024',
   1712773800000: '11-Apr-2024',
@@ -60,51 +61,50 @@ export default function Attendance() {
 
   useEffect(() => {
     try {
-    if (isOfficeMode && attendance[year][month][date]?.login !== '-') {
-      let intervalId = setInterval(() => {
-        try {
-          const year = format(currentDate, 'yyyy');
-          const month = format(currentDate, 'MMMM');
+      if (isOfficeMode && attendance[year][month][date]?.login !== '-') {
+        let intervalId = setInterval(() => {
+          try {
+            const year = format(currentDate, 'yyyy');
+            const month = format(currentDate, 'MMMM');
 
-          const todayDateObj = attendance[year][month][date];
-          const { login: loginRaw } = todayDateObj;
-          const login = removeAMorPM(loginRaw);
-          const logout = format(new Date(), 'HH:mm');
-          let timeSpendPayload = calculateTimeSpent(login, logout);
+            const todayDateObj = attendance[year][month][date];
+            const { login: loginRaw } = todayDateObj;
+            const login = removeAMorPM(loginRaw);
+            const logout = format(new Date(), 'HH:mm');
+            let timeSpendPayload = calculateTimeSpent(login, logout);
 
-          const payload = {
-            ...todayDateObj,
-            date,
-            login,
-            logout,
-            hours: `${timeSpendPayload.hrs
-              .toString()
-              .padStart(2, '0')}:${timeSpendPayload.mins
-              .toString()
-              .padStart(2, '0')}`,
-              present:'1'
-          };
-
-          dispatch(
-            setCurrentTimeSpent({
-              year,
-              month,
+            const payload = {
+              ...todayDateObj,
               date,
-              [date]: payload,
-            })
-          );
-        } catch (error) {
-          // TODO
-        }
-        // console.log(payload);
-      }, 1000);
+              login,
+              logout,
+              hours: `${timeSpendPayload.hrs
+                .toString()
+                .padStart(2, '0')}:${timeSpendPayload.mins
+                .toString()
+                .padStart(2, '0')}`,
+              present: '1',
+            };
 
-      return () => {
-        clearInterval(intervalId);
-      };
-    }
-   }
-   catch(error){}
+            dispatch(
+              setCurrentTimeSpent({
+                year,
+                month,
+                date,
+                [date]: payload,
+              })
+            );
+          } catch (error) {
+            // TODO
+          }
+          // console.log(payload);
+        }, 1000);
+
+        return () => {
+          clearInterval(intervalId);
+        };
+      }
+    } catch (error) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOfficeMode, year, month]);
 
@@ -198,11 +198,7 @@ export default function Attendance() {
           const parseDate = new Date(parseInt(date));
           const day = format(parseDate, 'EEEE');
           const dayNum = getDate(parseDate);
-          const isHoliday =
-            (isSaturday(parseDate) &&
-              (dayNum <= 7 || (dayNum > 14 && dayNum <= 21))) ||
-            isSunday(parseDate) ||
-            Object.values(holidays).includes(format(parseDate, 'dd-MMM-yyyy'));
+          const isHoliday = isHolidays(parseDate, dayNum);
 
           const obj = attendance[year][month][date];
           let loginTime = obj.login;

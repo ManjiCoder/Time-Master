@@ -1,3 +1,4 @@
+import { holidays } from '@/pages/attendance';
 import {
   differenceInHours,
   differenceInMinutes,
@@ -5,6 +6,7 @@ import {
   format,
   getDate,
   isSaturday,
+  isSunday,
   parse,
 } from 'date-fns';
 
@@ -298,3 +300,11 @@ export function getHolidaysList(str) {
   });
   return holidays;
 }
+
+export const isHolidays = (parseDate, dayNum) => {
+  return (
+    (isSaturday(parseDate) && (dayNum <= 7 || (dayNum > 14 && dayNum <= 21))) ||
+    isSunday(parseDate) ||
+    Object.values(holidays).includes(format(parseDate, 'dd-MMM-yyyy'))
+  );
+};
