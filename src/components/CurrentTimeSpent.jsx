@@ -40,6 +40,7 @@ export default function CurrentTimeSpent({ loginTime, logoutTime }) {
             .padStart(2, '0')}:${timeSpendPayload.mins
             .toString()
             .padStart(2, '0')}`,
+          present:'1'
         };
         if (loginTime !== '') {
           try {

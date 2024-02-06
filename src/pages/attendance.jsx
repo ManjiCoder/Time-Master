@@ -59,6 +59,7 @@ export default function Attendance() {
   const date = currentDate.setHours(0, 0, 0, 0);
 
   useEffect(() => {
+    try {
     if (isOfficeMode && attendance[year][month][date]?.login !== '-') {
       let intervalId = setInterval(() => {
         try {
@@ -81,6 +82,7 @@ export default function Attendance() {
               .padStart(2, '0')}:${timeSpendPayload.mins
               .toString()
               .padStart(2, '0')}`,
+              present:'1'
           };
 
           dispatch(
@@ -101,6 +103,8 @@ export default function Attendance() {
         clearInterval(intervalId);
       };
     }
+   }
+   catch(error){}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOfficeMode, year, month]);
 

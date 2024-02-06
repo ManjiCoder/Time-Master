@@ -59,6 +59,7 @@ export default function Home() {
         .padStart(2, '0')}:${timeSpendPayload.mins
         .toString()
         .padStart(2, '0')}`,
+      present:'1'
       // logout: isOfficeMode ? format(new Date(), "HH:mm") : logoutTime,
     };
     if (loginTime.trim().length !== 0 && logoutTime.trim().length !== 0) {
