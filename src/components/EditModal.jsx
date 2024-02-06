@@ -1,191 +1,240 @@
-import { Baloo_Bhai_2 } from 'next/font/google';
-import ToogleBtn from '@/components/HeadlessUI/ToggleBtn';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
+import { editByDate } from '@/redux/slices/attendanceSlice';
+import { calculateTimeSpent, removeAMorPM } from '@/utils/dateService';
+import { Dialog, Transition } from '@headlessui/react';
+import { XMarkIcon } from '@heroicons/react/20/solid';
 import { format } from 'date-fns';
-import { setLogin } from '@/redux/slices/attendanceSlice';
-import CurrentTimeSpent from '@/components/CurrentTimeSpent';
-import {
-  calculateTimeSpent,
-  isLoginTime,
-  isLogoutTime,
-  removeAMorPM,
-} from '@/utils/dateService';
-import TimeSpentIndicator from '@/components/TimeSpentIndicator';
-import ToggleCheckBox from '@/components/ToggleCheckBox';
-import { setIsOfficeMode, toggleOfficeMode } from '@/redux/slices/UserSettings';
+import { Fragment, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
-const inter = Baloo_Bhai_2({ subsets: ['latin'] });
-
-export default function Home() {
-  const { isOfficeMode } = useSelector((state) => state.userSettings);
-  const { isShowAmt } = useSelector((state) => state.dateSlice);
+export default function EditModal({ isOpen, setIsOpen }) {
   const attendance = useSelector((state) => state.attendance);
-  const currentDate = new Date().setHours(0, 0, 0, 0);
-  const year = new Date().getFullYear();
-  const month = format(currentDate, 'MMMM');
-
-  const isLogin = isLoginTime(year, month, currentDate, attendance);
-  const isLogout = isLogoutTime(year, month, currentDate, attendance);
-  const [loginTime, setLoginTime] = useState(
-    isLogin ? removeAMorPM(isLogin) : ''
-  );
-  const [logoutTime, setLogoutTime] = useState(
-    isLogout ? removeAMorPM(isLogout) : ''
-  );
+  const { year, month, targetDate } = useSelector((state) => state.dateSlice);
+  const { isOfficeMode } = useSelector((state) => state.userSettings);
   const dispatch = useDispatch();
-  const router = useRouter();
+  const data = attendance[year][month][targetDate];
+  const { login, logout, hours } = data;
+  const [loginTime, setLoginTime] = useState(removeAMorPM(login));
+  const [logoutTime, setLogoutTime] = useState(removeAMorPM(logout));
+  const [hoursTime, setHoursTime] = useState(hours === '-' ? null : hours);
+  const [isLeave, setIsLeave] = useState(data.isLeave || false);
+  const [note, setNote] = useState(data.remark || '');
+  // const [isCalculateTime, setIsCalculateTime] = useState(true);
 
-  const handleSubmit = (e) => {
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  const calculateTimeSpentInHrsMins = (login, logout) => {
+    const diffObj = calculateTimeSpent(login, logout);
+    const { hrs, mins } = diffObj;
+    if (isNaN(hrs) || isNaN(mins)) return '-';
+    return `${hrs.toString().padStart(2, '0')}:${mins
+      .toString()
+      .padStart(2, '0')}`;
+  };
+
+  const handleEdit = (e) => {
     e.preventDefault();
-    const currentDate = new Date();
-    const year = format(currentDate, 'yyyy');
-    const month = format(currentDate, 'MMMM');
-    const date = currentDate.setHours(0, 0, 0, 0);
-    let timeSpendPayload = calculateTimeSpent(
-      loginTime,
-      isOfficeMode ? format(new Date(), 'HH:mm') : logoutTime
-    );
 
-    const isTodayData = attendance[year][month][date];
-    // console.log(isTodayData);
-    const payload = {
-      date: currentDate.toISOString(),
+    const targetDateData = attendance[year][month][targetDate];
+
+    const editedData = {
+      ...targetDateData,
       login: loginTime,
       logout: logoutTime,
-      hours: `${timeSpendPayload.hrs
-        .toString()
-        .padStart(2, '0')}:${timeSpendPayload.mins
-        .toString()
-        .padStart(2, '0')}`,
-      present:'1'
-      // logout: isOfficeMode ? format(new Date(), "HH:mm") : logoutTime,
+      hours: hoursTime,
+      present: loginTime.includes(':') && logoutTime.includes(':') ? '1' : '-',
     };
-    if (loginTime.trim().length !== 0 && logoutTime.trim().length !== 0) {
-      try {
-        dispatch(
-          setLogin({
-            year,
-            month,
-            date,
-            [date]: { ...isTodayData, ...payload },
-          })
-        );
-      } catch (error) {
-        dispatch(
-          setLogin({
-            year,
-            month,
-            date,
-            [date]: payload,
-          })
-        );
-      }
-      router.push('/attendance');
+
+    if (isLeave) {
+      editedData.isLeave = true;
+      editedData.remark = note;
     }
+    if (!isLeave) {
+      delete editedData?.isLeave;
+      delete editedData?.remark;
+    }
+
+    if (isOfficeMode) {
+      return toast.warn('Disable Office Mode!');
+    }
+
+    if (note.trim().length !== 0) {
+      editedData.remark = note;
+    }
+    const payload = {
+      year,
+      month,
+      date: targetDate,
+      data: editedData,
+    };
+    // console.table(payload.data);
+    dispatch(editByDate(payload));
+    closeModal();
+    toast.success('TimeLog Updated Successfully!');
   };
+
   return (
-    // <PersistGate loading={null} persistor={persistor}>
-    <main
-      className={`bg-slate-300 dark:bg-slate-900 dark:text-white text-slate-800 min-h-screen pb-10 ${inter.className}`}
-    >
-      <TimeSpentIndicator isYearMonthPickerVisible={false} />
-      <div className='p-4'>
-        <section className='flex justify-between items-center'>
-          <h3 className='text-xl font-medium'>Welcome </h3>
-          {/* ToggleBtn */}
-          <ToogleBtn />
-        </section>
-
-        <form
-          className='grid grid-cols-2 my-5 gap-3 justify-evenly items-center'
-          onSubmit={handleSubmit}
+    <>
+      <Transition
+        appear
+        show={true}
+        as={Fragment}
+      >
+        <Dialog
+          as='div'
+          className='relative z-10'
+          onClose={closeModal}
         >
-          <div className='time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
-            <input
-              className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700'
-              type='time'
-              name='login'
-              id='login'
-              // step={300}
-              // pattern="(?:1[012]|0[0-9]):[0-5][0-9] (?:AM|PM)"
-              onChange={(e) => setLoginTime(e.target.value)}
-              placeholder='hh:mm AM/PM'
-              value={loginTime}
-            />
-            <button
-              type='button'
-              onClick={() => {
-                setLoginTime(format(new Date(), 'HH:mm'));
-                setLogoutTime('');
-                dispatch(setIsOfficeMode(true));
-              }}
-              className={`text-lg text-white font-medium shadow-md w-28 text-center py-1.5 rounded-md hover:bg-slate-800 hover:dark:bg-slate-900 ${
-                isOfficeMode ? 'bg-slate-800 dark:bg-slate-900' : 'bg-slate-700'
-              }`}
-            >
-              Log-In
-            </button>
-          </div>
-          <div className='time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
-            <input
-              className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700'
-              type='time'
-              name='logout'
-              id='logout'
-              onChange={(e) => setLogoutTime(e.target.value)}
-              placeholder='hh:mm AM/PM'
-              value={logoutTime}
-            />
-            <button
-              type='button'
-              onClick={() => {
-                setLogoutTime(format(new Date(), 'HH:mm'));
-                dispatch(setIsOfficeMode(false));
-              }}
-              className={`text-lg text-white font-medium shadow-md w-28 text-center py-1.5 rounded-md hover:bg-slate-800 hover:dark:bg-slate-900 ${
-                !isOfficeMode
-                  ? 'bg-slate-800 dark:bg-slate-900'
-                  : 'bg-slate-700'
-              }`}
-            >
-              Log-Out
-            </button>
-          </div>
-          <div className='pl-3 col-span-2 flex items-center text-sm'>
-            <ToggleCheckBox />
-          </div>
-          <button
-            type='submit'
-            className='col-span-2 mx-auto bg-slate-700 px-4 py-2 rounded-md shadow-md text-white'
+          <Transition.Child
+            as={Fragment}
+            enter='ease-out duration-300'
+            enterFrom='opacity-0'
+            enterTo='opacity-100'
+            leave='ease-in duration-200'
+            leaveFrom='opacity-100'
+            leaveTo='opacity-0'
           >
-            Submit
-          </button>
-        </form>
+            <div className='fixed inset-0 bg-black/70' />
+          </Transition.Child>
 
-        {/* Office Mode */}
+          <div className='fixed inset-0 overflow-y-auto'>
+            <div className='flex min-h-full items-center justify-center p-4 text-center'>
+              <Transition.Child
+                as={Fragment}
+                enter='ease-out duration-300'
+                enterFrom='opacity-0 scale-95'
+                enterTo='opacity-100 scale-100'
+                leave='ease-in duration-200'
+                leaveFrom='opacity-100 scale-100'
+                leaveTo='opacity-0 scale-95'
+              >
+                <Dialog.Panel className='w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-slate-900 p-6 text-left align-middle shadow-xl transition-all'>
+                  <Dialog.Title
+                    as='h3'
+                    className='text-2xl font-medium text-center mb-3 leading-6 text-gray-900 dark:text-white'
+                  >
+                    Are you sure?
+                  </Dialog.Title>
+                  <button onClick={closeModal}>
+                    <XMarkIcon className='absolute top-5 right-4 w-7 text-gray-900 dark:text-white text-xl' />
+                  </button>
+                  <h2 className='text-center font-medium mb-4 text-gray-900 dark:text-white'>
+                    Do you want to edit the{' '}
+                    {format(
+                      attendance[year][month][targetDate].date,
+                      'dd-MMM-yyyy'
+                    )}{' '}
+                    TimeLog?
+                  </h2>
 
-        {isOfficeMode && (
-          <CurrentTimeSpent
-            loginTime={loginTime.trim()}
-            logoutTime={logoutTime.trim()}
-          />
-        )}
-        {/* OnSubmit Mode */}
+                  <form
+                    className='grid grid-cols-2 text-gray-900 dark:text-white my-5 gap-4 justify-evenly items-center'
+                    onSubmit={handleEdit}
+                  >
+                    <div className='time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
+                      <input
+                        className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700 w-36'
+                        type='time'
+                        name='login'
+                        id='login'
+                        // step={300}
+                        // pattern="(?:1[012]|0[0-9]):[0-5][0-9] (?:AM|PM)"
+                        onChange={(e) => {
+                          setLoginTime(e.target.value);
+                          setHoursTime(
+                            calculateTimeSpentInHrsMins(
+                              e.target.value,
+                              logoutTime
+                            )
+                          );
+                        }}
+                        placeholder='hh:mm AM/PM'
+                        value={loginTime}
+                      />
+                      <h4 className='text-lg font-medium'>Log-In</h4>
+                    </div>
+                    <div className='time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
+                      <input
+                        className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700 w-36'
+                        type='time'
+                        name='logout'
+                        id='logout'
+                        onChange={(e) => {
+                          setLogoutTime(e.target.value);
+                          setHoursTime(
+                            calculateTimeSpentInHrsMins(
+                              loginTime,
+                              e.target.value
+                            )
+                          );
+                        }}
+                        placeholder='hh:mm AM/PM'
+                        value={logoutTime}
+                      />
 
-        {loginTime.trim().length !== 0 &&
-          logoutTime.trim().length !== 0 &&
-          !isOfficeMode && (
-            <CurrentTimeSpent
-              loginTime={loginTime.trim()}
-              logoutTime={logoutTime.trim()}
-            />
-          )}
+                      <h4 className='text-lg font-medium'>Log-Out</h4>
+                    </div>
 
-        {/* Results */}
-      </div>
-    </main>
-    // </PersistGate>
+                    <div className='time flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
+                      <input
+                        className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 w-36 dark:bg-slate-700 text-center'
+                        type='text'
+                        onChange={(e) => setHoursTime(e.target.value)}
+                        placeholder='HH:MM'
+                        maxLength={5}
+                        value={hoursTime === '-' ? null : hoursTime}
+                      />
+
+                      <h4 className='text-lg font-medium'>Time-Spent</h4>
+                    </div>
+                    <div className='time flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
+                      <input
+                        className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 w-36 dark:bg-slate-700 pl-3 capitalize'
+                        type='search'
+                        onChange={(e) => setNote(e.target.value)}
+                        placeholder='Remark'
+                        maxLength={100}
+                        value={note}
+                      />
+
+                      <h4 className='text-lg font-medium'>Remark</h4>
+                    </div>
+
+                    <label
+                      htmlFor='leave'
+                      className='flex items-center space-x-1.5'
+                    >
+                      <input
+                        type='checkbox'
+                        checked={isLeave}
+                        id='leave'
+                        className=''
+                        onClick={() => {
+                          setIsLeave(!isLeave);
+                          setLoginTime('09:00');
+                          setLogoutTime('18:00');
+                          setHoursTime('09:00');
+                          setNote('Leave');
+                        }}
+                      />
+                      <p className='mt-0.5 lg:-mt-0.5'>Mark as Leave?</p>
+                    </label>
+
+                    <button
+                      type='submit'
+                      className='col-span-2 mx-auto bg-slate-700 px-4 py-2 rounded-md shadow-md text-white'
+                    >
+                      Submit
+                    </button>
+                  </form>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
+    </>
   );
-  }
+}
