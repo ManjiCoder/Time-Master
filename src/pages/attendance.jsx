@@ -28,6 +28,7 @@ import {
 import ListBoxFilter from '@/components/ListBoxFilter';
 import ToogleBtn from '@/components/HeadlessUI/ToggleBtn';
 import { toast } from 'react-toastify';
+import { useTheme } from 'next-themes';
 
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 
@@ -46,6 +47,9 @@ export const holidays = {
 };
 
 export default function Attendance() {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
   const attendance = useSelector((state) => state.attendance);
   const { isOfficeMode, sortBy, order } = useSelector(
     (state) => state.userSettings
@@ -113,10 +117,7 @@ export default function Attendance() {
       <main
         className={`bg-slate-300 dark:bg-slate-900 dark:text-white text-slate-800 min-h-screen pb-16 ${inter.className}`}
       >
-        <TimeSpentIndicator
-          year={year}
-          month={month}
-        />
+        <TimeSpentIndicator year={year} month={month} />
         <h2 className='text-xl text-center mt-5'>No Data Found!</h2>
       </main>
     );
@@ -150,7 +151,16 @@ export default function Attendance() {
                 </span>
                 <span className='text-[0.57rem] -mt-1.5'>Time Spend</span>
               </p>
-              <span className='font-semibold pl-2 text-green-700 dark:text-green-400 text-xl'>
+              <span
+                className={`font-semibold text-white text-lg ${
+                  data.percent > 100 ? 'w-24' : 'w-20'
+                } rounded-full shadow-sm text-center from-slate-900`}
+                style={{
+                  background: `linear-gradient(90deg, #16a34a ${
+                    data.percent
+                  }% , ${isDark ? '#334155' : '#0f172a'} ${data.percent}%)`,
+                }}
+              >
                 {data.percent}%
               </span>
             </>
@@ -336,16 +346,10 @@ export default function Attendance() {
           );
         })}
       {isDeleteOpen && (
-        <DeleteModal
-          isOpen={isDeleteOpen}
-          setIsOpen={setIsDeleteOpen}
-        />
+        <DeleteModal isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} />
       )}
       {isEditOpen && (
-        <EditModal
-          isOpen={isEditOpen}
-          setIsOpen={setIsEditOpen}
-        />
+        <EditModal isOpen={isEditOpen} setIsOpen={setIsEditOpen} />
       )}
     </main>
   );
