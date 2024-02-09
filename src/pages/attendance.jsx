@@ -138,31 +138,35 @@ export default function Attendance() {
       className={`bg-slate-300 dark:bg-slate-900 text-slate-800 min-h-screen pb-16 ${inter.className}`}
     >
       <TimeSpentIndicator />
-      <section className='flex font-semibold justify-between mx-2 mt-2 space-x-1 items-center dark:text-white'>
+      <section className='flex font-semibold justify-between mx-2 mt-2 items-center dark:text-white'>
         {/* <span>Sort By Date : </span> */}
-        <div className='flex items-center space-x-1'>
+        <div className='flex items-center'>
           <ToogleBtn />
           {data && !Object.values(data).includes(NaN) && (
             <>
               <p className='flex flex-col items-center justify-center text-center'>
                 <span className='font-semibold text-[18px] w-16'>
-                  {data.hrs}:{data.mins.toString().padStart(2, '0')}:
+                  {data.hrs > 0 && data.hrs + ':'}
+                  {data.mins.toString().padStart(2, '0')}:
                   {data.secs.toString().padStart(2, '0')}
                 </span>
                 <span className='text-[0.57rem] -mt-1.5'>Time Spend</span>
               </p>
-              <span
-                className={`font-semibold text-white text-lg ${
-                  data.percent > 100 ? 'w-24' : 'w-20'
-                } rounded-full shadow-sm text-center from-slate-900`}
+              <p
+                className={`ml-2 font-semibold flex items-center justify-center text-white text-lg ${
+                  Math.floor(data.percent) > 100 ? 'w-16' : 'w-14'
+                } rounded-full shadow-sm text-center`}
                 style={{
-                  background: `linear-gradient(90deg, #16a34a ${
+                  background: `linear-gradient(90deg, #16a34a ${Math.floor(
                     data.percent
-                  }% , ${isDark ? '#334155' : '#0f172a'} ${data.percent}%)`,
+                  )}% , ${isDark ? '#334155' : '#0f172a'} ${Math.floor(
+                    data.percent
+                  )}%)`,
                 }}
               >
-                {data.percent}%
-              </span>
+                {Math.floor(data.percent)}
+                <span className='text-sm'>%</span>
+              </p>
             </>
           )}
         </div>
