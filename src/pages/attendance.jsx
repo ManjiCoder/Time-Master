@@ -47,8 +47,9 @@ export const holidays = {
 };
 
 export default function Attendance() {
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
+  const { theme, systemTheme } = useTheme();
+  const currentTheme = theme === 'system' ? systemTheme : theme;
+  const isDark = currentTheme === 'dark';
 
   const attendance = useSelector((state) => state.attendance);
   const { isOfficeMode, sortBy, order } = useSelector(
@@ -153,19 +154,32 @@ export default function Attendance() {
                 <span className='text-[0.57rem] -mt-1.5'>Time Spend</span>
               </p>
               <p
-                className={`ml-2 font-semibold flex items-center justify-center text-white text-lg ${
+                className={`ml-2 relative font-semibold flex items-center justify-center text-white text-lg ${
                   Math.floor(data.percent) > 100 ? 'w-16' : 'w-14'
-                } rounded-full shadow-sm text-center`}
+                } rounded-md shadow-sm text-center from-slate-700`}
                 style={{
                   background: `linear-gradient(90deg, #16a34a ${Math.floor(
                     data.percent
-                  )}% , ${isDark ? '#334155' : '#0f172a'} ${Math.floor(
-                    data.percent
-                  )}%)`,
+                  )}% , ${
+                    isDark
+                      ? isOfficeMode
+                        ? '#334155'
+                        : '#475569'
+                      : isOfficeMode
+                      ? '#0f172a'
+                      : '#475569'
+                  } ${Math.floor(data.percent)}%)`,
                 }}
               >
                 {Math.floor(data.percent)}
                 <span className='text-sm'>%</span>
+                <span
+                  className={`absolute -right-1 w-1 h-2 ${
+                    isOfficeMode ? 'bg-slate-900' : 'bg-slate-600'
+                  } ${
+                    isOfficeMode ? 'dark:bg-slate-700' : 'bg-slate-600'
+                  } rounded-r-sm`}
+                ></span>
               </p>
             </>
           )}
