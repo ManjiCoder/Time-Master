@@ -205,20 +205,36 @@ export function getUserInfo(text) {
     let isPresent = present === '1';
     let amIndex = str.indexOf('AM') + 2;
     let pmIndex = str.indexOf('PM') + 2;
+    let amLastIndex = str.lastIndexOf('AM') + 2;
+    let pmLastIndex = str.lastIndexOf('PM') + 2;
+    const isBothAM = str.toUpperCase().match(/AM/g);
+    const isBothPM = str.toUpperCase().match(/PM/g);
     let dateInTime = new Date(date).setHours(0, 0, 0, 0);
     let hours = isPresent ? str.slice(11, 16) : str.slice(11, 12);
     let isHoursEmpty = hours === '-';
-    let login = str.includes('AM')
-      ? str.slice(amIndex - 8, amIndex)
-      : isHoursEmpty
-      ? str.slice(13, 14)
-      : str.slice(16, 17);
-    let isLogin = str.includes('AM');
-    let logout = str.includes('PM')
-      ? str.slice(pmIndex - 8, pmIndex)
-      : isLogin
-      ? str.slice(amIndex, amIndex + 1)
-      : str.slice(17, 18);
+
+    let login;
+    if (str.includes('AM')) {
+      login = str.slice(amIndex - 8, amIndex);
+    } else if (isBothPM && isBothPM.length === 2) {
+      login = str.slice(pmIndex - 8, pmIndex);
+    } else if (isBothAM && isBothAM.length === 2) {
+      login = str.slice(amIndex - 8, amIndex);
+    } else {
+      login = '-';
+    }
+
+    let logout;
+    if (str.includes('PM')) {
+      logout = str.slice(pmLastIndex - 8, pmLastIndex);
+    } else if (isBothAM && isBothAM.length === 2) {
+      logout = str.slice(amLastIndex - 8, amLastIndex);
+    } else if (isBothPM && isBothPM.length === 2) {
+      logout = str.slice(pmLastIndex - 8, pmLastIndex);
+    } else {
+      logout = '-';
+    }
+
     let indexOfZero = str.lastIndexOf('00:00');
     let leave =
       indexOfZero === -1
