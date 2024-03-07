@@ -210,8 +210,8 @@ export function getUserInfo(text) {
     const isBothAM = str.toUpperCase().match(/AM/g);
     const isBothPM = str.toUpperCase().match(/PM/g);
     let dateInTime = new Date(date).setHours(0, 0, 0, 0);
-    let hours = isPresent ? str.slice(11, 16) : str.slice(11, 12);
-    let isHoursEmpty = hours === '-';
+    // let hours = isPresent ? str.slice(11, 16) : str.slice(11, 12);
+    // let isHoursEmpty = hours === '-';
 
     let login;
     if (str.includes('AM')) {
@@ -234,6 +234,8 @@ export function getUserInfo(text) {
     } else {
       logout = '-';
     }
+
+    let hours = login!=='-' ? str.slice(11, 16) : str.slice(11, 12);
 
     let indexOfZero = str.lastIndexOf('00:00');
     let leave =
