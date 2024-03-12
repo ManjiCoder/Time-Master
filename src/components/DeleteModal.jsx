@@ -22,6 +22,7 @@ export default function DeleteModal({ isOpen, setIsOpen }) {
       logout: '-',
       hours: '-',
       present: '-',
+      leave: '-',
     };
 
     if (targetDateData.remark !== undefined) {

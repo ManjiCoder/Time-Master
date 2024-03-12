@@ -66,6 +66,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
     };
 
     if (isLeave) {
+      editedData.present = '-';
       editedData.leave = '1';
       editedData.isLeave = true;
       editedData.remark = note;
@@ -110,6 +111,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
       logout: '-',
       hours: '-',
       present: '-',
+      leave: '-',
     };
 
     if (isOfficeMode && targetDate == new Date().setHours(0, 0, 0, 0)) {
@@ -132,8 +134,16 @@ export default function EditModal({ isOpen, setIsOpen }) {
 
   return (
     <>
-      <Transition appear show={true} as={Fragment}>
-        <Dialog as='div' className='relative z-10' onClose={closeModal}>
+      <Transition
+        appear
+        show={true}
+        as={Fragment}
+      >
+        <Dialog
+          as='div'
+          className='relative z-10'
+          onClose={closeModal}
+        >
           <Transition.Child
             as={Fragment}
             enter='ease-out duration-300'

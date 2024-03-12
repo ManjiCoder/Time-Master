@@ -50,6 +50,11 @@ const ExportData = () => {
         if (csvTitle !== Object.keys(jsonData[year][month][date])) {
           csvTitle = Object.keys(jsonData[year][month][date]);
         }
+        if (obj.leave === '1') {
+          obj.login = '09:00 AM';
+          obj.logout = '06:00 PM';
+          obj.hours = '09:00';
+        }
         let desc = Object.values(jsonData[year][month][date]);
         let temp = desc.shift();
         desc = `${temp},${desc.toString().replace(/-/g, '')}\n`;
@@ -60,7 +65,7 @@ const ExportData = () => {
       csvTitle.map((v) => v.replace(v[0], v[0].toUpperCase())).toString() +
       ',Remarks \n' +
       csvDesc;
-    console.log(csvData);
+    // console.log(csvData);
 
     // Download CSV file
     const blob = new Blob([csvData], { type: 'text/csv' });
