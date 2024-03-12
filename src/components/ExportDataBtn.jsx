@@ -36,23 +36,31 @@ const ExportData = () => {
 
     //   return `${headers}\n${rows.join('\n')}`;
     // };
-    const jsonData = attendance;
+    const jsonData = JSON.parse(JSON.stringify(attendance));
     let csvTitle = '';
     let csvDesc = [];
     const arr = Object.keys(jsonData[year][month])
       .sort((a, b) => parseInt(a) - parseInt(b))
       .map((date) => {
+        const obj = jsonData[year][month][date];
+        delete obj?.break;
+        delete obj?.isLeave;
+        delete obj?.tour;
+        // console.log(obj)
         if (csvTitle !== Object.keys(jsonData[year][month][date])) {
           csvTitle = Object.keys(jsonData[year][month][date]);
         }
-
-        csvDesc += Object.values(jsonData[year][month][date]).toString() + '\n';
+        let desc = Object.values(jsonData[year][month][date]);
+        let temp = desc.shift();
+        desc = `${temp},${desc.toString().replace(/-/g, '')}\n`;
+        csvDesc += desc;
       });
 
     const csvData =
       csvTitle.map((v) => v.replace(v[0], v[0].toUpperCase())).toString() +
-      '\n' +
+      ',Remarks \n' +
       csvDesc;
+    console.log(csvData);
 
     // Download CSV file
     const blob = new Blob([csvData], { type: 'text/csv' });
@@ -81,4 +89,3 @@ const ExportData = () => {
 };
 
 export default ExportData;
-      

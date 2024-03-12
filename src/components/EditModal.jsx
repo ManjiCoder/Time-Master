@@ -1,6 +1,7 @@
 import { editByDate } from '@/redux/slices/attendanceSlice';
 import {
   calculateTimeSpent,
+  format24To12,
   isHolidays,
   removeAMorPM,
 } from '@/utils/dateService';
@@ -58,17 +59,19 @@ export default function EditModal({ isOpen, setIsOpen }) {
 
     const editedData = {
       ...targetDateData,
-      login: loginTime,
-      logout: logoutTime,
+      login: format24To12(loginTime),
+      logout: format24To12(logoutTime),
       hours: hoursTime,
       present: loginTime.includes(':') && logoutTime.includes(':') ? '1' : '-',
     };
 
     if (isLeave) {
+      editedData.leave = '1';
       editedData.isLeave = true;
       editedData.remark = note;
     }
     if (!isLeave) {
+      delete editedData?.leave;
       delete editedData?.isLeave;
       delete editedData?.remark;
     }
@@ -129,16 +132,8 @@ export default function EditModal({ isOpen, setIsOpen }) {
 
   return (
     <>
-      <Transition
-        appear
-        show={true}
-        as={Fragment}
-      >
-        <Dialog
-          as='div'
-          className='relative z-10'
-          onClose={closeModal}
-        >
+      <Transition appear show={true} as={Fragment}>
+        <Dialog as='div' className='relative z-10' onClose={closeModal}>
           <Transition.Child
             as={Fragment}
             enter='ease-out duration-300'

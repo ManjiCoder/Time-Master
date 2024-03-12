@@ -8,6 +8,7 @@ import { setLogin } from '@/redux/slices/attendanceSlice';
 import CurrentTimeSpent from '@/components/CurrentTimeSpent';
 import {
   calculateTimeSpent,
+  format24To12,
   isLoginTime,
   isLogoutTime,
   removeAMorPM,
@@ -51,15 +52,15 @@ export default function Home() {
     const isTodayData = attendance[year][month][date];
     // console.log(isTodayData);
     const payload = {
-      date: currentDate.toISOString(),
-      login: loginTime,
-      logout: logoutTime,
+      date: format(date, 'yyyy-MM-dd'),
+      login: format24To12(loginTime),
+      logout: format24To12(logoutTime),
       hours: `${timeSpendPayload.hrs
         .toString()
         .padStart(2, '0')}:${timeSpendPayload.mins
         .toString()
         .padStart(2, '0')}`,
-      present:'1'
+      present: '1',
       // logout: isOfficeMode ? format(new Date(), "HH:mm") : logoutTime,
     };
     if (loginTime.trim().length !== 0 && logoutTime.trim().length !== 0) {

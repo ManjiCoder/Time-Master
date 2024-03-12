@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { setLogin } from '../redux/slices/attendanceSlice';
 import { format } from 'date-fns';
-import { calculateTimeSpent } from '@/utils/dateService';
+import { calculateTimeSpent, format24To12 } from '@/utils/dateService';
 
 export default function CurrentTimeSpent({ loginTime, logoutTime }) {
   const attendance = useSelector((state) => state.attendance);
@@ -30,17 +30,17 @@ export default function CurrentTimeSpent({ loginTime, logoutTime }) {
         seTimeSpent(timeSpendPayload);
 
         const isTodayData = attendance[year][month][date];
-      
+
         const payload = {
-          date: currentDate.toISOString(),
-          login: loginTime,
-          logout,
+          date: format(date, 'yyyy-MM-dd'),
+          login: format24To12(loginTime),
+          logout: format24To12(logout),
           hours: `${timeSpendPayload.hrs
             .toString()
             .padStart(2, '0')}:${timeSpendPayload.mins
             .toString()
             .padStart(2, '0')}`,
-          present:'1'
+          present: '1',
         };
         if (loginTime !== '') {
           try {
@@ -49,12 +49,10 @@ export default function CurrentTimeSpent({ loginTime, logoutTime }) {
                 year,
                 month,
                 date,
-                [date]: {...isTodayData,...payload},
+                [date]: { ...isTodayData, ...payload },
               })
             );
-            
           } catch (error) {
-            
             dispatch(
               setLogin({
                 year,

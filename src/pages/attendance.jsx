@@ -29,6 +29,7 @@ import ListBoxFilter from '@/components/ListBoxFilter';
 import ToogleBtn from '@/components/HeadlessUI/ToggleBtn';
 import { toast } from 'react-toastify';
 import { useTheme } from 'next-themes';
+import Remark from '@/components/Remark';
 
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 
@@ -80,9 +81,9 @@ export default function Attendance() {
 
             const payload = {
               ...todayDateObj,
-              date,
-              login,
-              logout,
+              date: format(date, 'yyyy-MM-dd'),
+              login: format24To12(login),
+              logout: format24To12(logout),
               hours: `${timeSpendPayload.hrs
                 .toString()
                 .padStart(2, '0')}:${timeSpendPayload.mins
@@ -229,6 +230,12 @@ export default function Attendance() {
           const isHoliday = isHolidays(parseDate, dayNum);
 
           const obj = attendance[year][month][date];
+          const isLeave = obj.leave === '1';
+          const remark =
+            obj?.remark ||
+            (obj?.leave === '1' && 'Leave') ||
+            (isHoliday && 'Holiday') ||
+            null;
           let loginTime = obj.login;
           let logoutTime = obj.logout;
           loginTime = loginTime ? formattedTime12(loginTime) : '00:00';
@@ -256,7 +263,7 @@ export default function Attendance() {
                 <div
                   className={`bg-slate-100 w-[70%] rounded-br-lg rounded-bl-lg h-16 grid place-items-center font-bold text-4xl ${
                     isHoliday && 'text-red-500'
-                  } `}
+                  } ${isLeave && 'text-green-600/85'}`}
                 >
                   {dayNum.toString().padStart(2, '0')}
                 </div>
@@ -345,20 +352,7 @@ export default function Attendance() {
                   </div>
                 </div>
                 {/* For IMP Note */}
-                {obj.remark && (
-                  <p className='ml-1 -mb-0.5 flex text-sm font-semibold items-center justify-center text-balance capitalize'>
-                    Remark :
-                    <span className='text-yellow-400 ml-1'> {obj.remark}</span>
-                  </p>
-                )}
-
-                {/* For Holidays */}
-                {isHoliday && (
-                  <p className='ml-1 -mb-0.5 flex text-sm font-semibold items-center justify-center text-balance capitalize'>
-                    Remark :
-                    <span className='text-yellow-400 ml-1'> Holiday</span>
-                  </p>
-                )}
+                <Remark msg={remark} />
               </div>
             </section>
           );

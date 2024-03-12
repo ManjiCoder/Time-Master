@@ -55,6 +55,9 @@ export default function TimeSpentIndicator({
               payload.mins = payload.mins + v;
             }
           });
+        } else if (timeLog[v].leave === '1') {
+          payload.days += 1;
+          payload.hrs += 9;
         }
       });
       return payload;
@@ -106,9 +109,11 @@ export default function TimeSpentIndicator({
     <header
       className={`sticky top-0 w-full z-10 space-x-1 p-2 text-center shadow-md flex items-center justify-evenly text-slate-950 dark:text-white bg-white/70 dark:bg-slate-700/40 backdrop-blur-sm dark:backdrop-brightness-75 ${extraStyle}`}
     >
-      <h1 className={`flex flex-1 ${
-          totalHrsR > 9? 'xs:text-[17px]' : 'xs:text-lg'
-        } space-x-1 justify-evenly items-center max-xs:text-sm`}>
+      <h1
+        className={`flex flex-1 ${
+          totalHrsR > 9 ? 'xs:text-[17px]' : 'xs:text-lg'
+        } space-x-1 justify-evenly items-center max-xs:text-sm`}
+      >
         <span
           className={`font-bold ${
             Math.sign(timeDiffMins) === -1 ? 'text-red-500' : 'text-green-500'
