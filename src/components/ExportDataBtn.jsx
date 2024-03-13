@@ -1,5 +1,7 @@
 import React from 'react';
+import { isHolidays } from '@/utils/dateService';
 import { useSelector } from 'react-redux';
+import { getDate } from 'date-fns';
 
 const ExportData = () => {
   const attendance = useSelector((state) => state.attendance);
@@ -43,18 +45,33 @@ const ExportData = () => {
       .sort((a, b) => parseInt(a) - parseInt(b))
       .map((date) => {
         const obj = jsonData[year][month][date];
+        // Clean UP
         delete obj?.break;
         delete obj?.isLeave;
         delete obj?.tour;
         // console.log(obj)
+        // For getting Titles
         if (csvTitle !== Object.keys(jsonData[year][month][date])) {
           csvTitle = Object.keys(jsonData[year][month][date]);
         }
+
+        // For Leave
         if (obj.leave === '1') {
           obj.login = '09:00 AM';
           obj.logout = '06:00 PM';
           obj.hours = '09:00';
+          obj.present = '1'
+          obj.note = 'Leave'
         }
+        delete obj?.leave
+        // For Holidays to be remark
+        const parseDate = new Date(parseInt(date));
+        const dayNum = getDate(parseDate);
+        if (isHolidays(parseDate, dayNum)) {
+          obj.note = 'Holiday';
+        }
+
+        // To replace - with ''
         let desc = Object.values(jsonData[year][month][date]);
         let temp = desc.shift();
         desc = `${temp},${desc.toString().replace(/-/g, '')}\n`;
