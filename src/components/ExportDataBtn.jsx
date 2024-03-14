@@ -79,7 +79,7 @@ const ExportData = () => {
       });
 
     const csvData =
-      csvTitle.map((v) => v.replace(v[0], v[0].toUpperCase())).toString() +
+      csvTitle.map((v) => v.replace(v[0], v[0].toUpperCase())).toString().replace(',Leave','') +
       ',Remarks \n' +
       csvDesc;
     // console.log(csvData);
