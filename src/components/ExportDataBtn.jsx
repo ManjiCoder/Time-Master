@@ -61,14 +61,14 @@ const ExportData = () => {
           obj.logout = '06:00 PM';
           obj.hours = '09:00';
           obj.present = '1'
-          obj.note = 'Leave'
+          obj.remark ||= 'Leave'
         }
         delete obj?.leave
         // For Holidays to be remark
         const parseDate = new Date(parseInt(date));
         const dayNum = getDate(parseDate);
         if (isHolidays(parseDate, dayNum)) {
-          obj.note = 'Holiday';
+          obj.remark = 'Holiday';
         }
 
         // To replace - with ''
