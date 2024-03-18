@@ -234,8 +234,10 @@ export default function Attendance() {
           const remark =
             obj?.remark ||
             (obj?.leave === '1' && 'Leave') ||
+            (obj?.present === '0.5' && 'Half Day') ||
             (isHoliday && 'Holiday') ||
             null;
+          // console.log(obj)
           let loginTime = obj.login;
           let logoutTime = obj.logout;
           loginTime = loginTime ? formattedTime12(loginTime) : '00:00';
