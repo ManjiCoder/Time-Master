@@ -23,6 +23,7 @@ export default function ToggleCheckBox() {
         <input
           type='checkbox'
           checked={isChecked}
+          onChange={(e)=>{}}
           id='showAmt'
           className=''
           onClick={handleClick}

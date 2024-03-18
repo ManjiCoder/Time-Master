@@ -201,7 +201,8 @@ export function getUserInfo(text) {
 
   arr.map((str) => {
     let date = str.slice(0, 10).split('-').reverse().join('-');
-    let present = str.slice(10, 11);
+    const isHalfDay = str.includes('0.5');
+    let present = str.slice(10, isHalfDay ? 13 : 11);
     let isPresent = present === '1';
     let amIndex = str.indexOf('AM') + 2;
     let pmIndex = str.indexOf('PM') + 2;
@@ -235,8 +236,10 @@ export function getUserInfo(text) {
       logout = '-';
     }
 
-    let hours = login!=='-' ? str.slice(11, 16) : str.slice(11, 12);
-
+    let hours = login !== '-' && logout !== '-' ? str.slice(11, 16) : str.slice(11, 12);
+    if (isHalfDay) {
+      hours = str.slice(13, 18);
+    }
     let indexOfZero = str.lastIndexOf('00:00');
     let leave =
       indexOfZero === -1

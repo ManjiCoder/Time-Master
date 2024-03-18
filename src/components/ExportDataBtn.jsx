@@ -55,15 +55,20 @@ const ExportData = () => {
           csvTitle = Object.keys(jsonData[year][month][date]);
         }
 
+        // For Half Day
+        if (obj.present === '0.5') {
+          obj.remark = 'Half Day';
+        }
+        
         // For Leave
         if (obj.leave === '1') {
           obj.login = '09:00 AM';
           obj.logout = '06:00 PM';
           obj.hours = '09:00';
-          obj.present = '1'
-          obj.remark ||= 'Leave'
+          obj.present = '1';
+          obj.remark ||= 'Leave';
         }
-        delete obj?.leave
+        delete obj?.leave;
         // For Holidays to be remark
         const parseDate = new Date(parseInt(date));
         const dayNum = getDate(parseDate);
@@ -79,7 +84,10 @@ const ExportData = () => {
       });
 
     const csvData =
-      csvTitle.map((v) => v.replace(v[0], v[0].toUpperCase())).toString().replace(',Leave','') +
+      csvTitle
+        .map((v) => v.replace(v[0], v[0].toUpperCase()))
+        .toString()
+        .replace(',Leave', '') +
       ',Remarks \n' +
       csvDesc;
     // console.log(csvData);
