@@ -30,7 +30,6 @@ export default function TimeSpentIndicator({
     hrs: 0,
     mins: 0,
     days: 0,
-    workedDays: 0,
   });
 
   // Calculate total hours when attendance changes
@@ -39,7 +38,6 @@ export default function TimeSpentIndicator({
       hrs: 0,
       mins: 0,
       days: 0,
-      workedDays: 0,
     };
 
     try {
@@ -48,7 +46,6 @@ export default function TimeSpentIndicator({
         v = parseInt(v);
         if (timeLog[v].present !== '-') {
           payload.days += 1;
-          payload.workedDays += parseFloat(timeLog[v].present);
 
           let timeInHrsMin = timeLog[v].hours.split(':').filter((v, i) => {
             v = parseInt(v);
@@ -60,7 +57,6 @@ export default function TimeSpentIndicator({
           });
         } else if (timeLog[v].leave === '1') {
           payload.days += 1;
-          payload.workedDays += 1;
           payload.hrs += 9;
         }
       });
@@ -78,7 +74,7 @@ export default function TimeSpentIndicator({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [attendance, year, month]);
 
-  const { days, hrs, mins, workedDays } = totalTimeSpent;
+  const { days, hrs, mins } = totalTimeSpent;
   const totalTimeSpendInMins = hrs * 60 + mins;
   const totalExpectedTimeSpendInMins = days * 9 * 60;
   const timeDiffMins = -(totalExpectedTimeSpendInMins - totalTimeSpendInMins);
@@ -135,7 +131,7 @@ export default function TimeSpentIndicator({
         </span>
 
         <span>
-          Days: <span className='font-bold'>{workedDays}</span>
+          Days: <span className='font-bold'>{days}</span>
         </span>
         <span>
           Avg: <span className='font-bold'>{isNaN(avg) ? 0 : avg}</span>
