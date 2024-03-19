@@ -246,7 +246,7 @@ export default function Attendance() {
             date === currentDate.setHours(0, 0, 0, 0).toString() &&
             isOfficeMode
           ) {
-            remark = "You're in Office";
+            remark = "You're in the Office";
           }
           // console.log(obj)
           let loginTime = obj.login;
