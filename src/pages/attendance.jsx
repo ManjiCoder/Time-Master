@@ -119,7 +119,10 @@ export default function Attendance() {
       <main
         className={`bg-slate-300 dark:bg-slate-900 dark:text-white text-slate-800 min-h-screen pb-16 ${inter.className}`}
       >
-        <TimeSpentIndicator year={year} month={month} />
+        <TimeSpentIndicator
+          year={year}
+          month={month}
+        />
         <h2 className='text-xl text-center mt-5'>No Data Found!</h2>
       </main>
     );
@@ -231,12 +234,20 @@ export default function Attendance() {
 
           const obj = attendance[year][month][date];
           const isLeave = obj.leave === '1';
-          const remark =
+          let remark =
             obj?.remark ||
             (obj?.leave === '1' && 'Leave') ||
             (obj?.present === '0.5' && 'Half Day') ||
-            (isHoliday && 'Holiday') ||
-            null;
+            (isHoliday && obj.hours !== '-' && 'Holiday - OverTime') ||
+            (isHoliday && !obj.hours !== '-' && 'Holiday');
+          null;
+
+          if (
+            date === currentDate.setHours(0, 0, 0, 0).toString() &&
+            isOfficeMode
+          ) {
+            remark = "You're in Office";
+          }
           // console.log(obj)
           let loginTime = obj.login;
           let logoutTime = obj.logout;
@@ -360,10 +371,16 @@ export default function Attendance() {
           );
         })}
       {isDeleteOpen && (
-        <DeleteModal isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} />
+        <DeleteModal
+          isOpen={isDeleteOpen}
+          setIsOpen={setIsDeleteOpen}
+        />
       )}
       {isEditOpen && (
-        <EditModal isOpen={isEditOpen} setIsOpen={setIsEditOpen} />
+        <EditModal
+          isOpen={isEditOpen}
+          setIsOpen={setIsEditOpen}
+        />
       )}
     </main>
   );

@@ -47,7 +47,9 @@ export default function TimeSpentIndicator({
       Object?.keys(timeLog).filter((v, i, a) => {
         v = parseInt(v);
         if (timeLog[v].present !== '-') {
-          payload.days += 1;
+          if (!timeLog[v].isHoliday) {
+            payload.days += 1;
+          }
           payload.workedDays += parseFloat(timeLog[v].present);
 
           let timeInHrsMin = timeLog[v].hours.split(':').filter((v, i) => {

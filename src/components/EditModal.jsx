@@ -7,7 +7,7 @@ import {
 } from '@/utils/dateService';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/20/solid';
-import { format } from 'date-fns';
+import { format, getDate } from 'date-fns';
 import { Fragment, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -56,6 +56,9 @@ export default function EditModal({ isOpen, setIsOpen }) {
     e.preventDefault();
 
     const targetDateData = attendance[year][month][targetDate];
+    const parseDate = new Date(parseInt(targetDate));
+    const dayNum = getDate(parseDate);
+    const isHoliday = isHolidays(parseDate, dayNum);
 
     const editedData = {
       ...targetDateData,
@@ -75,6 +78,10 @@ export default function EditModal({ isOpen, setIsOpen }) {
       delete editedData?.leave;
       delete editedData?.isLeave;
       delete editedData?.remark;
+    }
+
+    if (isHoliday) {
+      editedData.isHoliday = true;
     }
 
     if (isOfficeMode && targetDate == new Date().setHours(0, 0, 0, 0)) {
@@ -134,8 +141,16 @@ export default function EditModal({ isOpen, setIsOpen }) {
 
   return (
     <>
-      <Transition appear show={true} as={Fragment}>
-        <Dialog as='div' className='relative z-10' onClose={closeModal}>
+      <Transition
+        appear
+        show={true}
+        as={Fragment}
+      >
+        <Dialog
+          as='div'
+          className='relative z-10'
+          onClose={closeModal}
+        >
           <Transition.Child
             as={Fragment}
             enter='ease-out duration-300'
