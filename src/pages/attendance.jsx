@@ -119,10 +119,7 @@ export default function Attendance() {
       <main
         className={`bg-slate-300 dark:bg-slate-900 dark:text-white text-slate-800 min-h-screen pb-16 ${inter.className}`}
       >
-        <TimeSpentIndicator
-          year={year}
-          month={month}
-        />
+        <TimeSpentIndicator year={year} month={month} />
         <h2 className='text-xl text-center mt-5'>No Data Found!</h2>
       </main>
     );
@@ -227,20 +224,26 @@ export default function Attendance() {
           }
         })
         .map((date) => {
+          const obj = attendance[year][month][date];
           const parseDate = new Date(parseInt(date));
           const day = format(parseDate, 'EEEE');
           const dayNum = getDate(parseDate);
           const isHoliday = isHolidays(parseDate, dayNum);
-
-          const obj = attendance[year][month][date];
           const isLeave = obj.leave === '1';
+          const isAbsent =
+            date <= currentDate.setHours(0, 0, 0, 0) &&
+            !isHoliday &&
+            !isLeave &&
+            obj.present === '-';
+
           let remark =
             obj?.remark ||
             (obj?.leave === '1' && 'Leave') ||
             (obj?.present === '0.5' && 'Half Day') ||
             (isHoliday && obj.hours !== '-' && 'Holiday - OverTime') ||
-            (isHoliday && !obj.hours !== '-' && 'Holiday');
-          null;
+            (isHoliday && !obj.hours !== '-' && 'Holiday') ||
+            (isAbsent && 'Absent') ||
+            null;
 
           if (
             date === currentDate.setHours(0, 0, 0, 0).toString() &&
@@ -275,8 +278,8 @@ export default function Attendance() {
                 </div>
                 <div
                   className={`bg-slate-100 w-[70%] rounded-br-lg rounded-bl-lg h-16 grid place-items-center font-bold text-4xl ${
-                    isHoliday && 'text-red-500'
-                  } ${isLeave && 'text-green-600/85'}`}
+                    isAbsent && 'text-red-500'
+                  } ${isLeave || isHoliday ? 'text-green-600/85' : ''}`}
                 >
                   {dayNum.toString().padStart(2, '0')}
                 </div>
@@ -371,16 +374,10 @@ export default function Attendance() {
           );
         })}
       {isDeleteOpen && (
-        <DeleteModal
-          isOpen={isDeleteOpen}
-          setIsOpen={setIsDeleteOpen}
-        />
+        <DeleteModal isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} />
       )}
       {isEditOpen && (
-        <EditModal
-          isOpen={isEditOpen}
-          setIsOpen={setIsEditOpen}
-        />
+        <EditModal isOpen={isEditOpen} setIsOpen={setIsEditOpen} />
       )}
     </main>
   );
