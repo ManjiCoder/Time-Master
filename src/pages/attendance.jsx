@@ -119,7 +119,10 @@ export default function Attendance() {
       <main
         className={`bg-slate-300 dark:bg-slate-900 dark:text-white text-slate-800 min-h-screen pb-16 ${inter.className}`}
       >
-        <TimeSpentIndicator year={year} month={month} />
+        <TimeSpentIndicator
+          year={year}
+          month={month}
+        />
         <h2 className='text-xl text-center mt-5'>No Data Found!</h2>
       </main>
     );
@@ -280,7 +283,7 @@ export default function Attendance() {
                   className={`bg-slate-100 w-[70%] rounded-br-lg rounded-bl-lg h-16 grid place-items-center font-bold text-4xl ${
                     isAbsent && 'text-red-500'
                   } ${isLeave && 'text-pink-500'} ${
-                    isHoliday && 'text-green-600/85'
+                    isHoliday && 'dark:text-green-600 text-green-600/85'
                   }`}
                 >
                   {dayNum.toString().padStart(2, '0')}
@@ -376,10 +379,16 @@ export default function Attendance() {
           );
         })}
       {isDeleteOpen && (
-        <DeleteModal isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} />
+        <DeleteModal
+          isOpen={isDeleteOpen}
+          setIsOpen={setIsDeleteOpen}
+        />
       )}
       {isEditOpen && (
-        <EditModal isOpen={isEditOpen} setIsOpen={setIsEditOpen} />
+        <EditModal
+          isOpen={isEditOpen}
+          setIsOpen={setIsEditOpen}
+        />
       )}
     </main>
   );

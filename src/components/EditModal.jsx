@@ -18,26 +18,12 @@ export default function EditModal({ isOpen, setIsOpen }) {
   const { isOfficeMode } = useSelector((state) => state.userSettings);
   const dispatch = useDispatch();
   const data = attendance[year][month][targetDate];
-  const { login, logout, hours } = data;
+  const { login, logout, hours, leave, remark } = data;
   const [loginTime, setLoginTime] = useState(removeAMorPM(login));
   const [logoutTime, setLogoutTime] = useState(removeAMorPM(logout));
   const [hoursTime, setHoursTime] = useState(hours === '-' ? null : hours);
-  const [isLeave, setIsLeave] = useState(data.isLeave || false);
-
-  // const checkHolidays = () => {
-  //   try {
-  //     isHolidays(
-  //       new Date(parseInt(data.date)),
-  //       new Date(parseInt(data.date)).getDate()
-  //     );
-  //     return 'Holiday';
-  //   } catch (error) {
-  //     return false;
-  //   }
-  // };
-
-  const [note, setNote] = useState(data.remark || '');
-  // const [isCalculateTime, setIsCalculateTime] = useState(true);
+  const [isLeave, setIsLeave] = useState(leave === '1' || false);
+  const [note, setNote] = useState((leave === '1' && 'Leave') || remark || '');
 
   function closeModal() {
     setIsOpen(false);
@@ -59,6 +45,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
     const parseDate = new Date(parseInt(targetDate));
     const dayNum = getDate(parseDate);
     const isHoliday = isHolidays(parseDate, dayNum);
+    const isTargetDateLeave = targetDateData.leave === '1';
 
     const editedData = {
       ...targetDateData,
@@ -68,15 +55,13 @@ export default function EditModal({ isOpen, setIsOpen }) {
       present: loginTime.includes(':') && logoutTime.includes(':') ? '1' : '-',
     };
 
-    if (isLeave) {
-      editedData.present = '-';
+    if (isLeave || isTargetDateLeave) {
+      editedData.present = '1';
       editedData.leave = '1';
-      editedData.isLeave = true;
-      editedData.remark = note;
+      editedData.remark = note || 'Leave';
     }
     if (!isLeave) {
       delete editedData?.leave;
-      delete editedData?.isLeave;
       delete editedData?.remark;
     }
 
@@ -126,17 +111,6 @@ export default function EditModal({ isOpen, setIsOpen }) {
       closeModal();
       return;
     }
-
-    // const payload = {
-    //   year,
-    //   month,
-    //   date: targetDate,
-    //   data: editedData,
-    // };
-    // // console.table(payload.data);
-    // dispatch(editByDate(payload));
-    // closeModal();
-    // toast.success('TimeLog Resetted Successfully!');
   };
 
   return (

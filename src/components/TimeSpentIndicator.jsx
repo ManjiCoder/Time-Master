@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 import ListBoxMonths from './ListBoxMonths';
 import ListBoxYears from './ListBoxYears';
 import { useRouter } from 'next/router';
-import { isHolidays } from '@/utils/dateService';
-import { getDate } from 'date-fns';
+import { isHolidays, monthNameToIndex } from '@/utils/dateService';
+import { getDate, getDaysInMonth } from 'date-fns';
 
 export const formatAmt = {
   style: 'currency',
@@ -20,12 +20,19 @@ export default function TimeSpentIndicator({
 }) {
   const currentDate = new Date().setHours(0, 0, 0, 0);
   const attendance = useSelector((state) => state.attendance);
-  const { minRate } = useSelector((state) => state.userSettings);
+  const {
+    minRate,
+    overTimeMinRate,
+    salaryAmount: salaryAmt,
+  } = useSelector((state) => state.userSettings);
   const { isShowAmt, year, month } = useSelector((state) => state.dateSlice);
   const years = Object.keys(attendance)
     .filter((v) => v !== 'undefined')
     .reverse();
   const { pathname } = useRouter();
+  const noOfDaysInMonth = getDaysInMonth(
+    new Date().setFullYear(year, monthNameToIndex[month])
+  );
 
   // const [minsRate, setMinsRate] = useState(second)
 
@@ -36,6 +43,9 @@ export default function TimeSpentIndicator({
     workedDays: 0,
     totalHolidays: 0,
     holidaysLeft: 0,
+    overTimeHrs: 0,
+    overTimeMins: 0,
+    overTimeDays: 0,
   });
 
   // Calculate total hours when attendance changes
@@ -47,6 +57,9 @@ export default function TimeSpentIndicator({
       workedDays: 0,
       totalHolidays: 0,
       holidaysLeft: 0,
+      overTimeHrs: 0,
+      overTimeMins: 0,
+      overTimeDays: 0,
     };
 
     try {
@@ -56,21 +69,29 @@ export default function TimeSpentIndicator({
         const parseDate = new Date(v);
         const dayNum = getDate(parseDate);
         const isHoliday = isHolidays(parseDate, dayNum);
+        const isLeave = timeLog[v].leave === '1';
+
         if (timeLog[v].present !== '-') {
           if (!timeLog[v].isHoliday) {
             payload.days += 1;
           }
           payload.workedDays += parseFloat(timeLog[v].present);
-
+          // TODO:Refractor
           let timeInHrsMin = timeLog[v].hours.split(':').filter((v, i) => {
             v = parseInt(v);
             if (i === 0) {
               payload.hrs = payload.hrs + v;
+              if (isHoliday) {
+                payload.overTimeHrs = payload.overTimeHrs + v;
+              }
             } else {
               payload.mins = payload.mins + v;
+              if (isHoliday) {
+                payload.overTimeMins = payload.overTimeMins + v;
+              }
             }
           });
-        } else if (timeLog[v].leave === '1') {
+        } else if (isLeave) {
           payload.days += 1;
           payload.workedDays += 1;
           payload.hrs += 9;
@@ -93,13 +114,24 @@ export default function TimeSpentIndicator({
     // Update the state with the total hours
     const data = totalTimeObj();
     setTotalTimeSpent(data);
+    console.table(data);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [attendance, year, month]);
 
-  const { days, hrs, mins, workedDays, totalHolidays, holidaysLeft } =
-    totalTimeSpent;
+  const {
+    days,
+    hrs,
+    mins,
+    workedDays,
+    totalHolidays,
+    holidaysLeft,
+    overTimeHrs,
+    overTimeMins,
+  } = totalTimeSpent;
+
   const holidaysTimeInMins = (totalHolidays - holidaysLeft) * 9 * 60;
+  const overTimeInMins = overTimeHrs * 60 + overTimeMins;
   const totalTimeSpendInMins = hrs * 60 + mins;
   const totalExpectedTimeSpendInMins = days * 9 * 60;
   const timeDiffMins = -(totalExpectedTimeSpendInMins - totalTimeSpendInMins);
@@ -107,11 +139,16 @@ export default function TimeSpentIndicator({
   const totalHrsR = parseInt(Math.abs(timeDiffMins / 60));
   const rawAvg = totalTimeSpendInMins / 60 / days;
   const avg = Math.floor(rawAvg * 100) / 100;
-  const salaryAmount = Math.round(
-    totalTimeSpendInMins > totalExpectedTimeSpendInMins
+  let salaryAmount = Math.round(
+    totalTimeSpendInMins > totalExpectedTimeSpendInMins && overTimeInMins === 0
       ? totalExpectedTimeSpendInMins * minRate
       : (totalTimeSpendInMins + holidaysTimeInMins) * minRate
   );
+  if (overTimeInMins !== 0) {
+    const overTimeAmt = overTimeInMins * overTimeMinRate;
+    salaryAmount = parseFloat(salaryAmt) + overTimeAmt;
+  }
+  console.log(salaryAmount, overTimeInMins);
   const expectedSalaryAmount = Math.round(
     (totalExpectedTimeSpendInMins + holidaysTimeInMins) * minRate
   );
@@ -157,8 +194,14 @@ export default function TimeSpentIndicator({
         </span>
 
         <span>
-          Days: <span className='font-bold'>{workedDays}</span>
+          Days: <span className='font-bold'> {workedDays}</span>
+          {/* {noOfDaysInMonth - totalHolidays - workedDays > 0 && (
+            <span className='font-bold text-red-500 ml-2'>
+              -{noOfDaysInMonth - totalHolidays - workedDays}
+            </span>
+          )} */}
         </span>
+
         <span>
           Avg: <span className='font-bold'>{isNaN(avg) ? 0 : avg}</span>
         </span>

@@ -19,6 +19,7 @@ const initialState = {
   salaryAmount: null,
   // minRate: 0.9259259259259259,
   minRate: null,
+  overTimeMinRate: null,
   theme: 'system',
   sortBy: filterObj.date,
   order: filterOrder.ascending,
@@ -52,6 +53,9 @@ const userSettings = createSlice({
     setSortByOrder: (state, action) => {
       state.order = action.payload;
     },
+    setOverTimeMinRate: (state, action) => {
+      state.overTimeMinRate = action.payload;
+    },
   },
 });
 
@@ -65,6 +69,7 @@ export const {
   updateTheme,
   setSortBy,
   setSortByOrder,
+  setOverTimeMinRate,
 } = userSettings.actions;
 
 export default userSettings.reducer;

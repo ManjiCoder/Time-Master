@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditAmountModal from './EditAmountModal';
 import { toggleIsShowAmt } from '@/redux/slices/dateSlice';
-import { setMinRate } from '@/redux/slices/UserSettings';
+import { setMinRate, setOverTimeMinRate } from '@/redux/slices/UserSettings';
 import { getDaysInMonth } from 'date-fns';
 import { monthNameToIndex } from '@/utils/dateService';
 
@@ -23,6 +23,7 @@ export default function ToggleCheckBox() {
       new Date().setFullYear(year, monthNameToIndex[month])
     );
     dispatch(setMinRate(salaryAmount / noOfDaysInMonth / 9 / 60));
+    dispatch(setOverTimeMinRate(salaryAmount / 30 / 9 / 60));
     if (!salaryAmount) {
       setIsOpen(!isOpen);
     }
