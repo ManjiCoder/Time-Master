@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux';
 import ListBoxMonths from './ListBoxMonths';
 import ListBoxYears from './ListBoxYears';
 import { useRouter } from 'next/router';
+import { isHolidays } from '@/utils/dateService';
+import { getDate } from 'date-fns';
 
 export const formatAmt = {
   style: 'currency',
@@ -16,6 +18,7 @@ export default function TimeSpentIndicator({
   isYearMonthPickerVisible = true,
   extraStyle = '',
 }) {
+  const currentDate = new Date().setHours(0, 0, 0, 0);
   const attendance = useSelector((state) => state.attendance);
   const { minRate } = useSelector((state) => state.userSettings);
   const { isShowAmt, year, month } = useSelector((state) => state.dateSlice);
@@ -31,6 +34,8 @@ export default function TimeSpentIndicator({
     mins: 0,
     days: 0,
     workedDays: 0,
+    totalHolidays: 0,
+    holidaysLeft: 0,
   });
 
   // Calculate total hours when attendance changes
@@ -40,12 +45,17 @@ export default function TimeSpentIndicator({
       mins: 0,
       days: 0,
       workedDays: 0,
+      totalHolidays: 0,
+      holidaysLeft: 0,
     };
 
     try {
       const timeLog = attendance[year][month];
       Object?.keys(timeLog).filter((v, i, a) => {
         v = parseInt(v);
+        const parseDate = new Date(v);
+        const dayNum = getDate(parseDate);
+        const isHoliday = isHolidays(parseDate, dayNum);
         if (timeLog[v].present !== '-') {
           if (!timeLog[v].isHoliday) {
             payload.days += 1;
@@ -65,6 +75,12 @@ export default function TimeSpentIndicator({
           payload.workedDays += 1;
           payload.hrs += 9;
         }
+        if (isHoliday) {
+          payload.totalHolidays += 1;
+          if (v >= currentDate) {
+            payload.holidaysLeft += 1;
+          }
+        }
       });
       return payload;
     } catch (error) {
@@ -77,10 +93,13 @@ export default function TimeSpentIndicator({
     // Update the state with the total hours
     const data = totalTimeObj();
     setTotalTimeSpent(data);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [attendance, year, month]);
 
-  const { days, hrs, mins, workedDays } = totalTimeSpent;
+  const { days, hrs, mins, workedDays, totalHolidays, holidaysLeft } =
+    totalTimeSpent;
+  const holidaysTimeInMins = (totalHolidays - holidaysLeft) * 9 * 60;
   const totalTimeSpendInMins = hrs * 60 + mins;
   const totalExpectedTimeSpendInMins = days * 9 * 60;
   const timeDiffMins = -(totalExpectedTimeSpendInMins - totalTimeSpendInMins);
@@ -91,11 +110,12 @@ export default function TimeSpentIndicator({
   const salaryAmount = Math.round(
     totalTimeSpendInMins > totalExpectedTimeSpendInMins
       ? totalExpectedTimeSpendInMins * minRate
-      : totalTimeSpendInMins * minRate
+      : (totalTimeSpendInMins + holidaysTimeInMins) * minRate
   );
   const expectedSalaryAmount = Math.round(
-    totalExpectedTimeSpendInMins * minRate
+    (totalExpectedTimeSpendInMins + holidaysTimeInMins) * minRate
   );
+
   // const salaryAmount = isShowAmt
   //   ? Math.round(
   //       totalTimeSpendInMins * minRate + (30 - days) * 9 * 60 * minRate
