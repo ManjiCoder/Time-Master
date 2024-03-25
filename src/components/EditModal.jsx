@@ -65,10 +65,6 @@ export default function EditModal({ isOpen, setIsOpen }) {
       delete editedData?.remark;
     }
 
-    if (isHoliday) {
-      editedData.isHoliday = true;
-    }
-
     if (isOfficeMode && targetDate == new Date().setHours(0, 0, 0, 0)) {
       toast.warn('Disable Office Mode!');
       closeModal();

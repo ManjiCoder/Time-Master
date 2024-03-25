@@ -59,7 +59,7 @@ const ExportData = () => {
         if (obj.present === '0.5') {
           obj.remark = 'Half Day';
         }
-        
+
         // For Leave
         if (obj.leave === '1') {
           obj.login = '09:00 AM';
@@ -69,6 +69,7 @@ const ExportData = () => {
           obj.remark ||= 'Leave';
         }
         delete obj?.leave;
+        delete obj?.isHoliday;
         // For Holidays to be remark
         const parseDate = new Date(parseInt(date));
         const dayNum = getDate(parseDate);
@@ -90,7 +91,7 @@ const ExportData = () => {
         .replace(',Leave', '') +
       ',Remarks \n' +
       csvDesc;
-    // console.log(csvData);
+    // console.log(csvTitle);
 
     // Download CSV file
     const blob = new Blob([csvData], { type: 'text/csv' });

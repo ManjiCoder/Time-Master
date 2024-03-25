@@ -20,21 +20,17 @@ export default function TimeSpentIndicator({
 }) {
   const currentDate = new Date().setHours(0, 0, 0, 0);
   const attendance = useSelector((state) => state.attendance);
-  const {
-    minRate,
-    overTimeMinRate,
-    salaryAmount: salaryAmt,
-  } = useSelector((state) => state.userSettings);
+  const { minRate, overTimeMinRate } = useSelector(
+    (state) => state.userSettings
+  );
   const { isShowAmt, year, month } = useSelector((state) => state.dateSlice);
   const years = Object.keys(attendance)
     .filter((v) => v !== 'undefined')
     .reverse();
   const { pathname } = useRouter();
-  const noOfDaysInMonth = getDaysInMonth(
-    new Date().setFullYear(year, monthNameToIndex[month])
-  );
-
-  // const [minsRate, setMinsRate] = useState(second)
+  // const noOfDaysInMonth = getDaysInMonth(
+  //   new Date().setFullYear(year, monthNameToIndex[month])
+  // );
 
   const [totalTimeSpent, setTotalTimeSpent] = useState({
     hrs: 0,
@@ -114,7 +110,6 @@ export default function TimeSpentIndicator({
     // Update the state with the total hours
     const data = totalTimeObj();
     setTotalTimeSpent(data);
-    console.table(data);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [attendance, year, month]);
@@ -144,11 +139,13 @@ export default function TimeSpentIndicator({
       ? totalExpectedTimeSpendInMins * minRate
       : (totalTimeSpendInMins + holidaysTimeInMins) * minRate
   );
+  // For OverTime Calculation with 1x
   if (overTimeInMins !== 0) {
     const overTimeAmt = overTimeInMins * overTimeMinRate;
-    salaryAmount = parseFloat(salaryAmt) + overTimeAmt;
+    salaryAmount =
+      (totalTimeSpendInMins - overTimeInMins + holidaysTimeInMins) * minRate +
+      overTimeAmt;
   }
-  console.log(salaryAmount, overTimeInMins);
   const expectedSalaryAmount = Math.round(
     (totalExpectedTimeSpendInMins + holidaysTimeInMins) * minRate
   );
@@ -160,7 +157,7 @@ export default function TimeSpentIndicator({
   //   : Math.round(totalTimeSpendInMins * minRate);
   // const expectedSalaryAmount = isShowAmt
   //   ? Math.round(
-  //       totalExpectedTimeSpendInMins * minRate + (30 - days) * 9 * 60 * minRate
+  //       totalExpectedTimeSpendInMins * ~minRate + (30 - days) * 9 * 60 * minRate
   //     )
   //   : Math.round(totalExpectedTimeSpendInMins * minRate);
   const detuctedAmount =
