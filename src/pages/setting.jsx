@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import EditAmountModal from '@/components/EditAmountModal';
-import { formatAmt } from '@/components/TimeSpentIndicator';
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
 import ToggleThemeBtn from '@/components/ToggleThemeBtn';
 import ExportData from '@/components/ExportDataBtn';
@@ -39,14 +38,9 @@ export default function Setting() {
         </li> */}
         <li className='bg-slate-200 dark:bg-slate-800 shadow-md rounded-md py-4 px-4 border border-slate-400 flex space-x-2 items-center justify-start'>
           Salary Amount :
-          <span className='ml-1 font-semibold'>
-            {!isNaN(salaryAmount) &&
-              Number(salaryAmount).toLocaleString('en-IN', formatAmt)}
-          </span>
-          <button
-            type='button'
-            onClick={handleClick}
-          >
+          <span className='ml-1 font-semibold' hidden>{salaryAmount}</span>
+          <span className='ml-1 relative top-1.5 text-center text-2xl leading-[0] font-bold' >*********</span>
+          <button type='button' onClick={handleClick}>
             <PencilSquareIcon className='w-5 mb-1 text-blue-600' />
           </button>
         </li>
@@ -59,12 +53,7 @@ export default function Setting() {
       </ol>
 
       {/* Set Amount Modal */}
-      {isOpen && (
-        <EditAmountModal
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-        />
-      )}
+      {isOpen && <EditAmountModal isOpen={isOpen} setIsOpen={setIsOpen} />}
     </main>
   );
 }
