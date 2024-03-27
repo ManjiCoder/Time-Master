@@ -11,6 +11,14 @@ import { format, getDate } from 'date-fns';
 import { Fragment, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import ListBoxComp from './HeadlessUI/ListBoxComp';
+
+const months = {
+  leave: 'Leave',
+  floatingLeave: 'Floating Leave',
+  workFromHome: 'Work From Home',
+  others: 'Others',
+};
 
 export default function EditModal({ isOpen, setIsOpen }) {
   const attendance = useSelector((state) => state.attendance);
@@ -24,6 +32,13 @@ export default function EditModal({ isOpen, setIsOpen }) {
   const [hoursTime, setHoursTime] = useState(hours === '-' ? null : hours);
   const [isLeave, setIsLeave] = useState(leave === '1' || false);
   const [note, setNote] = useState((leave === '1' && 'Leave') || remark || '');
+  const [otherNote, setOtherNote] = useState(() => {
+    try {
+      return note.split('-')[1].join();
+    } catch (error) {
+      return '';
+    }
+  });
 
   function closeModal() {
     setIsOpen(false);
@@ -72,7 +87,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
     }
 
     if (note.trim().length !== 0) {
-      editedData.remark = note;
+      editedData.remark = otherNote !== '' ? `${note} - ${otherNote}` : note;
     }
     const payload = {
       year,
@@ -88,8 +103,8 @@ export default function EditModal({ isOpen, setIsOpen }) {
 
   const handleReset = () => {
     const targetDateData = attendance[year][month][targetDate];
-    setLoginTime('-');
-    setLogoutTime('-');
+    setLoginTime('');
+    setLogoutTime('');
     setHoursTime('');
     setIsLeave('');
     setNote('');
@@ -107,6 +122,13 @@ export default function EditModal({ isOpen, setIsOpen }) {
       closeModal();
       return;
     }
+  };
+
+  const handleLeave = () => {
+    setIsLeave(!isLeave);
+    setLoginTime('09:00');
+    setLogoutTime('18:00');
+    setHoursTime('09:00');
   };
 
   return (
@@ -224,14 +246,27 @@ export default function EditModal({ isOpen, setIsOpen }) {
                       <h4 className='text-lg font-medium'>Time-Spent</h4>
                     </div>
                     <div className='time flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
-                      <input
-                        className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 w-36 dark:bg-slate-700 pl-3 capitalize'
-                        type='search'
-                        onChange={(e) => setNote(e.target.value)}
-                        placeholder='Remark'
-                        maxLength={100}
-                        value={note}
+                      <ListBoxComp
+                        options={months}
+                        note={note}
+                        setNote={setNote}
+                        isLeave={isLeave}
+                        setIsLeave={setIsLeave}
+                        setLoginTime={setLoginTime}
+                        setLogoutTime={setLogoutTime}
+                        setHoursTime={setHoursTime}
                       />
+
+                      {note === 'Others' && (
+                        <input
+                          className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 w-36 dark:bg-slate-700 pl-3 capitalize'
+                          type='search'
+                          onChange={(e) => setOtherNote(e.target.value)}
+                          placeholder='Remark'
+                          maxLength={100}
+                          value={otherNote}
+                        />
+                      )}
 
                       <h4 className='text-lg font-medium'>Remark</h4>
                     </div>
@@ -246,13 +281,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         onChange={(e) => {}}
                         id='leave'
                         className=''
-                        onClick={() => {
-                          setIsLeave(!isLeave);
-                          setLoginTime('09:00');
-                          setLogoutTime('18:00');
-                          setHoursTime('09:00');
-                          setNote('Leave');
-                        }}
+                        onClick={handleLeave}
                       />
                       <p className='mt-0.5 lg:-mt-0.5'>Mark as Leave?</p>
                     </label>
