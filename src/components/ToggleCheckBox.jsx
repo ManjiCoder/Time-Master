@@ -39,7 +39,7 @@ export default function ToggleCheckBox() {
           checked={isChecked}
           onChange={(e) => {}}
           id='showAmt'
-          className=''
+          className='outline-none'
           onClick={handleClick}
         />
         <span className='mt-1'>{!isChecked ? 'Show' : 'hide'} Amount</span>

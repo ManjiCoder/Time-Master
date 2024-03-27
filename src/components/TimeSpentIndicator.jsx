@@ -77,6 +77,9 @@ export default function TimeSpentIndicator({
             v = parseInt(v);
             if (i === 0) {
               payload.hrs = payload.hrs + v;
+              if (isHoliday || isLeave) {
+                payload.overTimeDays = payload.overTimeDays + 1;
+              }
               if (isHoliday) {
                 payload.overTimeHrs = payload.overTimeHrs + v;
               }
@@ -110,12 +113,13 @@ export default function TimeSpentIndicator({
     // Update the state with the total hours
     const data = totalTimeObj();
     setTotalTimeSpent(data);
+    console.log(data);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [attendance, year, month]);
 
   const {
-    days,
+    days: tDays,
     hrs,
     mins,
     workedDays,
@@ -123,7 +127,9 @@ export default function TimeSpentIndicator({
     holidaysLeft,
     overTimeHrs,
     overTimeMins,
+    overTimeDays,
   } = totalTimeSpent;
+  const days = tDays - overTimeDays;
 
   const holidaysTimeInMins = (totalHolidays - holidaysLeft) * 9 * 60;
   const overTimeInMins = overTimeHrs * 60 + overTimeMins;

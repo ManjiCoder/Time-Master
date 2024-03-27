@@ -38,9 +38,20 @@ export default function Setting() {
         </li> */}
         <li className='bg-slate-200 dark:bg-slate-800 shadow-md rounded-md py-4 px-4 border border-slate-400 flex space-x-2 items-center justify-start'>
           Salary Amount :
-          <span className='ml-1 font-semibold' hidden>{salaryAmount}</span>
-          <span className='ml-1 relative top-1.5 text-center text-2xl leading-[0] font-bold' >*********</span>
-          <button type='button' onClick={handleClick}>
+          <span
+            className='ml-1 font-semibold'
+            hidden
+          >
+            {salaryAmount}
+          </span>
+          <span className='ml-1 relative top-1.5 text-center text-2xl leading-[0] font-bold'>
+            *********
+          </span>
+          <button
+            className='outline-none'
+            type='button'
+            onClick={handleClick}
+          >
             <PencilSquareIcon className='w-5 mb-1 text-blue-600' />
           </button>
         </li>
@@ -53,7 +64,12 @@ export default function Setting() {
       </ol>
 
       {/* Set Amount Modal */}
-      {isOpen && <EditAmountModal isOpen={isOpen} setIsOpen={setIsOpen} />}
+      {isOpen && (
+        <EditAmountModal
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+        />
+      )}
     </main>
   );
 }
