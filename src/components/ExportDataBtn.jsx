@@ -1,7 +1,7 @@
 import React from 'react';
 import { isHolidays } from '@/utils/dateService';
 import { useSelector } from 'react-redux';
-import { getDate } from 'date-fns';
+import { differenceInMinutes, format, getDate, parse } from 'date-fns';
 
 const ExportData = () => {
   const attendance = useSelector((state) => state.attendance);
@@ -39,7 +39,7 @@ const ExportData = () => {
     //   return `${headers}\n${rows.join('\n')}`;
     // };
     const jsonData = JSON.parse(JSON.stringify(attendance));
-    let csvTitle = '';
+    let csvTitle = [];
     let csvDesc = [];
     const arr = Object.keys(jsonData[year][month])
       .sort((a, b) => parseInt(a) - parseInt(b))
@@ -77,12 +77,28 @@ const ExportData = () => {
           obj.remark = 'Holiday';
         }
 
+        const isHours = obj?.hours !== '-';
+        if (isHours) {
+          const t1 = parse(obj.hours, 'HH:mm', new Date());
+          const t2 = parse('09:00', 'HH:mm', new Date());
+          const diff = differenceInMinutes(t1, t2);
+          obj.diff = JSON.stringify(diff);
+        }
+
         // To replace - with ''
-        let desc = Object.values(jsonData[year][month][date]);
-        let temp = desc.shift();
-        desc = `${temp},${desc.toString().replace(/-/g, '')}\n`;
+        let desc = `${format(parseInt(date), 'dd-MMM')},${obj.present.replace(
+          /-/g,
+          ''
+        )},${obj.hours.replace(/-/g, '')},${obj.diff || ''},${obj.login.replace(
+          /-/g,
+          ''
+        )},${obj.logout.replace(/-/g, '')},${obj.remark || ''}`;
+        let temp = obj.date;
+        desc = `${desc}\n`;
         csvDesc += desc;
       });
+
+    csvTitle.splice(3, 0, 'diff');
 
     const csvData =
       csvTitle
@@ -91,7 +107,7 @@ const ExportData = () => {
         .replace(',Leave', '') +
       ',Remarks \n' +
       csvDesc;
-    // console.log(csvTitle);
+    console.log(csvData);
 
     // Download CSV file
     const blob = new Blob([csvData], { type: 'text/csv' });

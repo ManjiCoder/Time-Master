@@ -7,13 +7,11 @@ export default function ListBoxComp(props) {
   const {
     note: selected,
     setNote: setSelected,
-    leave,
     setIsLeave,
     setLoginTime,
     setLogoutTime,
     setHoursTime,
   } = props;
-
   return (
     <div className='w-36'>
       <Listbox

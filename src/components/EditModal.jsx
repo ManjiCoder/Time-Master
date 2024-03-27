@@ -31,7 +31,8 @@ export default function EditModal({ isOpen, setIsOpen }) {
   const [logoutTime, setLogoutTime] = useState(removeAMorPM(logout));
   const [hoursTime, setHoursTime] = useState(hours === '-' ? null : hours);
   const [isLeave, setIsLeave] = useState(leave === '1' || false);
-  const [note, setNote] = useState((leave === '1' && 'Leave') || remark || '');
+  const [note, setNote] = useState(remark || (isLeave && 'Leave') || '');
+
   const [otherNote, setOtherNote] = useState(() => {
     try {
       return note.split('-')[1].join();
@@ -103,8 +104,8 @@ export default function EditModal({ isOpen, setIsOpen }) {
 
   const handleReset = () => {
     const targetDateData = attendance[year][month][targetDate];
-    setLoginTime('');
-    setLogoutTime('');
+    setLoginTime('-');
+    setLogoutTime('-');
     setHoursTime('');
     setIsLeave('');
     setNote('');
@@ -122,6 +123,14 @@ export default function EditModal({ isOpen, setIsOpen }) {
       closeModal();
       return;
     }
+
+    const payload = {
+      year,
+      month,
+      date: targetDate,
+      data: editedData,
+    };
+    dispatch(editByDate(payload));
   };
 
   const handleLeave = () => {
@@ -250,7 +259,6 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         options={months}
                         note={note}
                         setNote={setNote}
-                        isLeave={isLeave}
                         setIsLeave={setIsLeave}
                         setLoginTime={setLoginTime}
                         setLogoutTime={setLogoutTime}
