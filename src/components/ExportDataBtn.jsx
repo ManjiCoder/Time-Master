@@ -98,7 +98,7 @@ const ExportData = () => {
         csvDesc += desc;
       });
 
-    csvTitle.splice(3, 0, 'diff');
+    csvTitle.splice(3, 0, 'difference');
 
     const csvData =
       csvTitle
