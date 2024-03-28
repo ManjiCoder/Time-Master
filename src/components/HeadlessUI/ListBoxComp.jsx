@@ -6,6 +6,9 @@ export default function ListBoxComp(props) {
   const options = Object.values(props.options);
   const {
     note: selected,
+    loginTime,
+    logoutTime,
+    hoursTime,
     setNote: setSelected,
     setIsLeave,
     setLoginTime,
@@ -25,9 +28,9 @@ export default function ListBoxComp(props) {
             setHoursTime('09:00');
           } else {
             setIsLeave(!true);
-            setLoginTime('');
-            setLogoutTime('');
-            setHoursTime('');
+            setLoginTime(loginTime);
+            setLogoutTime(logoutTime);
+            setHoursTime(hoursTime);
           }
         }}
       >

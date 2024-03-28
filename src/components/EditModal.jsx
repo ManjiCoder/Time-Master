@@ -33,13 +33,16 @@ export default function EditModal({ isOpen, setIsOpen }) {
   const [isLeave, setIsLeave] = useState(leave === '1' || false);
   const [note, setNote] = useState(remark || (isLeave && 'Leave') || '');
 
-  const [otherNote, setOtherNote] = useState(() => {
+  // TODO: Place inside utils file
+  const getOtherRemark = (str) => {
     try {
-      return note.split('-')[1].join();
+      return str.replace('Others - ', '');
     } catch (error) {
       return '';
     }
-  });
+  };
+  const otherRemark = getOtherRemark(remark);
+  const [otherNote, setOtherNote] = useState(otherRemark);
 
   function closeModal() {
     setIsOpen(false);
@@ -138,6 +141,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
     setLoginTime('09:00');
     setLogoutTime('18:00');
     setHoursTime('09:00');
+    setNote(!isLeave ? 'Leave' : '');
   };
 
   return (
@@ -260,6 +264,9 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         note={note}
                         setNote={setNote}
                         setIsLeave={setIsLeave}
+                        loginTime={loginTime}
+                        logoutTime={logoutTime}
+                        hoursTime={hoursTime}
                         setLoginTime={setLoginTime}
                         setLogoutTime={setLogoutTime}
                         setHoursTime={setHoursTime}
