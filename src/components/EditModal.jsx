@@ -36,7 +36,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
   // TODO: Place inside utils file
   const getOtherRemark = (str) => {
     try {
-      return str.replace('Others - ', '');
+      return str.includes('Others - ') ? str.replace('Others - ', '') : '';
     } catch (error) {
       return '';
     }
@@ -91,8 +91,9 @@ export default function EditModal({ isOpen, setIsOpen }) {
     }
 
     if (note.trim().length !== 0) {
-      editedData.remark = note;
-      // editedData.remark = otherNote !== '' ? `${note} - ${otherNote}` : note;
+      // editedData.remark = note;
+      editedData.remark =
+        otherNote !== '' && note === 'Others' ? `${note} - ${otherNote}` : note;
     }
     const payload = {
       year,
@@ -147,8 +148,16 @@ export default function EditModal({ isOpen, setIsOpen }) {
 
   return (
     <>
-      <Transition appear show={true} as={Fragment}>
-        <Dialog as='div' className='relative z-10' onClose={closeModal}>
+      <Transition
+        appear
+        show={true}
+        as={Fragment}
+      >
+        <Dialog
+          as='div'
+          className='relative z-10'
+          onClose={closeModal}
+        >
           <Transition.Child
             as={Fragment}
             enter='ease-out duration-300'
@@ -263,6 +272,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         setLoginTime={setLoginTime}
                         setLogoutTime={setLogoutTime}
                         setHoursTime={setHoursTime}
+                        setOtherNote={setOtherNote}
                       />
 
                       {note === 'Others' && (
