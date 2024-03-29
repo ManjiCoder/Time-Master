@@ -5,6 +5,8 @@ import ListBoxYears from './ListBoxYears';
 import { useRouter } from 'next/router';
 import { isHolidays, monthNameToIndex } from '@/utils/dateService';
 import { getDate, getDaysInMonth } from 'date-fns';
+import { calculateSalary } from '@/utils/salary';
+import { toast } from 'react-toastify';
 
 export const formatAmt = {
   style: 'currency',
@@ -20,9 +22,11 @@ export default function TimeSpentIndicator({
 }) {
   const currentDate = new Date().setHours(0, 0, 0, 0);
   const attendance = useSelector((state) => state.attendance);
-  const { minRate, overTimeMinRate } = useSelector(
-    (state) => state.userSettings
-  );
+  const {
+    minRate,
+    overTimeMinRate,
+    salaryAmount: salaryAmt,
+  } = useSelector((state) => state.userSettings);
   const { isShowAmt, year, month } = useSelector((state) => state.dateSlice);
   const years = Object.keys(attendance)
     .filter((v) => v !== 'undefined')
@@ -37,6 +41,7 @@ export default function TimeSpentIndicator({
     mins: 0,
     days: 0,
     workedDays: 0,
+    absentDays: 0,
     totalHolidays: 0,
     holidaysLeft: 0,
     overTimeHrs: 0,
@@ -51,6 +56,7 @@ export default function TimeSpentIndicator({
       mins: 0,
       days: 0,
       workedDays: 0,
+      absentDays: 0,
       totalHolidays: 0,
       holidaysLeft: 0,
       overTimeHrs: 0,
@@ -102,6 +108,9 @@ export default function TimeSpentIndicator({
             payload.holidaysLeft += 1;
           }
         }
+        if (timeLog[v].present === '-' && !isHoliday && !isLeave) {
+          payload.absentDays += 1;
+        }
       });
       return payload;
     } catch (error) {
@@ -115,6 +124,7 @@ export default function TimeSpentIndicator({
     const data = totalTimeObj();
     setTotalTimeSpent(data);
     // console.log(data);
+    // alert(calculateSalary(salaryAmt, 6, data.absentDays, month));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [attendance, year, month]);
@@ -129,6 +139,7 @@ export default function TimeSpentIndicator({
     overTimeHrs,
     overTimeMins,
     overTimeDays,
+    absentDays,
   } = totalTimeSpent;
   const days = tDays - overTimeDays;
 
@@ -141,32 +152,33 @@ export default function TimeSpentIndicator({
   const totalHrsR = parseInt(Math.abs(timeDiffMins / 60));
   const rawAvg = totalTimeSpendInMins / 60 / days;
   const avg = Math.floor(rawAvg * 100) / 100;
-  let salaryAmount = Math.round(
-    totalTimeSpendInMins > totalExpectedTimeSpendInMins && overTimeInMins === 0
-      ? (totalExpectedTimeSpendInMins + holidaysTimeInMins) * minRate
-      : (totalTimeSpendInMins + holidaysTimeInMins) * minRate
+  // let salaryAmount = Math.round(
+  //   totalTimeSpendInMins > totalExpectedTimeSpendInMins && overTimeInMins === 0
+  //     ? (totalExpectedTimeSpendInMins + holidaysTimeInMins) * minRate
+  //     : (totalTimeSpendInMins + holidaysTimeInMins) * minRate
+  // );
+  // // For OverTime Calculation with 1x
+  // if (overTimeInMins !== 0) {
+  //   const overTimeAmt = overTimeInMins * overTimeMinRate;
+  //   salaryAmount =
+  //     (totalTimeSpendInMins - overTimeInMins + holidaysTimeInMins) * minRate +
+  //     overTimeAmt;
+  // }
+  // const expectedSalaryAmount = Math.round(
+  //   (totalExpectedTimeSpendInMins + holidaysTimeInMins) * minRate
+  // );
+  const totalTimeSpendInHrs =
+    totalHrsR + parseInt(Math.abs(overTimeInMins / 60));
+  // alert(totalTimeSpendInHrs);
+  // if (workedDays === 0) toast.warn('oops'); // TODO Use MEMO
+  const salaryAmount = calculateSalary(
+    salaryAmt,
+    totalTimeSpendInHrs,
+    absentDays,
+    month
   );
-  // For OverTime Calculation with 1x
-  if (overTimeInMins !== 0) {
-    const overTimeAmt = overTimeInMins * overTimeMinRate;
-    salaryAmount =
-      (totalTimeSpendInMins - overTimeInMins + holidaysTimeInMins) * minRate +
-      overTimeAmt;
-  }
-  const expectedSalaryAmount = Math.round(
-    (totalExpectedTimeSpendInMins + holidaysTimeInMins) * minRate
-  );
+  const expectedSalaryAmount = calculateSalary(salaryAmt, 0, 0, month);
 
-  // const salaryAmount = isShowAmt
-  //   ? Math.round(
-  //       totalTimeSpendInMins * minRate + (30 - days) * 9 * 60 * minRate
-  //     )
-  //   : Math.round(totalTimeSpendInMins * minRate);
-  // const expectedSalaryAmount = isShowAmt
-  //   ? Math.round(
-  //       totalExpectedTimeSpendInMins * ~minRate + (30 - days) * 9 * 60 * minRate
-  //     )
-  //   : Math.round(totalExpectedTimeSpendInMins * minRate);
   const detuctedAmount =
     Math.sign(expectedSalaryAmount - salaryAmount) === -1
       ? 0
