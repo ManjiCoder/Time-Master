@@ -243,11 +243,17 @@ export default function Attendance() {
             obj?.remark ||
             (obj?.leave === '1' && 'Leave') ||
             (obj?.present === '0.5' && 'Half Day') ||
-            (isHoliday && obj.hours !== '-' && 'Holiday - OverTime') ||
-            (isHoliday && !obj.hours !== '-' && 'Holiday') ||
             (isAbsent && 'Absent') ||
             null;
 
+          if (isHoliday) {
+            if (obj.remark) {
+              remark =
+                obj.remark !== '' ? `Holiday - ${obj.remark}` : 'Holiday';
+            } else {
+              remark = 'Holiday';
+            }
+          }
           if (
             date === currentDate.setHours(0, 0, 0, 0).toString() &&
             isOfficeMode
