@@ -91,7 +91,8 @@ export default function EditModal({ isOpen, setIsOpen }) {
     }
 
     if (note.trim().length !== 0) {
-      editedData.remark = otherNote !== '' ? `${note} - ${otherNote}` : note;
+      editedData.remark = note;
+      // editedData.remark = otherNote !== '' ? `${note} - ${otherNote}` : note;
     }
     const payload = {
       year,
@@ -146,16 +147,8 @@ export default function EditModal({ isOpen, setIsOpen }) {
 
   return (
     <>
-      <Transition
-        appear
-        show={true}
-        as={Fragment}
-      >
-        <Dialog
-          as='div'
-          className='relative z-10'
-          onClose={closeModal}
-        >
+      <Transition appear show={true} as={Fragment}>
+        <Dialog as='div' className='relative z-10' onClose={closeModal}>
           <Transition.Child
             as={Fragment}
             enter='ease-out duration-300'

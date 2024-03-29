@@ -45,6 +45,11 @@ const ExportData = () => {
       .sort((a, b) => parseInt(a) - parseInt(b))
       .map((date) => {
         const obj = jsonData[year][month][date];
+        // For Holidays to be remark
+        const parseDate = new Date(parseInt(date));
+        const dayNum = getDate(parseDate);
+        const isHoliday = isHolidays(parseDate, dayNum);
+
         // Clean UP
         delete obj?.break;
         delete obj?.isLeave;
@@ -68,19 +73,19 @@ const ExportData = () => {
           obj.present = '1';
           obj.remark ||= 'Leave';
         }
-        delete obj?.leave;
+        // delete obj?.leave;
         delete obj?.isHoliday;
-        // For Holidays to be remark
-        const parseDate = new Date(parseInt(date));
-        const dayNum = getDate(parseDate);
-        if (isHolidays(parseDate, dayNum)) {
+
+        if (isHoliday) {
           obj.remark = 'Holiday';
         }
 
         const isHours = obj?.hours !== '-';
         if (isHours) {
           const t1 = parse(obj.hours, 'HH:mm', new Date());
-          const t2 = parse('09:00', 'HH:mm', new Date());
+          const t2 = isHoliday
+            ? new Date().setHours(0, 0, 0, 0)
+            : parse('09:00', 'HH:mm', new Date());
           const diff = differenceInMinutes(t1, t2);
           obj.diff = JSON.stringify(diff);
         }
