@@ -168,7 +168,7 @@ export default function TimeSpentIndicator({
   //   (totalExpectedTimeSpendInMins + holidaysTimeInMins) * minRate
   // );
   const totalTimeSpendInHrs =
-    totalHrsR + parseInt(Math.abs(overTimeInMins / 60));
+    Math.abs(timeDiffMins/60) + (Math.abs(overTimeInMins / 60));
   // alert(totalTimeSpendInHrs);
   // if (workedDays === 0) toast.warn('oops'); // TODO Use MEMO
   const salaryAmount = calculateSalary(
