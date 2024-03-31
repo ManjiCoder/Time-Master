@@ -171,12 +171,10 @@ export default function TimeSpentIndicator({
     totalHrsR + parseInt(Math.abs(overTimeInMins / 60));
   // alert(totalTimeSpendInHrs);
   // if (workedDays === 0) toast.warn('oops'); // TODO Use MEMO
-  const salaryAmount = calculateSalary(
-    salaryAmt,
-    totalTimeSpendInHrs,
-    absentDays,
-    month
-  );
+  const salaryAmount =
+    days === 0
+      ? 0
+      : calculateSalary(salaryAmt, totalTimeSpendInHrs, absentDays, month);
   const expectedSalaryAmount = calculateSalary(salaryAmt, 0, 0, month);
 
   const detuctedAmount =

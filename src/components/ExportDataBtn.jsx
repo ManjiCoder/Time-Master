@@ -71,13 +71,16 @@ const ExportData = () => {
           obj.logout = '06:00 PM';
           obj.hours = '09:00';
           obj.present = '1';
-          obj.remark ||= 'Leave';
+          obj.remark = obj.remark && obj.remark !== '' ? obj.remark : 'Leave';
         }
         // delete obj?.leave;
         delete obj?.isHoliday;
 
         if (isHoliday) {
-          obj.remark = 'Holiday';
+          obj.remark =
+            obj.remark && obj.remark !== ''
+              ? `Holiday - ${obj.remark}`
+              : 'Holiday';
         }
 
         const isHours = obj?.hours !== '-';
