@@ -29,8 +29,16 @@ export default function CurrentTimeSpent({ loginTime, logoutTime }) {
         let timeSpendPayload = calculateTimeSpent(loginTime, logout);
         seTimeSpent(timeSpendPayload);
 
-        const isTodayData = attendance[year][month][date];
+         // IIFE
+         const isTodayData = (() => {
+          try {
+            return attendance[year][month];
+          } catch (error) {
+            return {};
+          }
+        })();
 
+        
         const payload = {
           date: format(date, 'yyyy-MM-dd'),
           login: format24To12(loginTime),
