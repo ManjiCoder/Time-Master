@@ -167,14 +167,22 @@ export default function TimeSpentIndicator({
   // const expectedSalaryAmount = Math.round(
   //   (totalExpectedTimeSpendInMins + holidaysTimeInMins) * minRate
   // );
-  const totalTimeSpendInHrs =
-    Math.abs(timeDiffMins/60) + (Math.abs(overTimeInMins / 60));
+  const hoursLeft =
+    totalTimeSpendInMins > totalExpectedTimeSpendInMins
+      ? 0
+      : Math.abs(timeDiffMins / 60);
   // alert(totalTimeSpendInHrs);
   // if (workedDays === 0) toast.warn('oops'); // TODO Use MEMO
   const salaryAmount =
     days === 0
       ? 0
-      : calculateSalary(salaryAmt, totalTimeSpendInHrs, absentDays, month);
+      : calculateSalary(
+          salaryAmt,
+          hoursLeft,
+          absentDays,
+          month,
+          overTimeInMins / 60
+        );
   const expectedSalaryAmount = calculateSalary(salaryAmt, 0, 0, month);
 
   const detuctedAmount =
