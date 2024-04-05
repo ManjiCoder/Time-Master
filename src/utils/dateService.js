@@ -7,6 +7,7 @@ import {
   getDate,
   isSaturday,
   isSunday,
+  isValid,
   parse,
 } from 'date-fns';
 
@@ -196,83 +197,97 @@ export function getUserInfo(text) {
   let userTimeLog = {};
   let year;
   let month;
-  let startIndex = text.indexOf('Tour') + 5;
-  let arr = text.slice(startIndex, text.length).split('\n');
 
-  arr.map((str) => {
-    let date = str.slice(0, 10).split('-').reverse().join('-');
-    const isHalfDay = str.includes('0.5');
-    let present = str.slice(10, isHalfDay ? 13 : 11);
-    let isPresent = present === '1';
-    let amIndex = str.indexOf('AM') + 2;
-    let pmIndex = str.indexOf('PM') + 2;
-    let amLastIndex = str.lastIndexOf('AM') + 2;
-    let pmLastIndex = str.lastIndexOf('PM') + 2;
-    const isBothAM = str.toUpperCase().match(/AM/g);
-    const isBothPM = str.toUpperCase().match(/PM/g);
-    let dateInTime = new Date(date).setHours(0, 0, 0, 0);
-    // let hours = isPresent ? str.slice(11, 16) : str.slice(11, 12);
-    // let isHoursEmpty = hours === '-';
+  try {
+    let startIndex = text.indexOf('Tour') + 5;
+    let arr = text.slice(startIndex, text.length).split('\n');
 
-    let login;
-    if (str.includes('AM')) {
-      login = str.slice(amIndex - 8, amIndex);
-    } else if (isBothPM && isBothPM.length === 2) {
-      login = str.slice(pmIndex - 8, pmIndex);
-    } else if (isBothAM && isBothAM.length === 2) {
-      login = str.slice(amIndex - 8, amIndex);
-    } else {
-      login = '-';
-    }
+    arr.map((str) => {
+      let date = str.slice(0, 10).split('-').reverse().join('-');
 
-    let logout;
-    if (str.includes('PM')) {
-      logout = str.slice(pmLastIndex - 8, pmLastIndex);
-    } else if (isBothAM && isBothAM.length === 2) {
-      logout = str.slice(amLastIndex - 8, amLastIndex);
-    } else if (isBothPM && isBothPM.length === 2) {
-      logout = str.slice(pmLastIndex - 8, pmLastIndex);
-    } else {
-      logout = '-';
-    }
+      if (!isValid(date)) {
+        throw new Error('Invalid Date');
+      }
+      const isHalfDay = str.includes('0.5');
+      let present = str.slice(10, isHalfDay ? 13 : 11);
+      let isPresent = present === '1';
+      let amIndex = str.indexOf('AM') + 2;
+      let pmIndex = str.indexOf('PM') + 2;
+      let amLastIndex = str.lastIndexOf('AM') + 2;
+      let pmLastIndex = str.lastIndexOf('PM') + 2;
+      const isBothAM = str.toUpperCase().match(/AM/g);
+      const isBothPM = str.toUpperCase().match(/PM/g);
+      let dateInTime = new Date(date).setHours(0, 0, 0, 0);
+      // let hours = isPresent ? str.slice(11, 16) : str.slice(11, 12);
+      // let isHoursEmpty = hours === '-';
 
-    let hours = login !== '-' && logout !== '-' ? str.slice(11, 16) : str.slice(11, 12);
-    if (isHalfDay) {
-      hours = str.slice(13, 18);
-    }
-    let indexOfZero = str.lastIndexOf('00:00');
-    let leave =
-      indexOfZero === -1
-        ? str.slice(-3)[0]
-        : str.slice(indexOfZero - 1, indexOfZero);
-    let breakTime =
-      indexOfZero === -1
-        ? str.slice(-2)[0]
-        : str.slice(indexOfZero, indexOfZero + 5);
-    let tour = str.slice(-1);
-    // console.log(str);
+      let login;
+      if (str.includes('AM')) {
+        login = str.slice(amIndex - 8, amIndex);
+      } else if (isBothPM && isBothPM.length === 2) {
+        login = str.slice(pmIndex - 8, pmIndex);
+      } else if (isBothAM && isBothAM.length === 2) {
+        login = str.slice(amIndex - 8, amIndex);
+      } else {
+        login = '-';
+      }
 
-    if (!Number.isNaN(dateInTime)) {
-      userTimeLog[dateInTime] = {
-        date,
-        present,
-        hours,
-        login,
-        logout,
-        leave,
-        break: breakTime,
-        tour,
-      };
-      year = format(Number(dateInTime), 'yyyy');
-      month = format(Number(dateInTime), 'MMMM');
-    }
-  });
-  const payload = {
-    year,
-    month,
-    data: userTimeLog,
-  };
-  return payload;
+      let logout;
+      if (str.includes('PM')) {
+        logout = str.slice(pmLastIndex - 8, pmLastIndex);
+      } else if (isBothAM && isBothAM.length === 2) {
+        logout = str.slice(amLastIndex - 8, amLastIndex);
+      } else if (isBothPM && isBothPM.length === 2) {
+        logout = str.slice(pmLastIndex - 8, pmLastIndex);
+      } else {
+        logout = '-';
+      }
+
+      let hours =
+        login !== '-' && logout !== '-' ? str.slice(11, 16) : str.slice(11, 12);
+      if (isHalfDay) {
+        hours = str.slice(13, 18);
+      }
+      let indexOfZero = str.lastIndexOf('00:00');
+      let leave =
+        indexOfZero === -1
+          ? str.slice(-3)[0]
+          : str.slice(indexOfZero - 1, indexOfZero);
+      let breakTime =
+        indexOfZero === -1
+          ? str.slice(-2)[0]
+          : str.slice(indexOfZero, indexOfZero + 5);
+      let tour = str.slice(-1);
+      // console.log(str);
+
+      if (!Number.isNaN(dateInTime)) {
+        userTimeLog[dateInTime] = {
+          date,
+          present,
+          hours,
+          login,
+          logout,
+          leave,
+          break: breakTime,
+          tour,
+        };
+        year = format(Number(dateInTime), 'yyyy');
+        month = format(Number(dateInTime), 'MMMM');
+      }
+    });
+    const payload = {
+      year,
+      month,
+      data: userTimeLog,
+    };
+    return payload;
+  } catch (error) {
+    return {
+      year,
+      month,
+      data: {},
+    };
+  }
 }
 
 export const monthNameToIndex = {

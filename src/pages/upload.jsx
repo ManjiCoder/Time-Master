@@ -68,6 +68,15 @@ const PdfReader = () => {
 
   const handleFileChangeUpload = async (file) => {
     const toastId = toast.loading('Please wait...');
+    const maxFileSizeBytes = 5 * 1024 * 1024; // 5 MB limit
+    const fileSize = file.size;
+    if (fileSize > maxFileSizeBytes) {
+      setSelectedFile(null);
+      return toast.update(
+        toastId,
+        toastifyOptions('error', 'File must be under 5MB!')
+      );
+    }
     if (file) {
       const reader = new FileReader();
 
@@ -92,6 +101,13 @@ const PdfReader = () => {
               // setNumPages(data.numPages);
             } else {
               const payload = getUserInfo(data.text);
+              if (
+                Object.keys(payload.data).length === 0 ||
+                !payload.month ||
+                !payload.year
+              ) {
+                throw new Error('PDF processing failed.');
+              }
               dispatch(setPdfData(payload));
               setNumPages(data.numPages);
             }
@@ -133,7 +149,7 @@ const PdfReader = () => {
             isDragActive ? 'border-green-500' : 'border-gray-400'
           }`}
         >
-          <input {...getInputProps()} />
+          <input {...getInputProps()} accept='.pdf, .csv' />
           <p className='text-center'>
             {isDragActive
               ? 'Drop the file here'
