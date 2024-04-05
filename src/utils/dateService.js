@@ -205,9 +205,10 @@ export function getUserInfo(text) {
     arr.map((str) => {
       let date = str.slice(0, 10).split('-').reverse().join('-');
 
-      if (!isValid(date)) {
+      if (!isValid(new Date(date))) {
         throw new Error('Invalid Date');
       }
+
       const isHalfDay = str.includes('0.5');
       let present = str.slice(10, isHalfDay ? 13 : 11);
       let isPresent = present === '1';
