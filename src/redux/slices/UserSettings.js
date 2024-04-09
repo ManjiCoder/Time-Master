@@ -10,11 +10,11 @@ export const filterObj = Object.freeze({
 });
 
 export const filterOptions = [
-  'Month',
-  'Today',
-  'Holidays',
-  'Present',
-  // 'Absent',
+  filterObj.fullMonth,
+  filterObj.today,
+  filterObj.holidays,
+  filterObj.present,
+  filterObj.absent,
 ];
 
 export const filterOrder = Object.freeze({
@@ -32,7 +32,7 @@ const initialState = {
   minRate: null,
   overTimeMinRate: null,
   theme: 'system',
-  sortBy: filterObj.date,
+  sortBy: filterObj.fullMonth,
   order: filterOrder.ascending,
 };
 

@@ -121,33 +121,46 @@ export default function Attendance() {
       <main
         className={`bg-slate-300 dark:bg-slate-900 dark:text-white text-slate-800 min-h-screen pb-16 ${inter.className}`}
       >
-        <TimeSpentIndicator year={year} month={month} />
+        <TimeSpentIndicator
+          year={year}
+          month={month}
+        />
         <h2 className='text-xl text-center mt-5'>No Data Found!</h2>
       </main>
     );
   }
 
-  const allDates = Object.keys(attendance[year][month]);
-  const tillTodayDates = Object.keys(attendance[year][month]).filter(
-    (v) => v <= new Date().setHours(0, 0, 0, 0)
-  );
-  const presentDays = Object.keys(attendance[year][month]).filter((v) => {
-    return attendance[year][month][v].present === '1';
-  });
-  const holidays = Object.keys(attendance[year][month]).filter((v) => {
-    const parseDate = new Date(parseInt(v));
-    const dayNum = getDate(parseDate);
-    const isHoliday = isHolidays(parseDate, dayNum);
-    return isHoliday;
-  });
-
-  let showDates = allDates;
+  let showDates = Object.keys(attendance[year][month]);
   if (sortBy === filterObj.holidays) {
+    const holidays = Object.keys(attendance[year][month]).filter((v) => {
+      const parseDate = new Date(parseInt(v));
+      const dayNum = getDate(parseDate);
+      const isHoliday = isHolidays(parseDate, dayNum);
+      return isHoliday;
+    });
     showDates = holidays;
   } else if (sortBy === filterObj.today) {
+    const tillTodayDates = Object.keys(attendance[year][month]).filter(
+      (v) => v <= new Date().setHours(0, 0, 0, 0)
+    );
     showDates = tillTodayDates;
   } else if (sortBy === filterObj.present) {
+    const presentDays = Object.keys(attendance[year][month]).filter((v) => {
+      return attendance[year][month][v].present === '1';
+    });
     showDates = presentDays;
+  } else if (sortBy === filterObj.absent) {
+    const absentDays = Object.keys(attendance[year][month]).filter((v) => {
+      const parseDate = new Date(parseInt(v));
+      const dayNum = getDate(parseDate);
+      const isHoliday = isHolidays(parseDate, dayNum);
+      const isLeave = attendance[year][month][v].leave === '1';
+      const isPresent = ['0.5', '1'].includes(
+        attendance[year][month][v].present
+      );
+      return !isHoliday && !isLeave && !isPresent;
+    });
+    showDates = absentDays;
   }
   const data = calculateTimeSpent(
     removeAMorPM(attendance[year][month][date]?.login),
@@ -207,7 +220,7 @@ export default function Attendance() {
 
         <div className='flex'>
           <ListBoxFilter />
-          <div className='flex pr-2 flex-col justify-center items-center rounded-lg rounded-l-none bg-white dark:bg-slate-700'>
+          <div className='flex pr-2 flex-col justify-center items-center rounded-lg rounded-l-none bg-slate-50 dark:bg-slate-700'>
             <ChevronUpIcon
               className={`w-5 -mb-2.5 cursor-pointer ${
                 order === filterOrder.ascending
@@ -418,10 +431,16 @@ export default function Attendance() {
           );
         })}
       {isDeleteOpen && (
-        <DeleteModal isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} />
+        <DeleteModal
+          isOpen={isDeleteOpen}
+          setIsOpen={setIsDeleteOpen}
+        />
       )}
       {isEditOpen && (
-        <EditModal isOpen={isEditOpen} setIsOpen={setIsEditOpen} />
+        <EditModal
+          isOpen={isEditOpen}
+          setIsOpen={setIsEditOpen}
+        />
       )}
     </main>
   );

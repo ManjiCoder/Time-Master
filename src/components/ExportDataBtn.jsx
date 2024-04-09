@@ -94,13 +94,14 @@ const ExportData = () => {
         }
 
         // To replace - with ''
-        let desc = `${format(parseInt(date), 'dd-MMM')},${obj.present.replace(
-          /-/g,
-          ''
-        )},${obj.hours.replace(/-/g, '')},${obj.diff || ''},${obj.login.replace(
-          /-/g,
-          ''
-        )},${obj.logout.replace(/-/g, '')},${obj.remark || ''}`;
+        let desc = `${format(
+          parseInt(date),
+          'EEE dd MMM'
+        )},${obj.present.replace(/-/g, '')},${obj.hours.replace(/-/g, '')},${
+          obj.diff || ''
+        },${obj.login.replace(/-/g, '')},${obj.logout.replace(/-/g, '')},${
+          obj.remark || ''
+        }`;
         let temp = obj.date;
         desc = `${desc}\n`;
         csvDesc += desc;
