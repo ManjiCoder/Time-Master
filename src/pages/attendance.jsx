@@ -6,6 +6,8 @@ import { format, getDate, isSaturday, isSunday } from 'date-fns';
 import {
   ArrowDownCircleIcon,
   ArrowUpCircleIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
   PencilSquareIcon,
   TrashIcon,
 } from '@heroicons/react/20/solid';
@@ -119,10 +121,7 @@ export default function Attendance() {
       <main
         className={`bg-slate-300 dark:bg-slate-900 dark:text-white text-slate-800 min-h-screen pb-16 ${inter.className}`}
       >
-        <TimeSpentIndicator
-          year={year}
-          month={month}
-        />
+        <TimeSpentIndicator year={year} month={month} />
         <h2 className='text-xl text-center mt-5'>No Data Found!</h2>
       </main>
     );
@@ -189,10 +188,27 @@ export default function Attendance() {
           )}
         </div>
 
-        <div className='flex space-x-1'>
+        <div className='flex'>
           <ListBoxFilter />
-
-          <button
+          <div className='flex pr-2 flex-col justify-center items-center rounded-lg rounded-l-none bg-white dark:bg-slate-700'>
+            <ChevronUpIcon
+              className={`w-5 -mb-2.5 cursor-pointer ${
+                order === filterOrder.ascending
+                  ? 'text-gray-700 dark:text-white'
+                  : 'text-gray-400 dark:text-slate-400'
+              } `}
+              onClick={() => dispatch(setSortByOrder(filterOrder.ascending))}
+            />
+            <ChevronDownIcon
+              className={`w-5 cursor-pointer ${
+                order === filterOrder.descending
+                  ? 'text-gray-700 dark:text-white'
+                  : 'text-gray-400 dark:text-slate-400'
+              } `}
+              onClick={() => dispatch(setSortByOrder(filterOrder.descending))}
+            />
+          </div>
+          {/* <button
             type='button'
             onClick={() => dispatch(setSortByOrder(filterOrder.ascending))}
           >
@@ -212,7 +228,7 @@ export default function Attendance() {
                 order === filterOrder.descending ? 'opacity-100' : 'opacity-70'
               }`}
             />
-          </button>
+          </button> */}
         </div>
       </section>
 
@@ -385,16 +401,10 @@ export default function Attendance() {
           );
         })}
       {isDeleteOpen && (
-        <DeleteModal
-          isOpen={isDeleteOpen}
-          setIsOpen={setIsDeleteOpen}
-        />
+        <DeleteModal isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} />
       )}
       {isEditOpen && (
-        <EditModal
-          isOpen={isEditOpen}
-          setIsOpen={setIsEditOpen}
-        />
+        <EditModal isOpen={isEditOpen} setIsOpen={setIsEditOpen} />
       )}
     </main>
   );

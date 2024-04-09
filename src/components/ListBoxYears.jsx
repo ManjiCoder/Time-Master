@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { useDispatch, useSelector } from 'react-redux';
 import { setYear } from '@/redux/slices/dateSlice';
 
@@ -11,27 +11,27 @@ export default function ListBoxYears({ years }) {
   const dispatch = useDispatch();
 
   return (
-    <div className="">
+    <div className=''>
       <Listbox value={selected} onChange={(e) => dispatch(setYear(e))}>
-        <div className="relative text-sm">
-          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white dark:bg-slate-700 py-1.5 pl-3 pr-8 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-            <span className="block truncate dark:text-white text-gray-900 font-semibold">
+        <div className='relative text-sm'>
+          <Listbox.Button className='relative w-full cursor-pointer rounded-lg bg-white dark:bg-slate-700 py-1.5 pl-3 pr-8 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm'>
+            <span className='block truncate dark:text-white text-gray-900 font-semibold'>
               {selected}
             </span>
-            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-              <ChevronUpDownIcon
-                className="h-5 w-5 text-gray-400 dark:text-slate-400"
-                aria-hidden="true"
+            <span className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2'>
+              <ChevronDownIcon
+                className='h-5 w-5 text-gray-400 dark:text-slate-400'
+                aria-hidden='true'
               />
             </span>
           </Listbox.Button>
           <Transition
             as={Fragment}
-            leave="transition ease-in duration-100"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
+            leave='transition ease-in duration-100'
+            leaveFrom='opacity-100'
+            leaveTo='opacity-0'
           >
-            <Listbox.Options className="absolute text-sm mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-slate-700 py-1 shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+            <Listbox.Options className='absolute text-sm mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-slate-700 py-1 shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm'>
               {years.map((year, yearsIdx) => (
                 <Listbox.Option
                   key={yearsIdx}
@@ -54,7 +54,7 @@ export default function ListBoxYears({ years }) {
                         {year}
                       </span>
                       {selected ? (
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                        <span className='absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600'>
                           {/* <CheckIcon className="h-5 w-5" aria-hidden="true" /> */}
                         </span>
                       ) : null}
