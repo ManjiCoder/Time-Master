@@ -2,9 +2,20 @@ import { createSlice } from '@reduxjs/toolkit';
 import { format } from 'date-fns';
 
 export const filterObj = Object.freeze({
-  date: 'Date',
-  present: 'Today',
+  fullMonth: 'Month',
+  today: 'Today',
+  holidays: 'Holidays',
+  absent: 'Absent',
+  present: 'Present',
 });
+
+export const filterOptions = [
+  'Month',
+  'Today',
+  'Holidays',
+  'Present',
+  // 'Absent',
+];
 
 export const filterOrder = Object.freeze({
   ascending: 'Ascending',

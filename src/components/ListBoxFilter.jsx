@@ -1,22 +1,20 @@
 import { Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { filterObj, setSortBy } from '@/redux/slices/UserSettings';
+import {
+  filterObj,
+  filterOptions,
+  setSortBy,
+} from '@/redux/slices/UserSettings';
 
 export default function ListBoxFilter() {
-  const years = Object.values(filterObj);
+  const years = filterOptions;
   const { sortBy: selected } = useSelector((state) => state.userSettings);
   const dispatch = useDispatch();
 
   return (
     <div className=''>
-      <Listbox
-        value={selected}
-        onChange={(e) => {
-          console.log('chnage');
-          dispatch(setSortBy(e));
-        }}
-      >
+      <Listbox value={selected} onChange={(e) => dispatch(setSortBy(e))}>
         <div className='relative text-sm'>
           <Listbox.Button className='relative w-full flex items-center space-x-2 cursor-pointer rounded-lg rounded-r-none bg-white dark:bg-slate-700 py-2 pl-3 pr-1.5 text-left  focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm'>
             <span className='block truncate dark:text-white text-gray-900 font-semibold'>

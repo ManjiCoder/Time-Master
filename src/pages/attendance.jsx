@@ -131,7 +131,24 @@ export default function Attendance() {
   const tillTodayDates = Object.keys(attendance[year][month]).filter(
     (v) => v <= new Date().setHours(0, 0, 0, 0)
   );
-  const showDates = sortBy === filterObj.present ? tillTodayDates : allDates;
+  const presentDays = Object.keys(attendance[year][month]).filter((v) => {
+    return attendance[year][month][v].present === '1';
+  });
+  const holidays = Object.keys(attendance[year][month]).filter((v) => {
+    const parseDate = new Date(parseInt(v));
+    const dayNum = getDate(parseDate);
+    const isHoliday = isHolidays(parseDate, dayNum);
+    return isHoliday;
+  });
+
+  let showDates = allDates;
+  if (sortBy === filterObj.holidays) {
+    showDates = holidays;
+  } else if (sortBy === filterObj.today) {
+    showDates = tillTodayDates;
+  } else if (sortBy === filterObj.present) {
+    showDates = presentDays;
+  }
   const data = calculateTimeSpent(
     removeAMorPM(attendance[year][month][date]?.login),
     removeAMorPM(attendance[year][month][date]?.logout)
