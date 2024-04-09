@@ -2,6 +2,7 @@ import React from 'react';
 import { isHolidays } from '@/utils/dateService';
 import { useSelector } from 'react-redux';
 import { differenceInMinutes, format, getDate, parse } from 'date-fns';
+import { holidayDetails } from '@/pages/attendance';
 
 const ExportData = () => {
   const attendance = useSelector((state) => state.attendance);
@@ -76,11 +77,15 @@ const ExportData = () => {
         // delete obj?.leave;
         delete obj?.isHoliday;
 
+        let remark = obj.remark;
         if (isHoliday) {
-          obj.remark =
-            obj.remark && obj.remark !== ''
-              ? `Holiday - ${obj.remark}`
-              : 'Holiday';
+          if (holidayDetails[parseInt(date)]) {
+            remark = holidayDetails[parseInt(date)].desc;
+          } else if (obj.remark && obj.remark !== '') {
+            remark = `Holiday - ${obj.remark}`;
+          } else {
+            remark = 'Holiday';
+          }
         }
 
         const isHours = obj?.hours !== '-';
@@ -100,7 +105,7 @@ const ExportData = () => {
         )},${obj.present.replace(/-/g, '')},${obj.hours.replace(/-/g, '')},${
           obj.diff || ''
         },${obj.login.replace(/-/g, '')},${obj.logout.replace(/-/g, '')},${
-          obj.remark || ''
+          remark || ''
         }`;
         let temp = obj.date;
         desc = `${desc}\n`;
