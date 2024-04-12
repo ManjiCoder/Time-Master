@@ -3,10 +3,11 @@ import { isHolidays } from '@/utils/dateService';
 import { useSelector } from 'react-redux';
 import { differenceInMinutes, format, getDate, parse } from 'date-fns';
 import { holidayDetails } from '@/pages/attendance';
+import { toast } from 'react-toastify';
 
-const ExportData = () => {
+const ExportData = ({ year, month }) => {
   const attendance = useSelector((state) => state.attendance);
-  const { year, month } = useSelector((state) => state.dateSlice);
+  // const { year, month } = useSelector((state) => state.dateSlice);
 
   const downloadJSONFile = () => {
     const jsonData = attendance;
@@ -27,120 +28,112 @@ const ExportData = () => {
   };
 
   const downloadCSVFile = () => {
-    // // Function to convert JSON to CSV
-    // const jsonToCSV = (data) => {
-    //   const headers = Object.keys(data[0]).join(','); // Extract headers
+    try {
+      const jsonData = JSON.parse(JSON.stringify(attendance));
+      let csvTitle = [];
+      let csvDesc = [];
+      const arr = Object.keys(jsonData[year][month])
+        .sort((a, b) => parseInt(a) - parseInt(b))
+        .map((date) => {
+          const obj = jsonData[year][month][date];
+          // For Holidays to be remark
+          const parseDate = new Date(parseInt(date));
+          const dayNum = getDate(parseDate);
+          const isHoliday = isHolidays(parseDate, dayNum);
 
-    //   const rows = data.map((obj) =>
-    //     Object.values(obj)
-    //       .map((val) => `"${val}"`) // Enclose values in double quotes to handle commas in values
-    //       .join(',')
-    //   );
-
-    //   return `${headers}\n${rows.join('\n')}`;
-    // };
-    const jsonData = JSON.parse(JSON.stringify(attendance));
-    let csvTitle = [];
-    let csvDesc = [];
-    const arr = Object.keys(jsonData[year][month])
-      .sort((a, b) => parseInt(a) - parseInt(b))
-      .map((date) => {
-        const obj = jsonData[year][month][date];
-        // For Holidays to be remark
-        const parseDate = new Date(parseInt(date));
-        const dayNum = getDate(parseDate);
-        const isHoliday = isHolidays(parseDate, dayNum);
-
-        // Clean UP
-        delete obj?.break;
-        delete obj?.isLeave;
-        delete obj?.tour;
-        // console.log(obj)
-        // For getting Titles
-        if (csvTitle !== Object.keys(jsonData[year][month][date])) {
-          csvTitle = Object.keys(jsonData[year][month][date]);
-        }
-
-        // For Half Day
-        if (obj.present === '0.5') {
-          obj.remark = 'Half Day';
-        }
-
-        // For Leave
-        if (obj.leave === '1') {
-          obj.login = '09:00 AM';
-          obj.logout = '06:00 PM';
-          obj.hours = '09:00';
-          obj.present = '1';
-          obj.remark = obj.remark && obj.remark !== '' ? obj.remark : 'Leave';
-        }
-        // delete obj?.leave;
-        delete obj?.isHoliday;
-
-        let remark = obj.remark;
-        if (isHoliday) {
-          if (holidayDetails[parseInt(date)]) {
-            remark = holidayDetails[parseInt(date)].desc;
-          } else if (obj.remark && obj.remark !== '') {
-            remark = `Holiday - ${obj.remark}`;
-          } else {
-            remark = 'Holiday';
+          // Clean UP
+          delete obj?.break;
+          delete obj?.isLeave;
+          delete obj?.tour;
+          // console.log(obj)
+          // For getting Titles
+          if (csvTitle !== Object.keys(jsonData[year][month][date])) {
+            csvTitle = Object.keys(jsonData[year][month][date]);
           }
-        }
 
-        const isHours = obj?.hours !== '-';
-        if (isHours) {
-          const t1 = parse(obj.hours, 'HH:mm', new Date());
-          const t2 = isHoliday
-            ? new Date().setHours(0, 0, 0, 0)
-            : parse('09:00', 'HH:mm', new Date());
-          const diff = differenceInMinutes(t1, t2);
-          obj.diff = JSON.stringify(diff);
-        }
+          // For Half Day
+          if (obj.present === '0.5') {
+            obj.remark = 'Half Day';
+          }
 
-        // To replace - with ''
-        let desc = `${format(
-          parseInt(date),
-          'EEE dd MMM'
-        )},${obj.present.replace(/-/g, '')},${obj.hours.replace(/-/g, '')},${
-          obj.diff || ''
-        },${obj.login.replace(/-/g, '')},${obj.logout.replace(/-/g, '')},${
-          remark || ''
-        }`;
-        let temp = obj.date;
-        desc = `${desc}\n`;
-        csvDesc += desc;
-      });
+          // For Leave
+          if (obj.leave === '1') {
+            obj.login = '09:00 AM';
+            obj.logout = '06:00 PM';
+            obj.hours = '09:00';
+            obj.present = '1';
+            obj.remark = obj.remark && obj.remark !== '' ? obj.remark : 'Leave';
+          }
+          // delete obj?.leave;
+          delete obj?.isHoliday;
 
-    csvTitle.splice(3, 0, 'difference');
+          let remark = obj.remark;
+          if (isHoliday) {
+            if (holidayDetails[parseInt(date)]) {
+              remark = holidayDetails[parseInt(date)].desc;
+            } else if (obj.remark && obj.remark !== '') {
+              remark = `Holiday - ${obj.remark}`;
+            } else {
+              remark = 'Holiday';
+            }
+          }
 
-    const csvData =
-      csvTitle
-        .map((v) => v.replace(v[0], v[0].toUpperCase()))
-        .toString()
-        .replace(',Leave', '') +
-      ',Remarks \n' +
-      csvDesc;
-    console.log(csvData);
+          const isHours = obj?.hours !== '-';
+          if (isHours) {
+            const t1 = parse(obj.hours, 'HH:mm', new Date());
+            const t2 = isHoliday
+              ? new Date().setHours(0, 0, 0, 0)
+              : parse('09:00', 'HH:mm', new Date());
+            const diff = differenceInMinutes(t1, t2);
+            obj.diff = JSON.stringify(diff);
+          }
 
-    // Download CSV file
-    const blob = new Blob([csvData], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
+          // To replace - with ''
+          let desc = `${format(
+            parseInt(date),
+            'EEE dd MMM'
+          )},${obj.present.replace(/-/g, '')},${obj.hours.replace(/-/g, '')},${
+            obj.diff || ''
+          },${obj.login.replace(/-/g, '')},${obj.logout.replace(/-/g, '')},${
+            remark || ''
+          }`;
+          let temp = obj.date;
+          desc = `${desc}\n`;
+          csvDesc += desc;
+        });
 
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `MasterTime-${month}-${year}.csv`;
+      csvTitle.splice(3, 0, 'difference');
 
-    document.body.appendChild(a);
-    a.click();
+      const csvData =
+        csvTitle
+          .map((v) => v.replace(v[0], v[0].toUpperCase()))
+          .toString()
+          .replace(',Leave', '') +
+        ',Remarks \n' +
+        csvDesc;
+      console.log(csvData);
 
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
+      // Download CSV file
+      const blob = new Blob([csvData], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `MasterTime-${month}-${year}.csv`;
+
+      document.body.appendChild(a);
+      a.click();
+
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      toast.error('No Data Found');
+    }
   };
 
   return (
     <button
-      className='ml-2 bg-blue-700 px-3 font-bold text-sm py-1.5 rounded-md shadow-md text-white'
+      className='ml-2 bg-blue-700 px-3 font-bold text-sm py-2.5 rounded-md shadow-md text-white'
       onClick={downloadCSVFile}
     >
       {' '}

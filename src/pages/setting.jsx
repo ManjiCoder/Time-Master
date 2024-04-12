@@ -8,14 +8,22 @@ import { PencilSquareIcon } from '@heroicons/react/20/solid';
 import ToggleThemeBtn from '@/components/ToggleThemeBtn';
 import ExportData from '@/components/ExportDataBtn';
 import { toggleIsShowAmt } from '@/redux/slices/dateSlice';
+import YearMonthPicker from '@/components/YearMonthPicker';
+import { monthNameToIndex } from '@/utils/dateService';
 
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 
 export default function Setting() {
+  const currentDate = new Date();
+  const initialState = {
+    year: currentDate.getFullYear(),
+    month: currentDate.getMonth() + 1,
+  };
   const { salaryAmount } = useSelector((state) => state.userSettings);
   const dispatch = useDispatch();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [expDetails, setExpDetails] = useState(initialState);
   const handleClick = () => {
     dispatch(toggleIsShowAmt());
     setIsOpen(!isOpen);
@@ -59,7 +67,17 @@ export default function Setting() {
           Theme Mode - <ToggleThemeBtn />
         </li>
         <li className='bg-slate-200 dark:bg-slate-800 shadow-md rounded-md py-4 px-4 border border-slate-400 flex space-x-2 items-center justify-start'>
-          Export Data - <ExportData />
+          Export Data -{' '}
+          <YearMonthPicker
+            defaultDate={`${initialState.year}-${initialState.month
+              .toString()
+              .padStart(2, '0')}`}
+            setExpDetails={setExpDetails}
+          />
+          <ExportData
+            year={expDetails.year || initialState.year}
+            month={expDetails.month || initialState.month}
+          />
         </li>
       </ol>
 
