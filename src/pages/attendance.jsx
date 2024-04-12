@@ -252,29 +252,14 @@ export default function Attendance() {
               onClick={() => dispatch(setSortByOrder(filterOrder.descending))}
             />
           </div>
-          {/* <button
-            type='button'
-            onClick={() => dispatch(setSortByOrder(filterOrder.ascending))}
-          >
-            <ArrowUpCircleIcon
-              className={`h-6 w-6 text-white dark:text-slate-800 bg-slate-800 dark:bg-white rounded-full shadow-md ${
-                order === filterOrder.ascending ? 'opacity-100' : 'opacity-70'
-              }`}
-            />
-          </button>
-
-          <button
-            type='button'
-            onClick={() => dispatch(setSortByOrder(filterOrder.descending))}
-          >
-            <ArrowDownCircleIcon
-              className={`h-6 w-6 text-white dark:text-slate-800 bg-slate-800 dark:bg-white rounded-full shadow-md ${
-                order === filterOrder.descending ? 'opacity-100' : 'opacity-70'
-              }`}
-            />
-          </button> */}
         </div>
       </section>
+
+      {showDates.length === 0 && (
+        <h2 className='text-xl text-center dark:text-white mt-5'>
+          No Data Found!
+        </h2>
+      )}
 
       {showDates
         .sort((a, b) => {

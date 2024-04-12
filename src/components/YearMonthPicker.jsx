@@ -17,6 +17,7 @@ export default function YearMonthPicker({ defaultDate, setExpDetails }) {
       type='month'
       onChange={handleChange}
       defaultValue={defaultDate}
+      max={defaultDate}
     />
   );
 }
