@@ -1,11 +1,13 @@
 import React from 'react';
-import { isHolidays } from '@/utils/dateService';
+import { isHolidays, monthNameToIndex } from '@/utils/dateService';
 import { useSelector } from 'react-redux';
 import { differenceInMinutes, format, getDate, parse } from 'date-fns';
 import { holidayDetails } from '@/pages/attendance';
 import { toast } from 'react-toastify';
 
-const ExportData = ({ year, month }) => {
+const ExportData = (props) => {
+  const year = props.year;
+  const month = Object.keys(monthNameToIndex)[props.month - 1];
   const attendance = useSelector((state) => state.attendance);
   // const { year, month } = useSelector((state) => state.dateSlice);
 
