@@ -135,10 +135,7 @@ export default function Attendance() {
       <main
         className={`bg-slate-300 dark:bg-slate-900 dark:text-white text-slate-800 min-h-screen pb-16 ${inter.className}`}
       >
-        <TimeSpentIndicator
-          year={year}
-          month={month}
-        />
+        <TimeSpentIndicator year={year} month={month} />
         <h2 className='text-xl text-center mt-5'>No Data Found!</h2>
       </main>
     );
@@ -180,6 +177,103 @@ export default function Attendance() {
     removeAMorPM(attendance[year][month][date]?.login),
     removeAMorPM(attendance[year][month][date]?.logout)
   );
+  const totalTimeObj = () => {
+    let payload = {
+      hrs: 0,
+      mins: 0,
+      days: 0,
+      workedDays: 0,
+      absentDays: 0,
+      totalHolidays: 0,
+      holidaysLeft: 0,
+      overTimeHrs: 0,
+      overTimeMins: 0,
+      overTimeDays: 0,
+      daysLeft: 0,
+    };
+
+    try {
+      const timeLog = attendance[year][month];
+      Object?.keys(timeLog).filter((v, i, a) => {
+        v = parseInt(v);
+        const parseDate = new Date(v);
+        const dayNum = getDate(parseDate);
+        const isHoliday = isHolidays(parseDate, dayNum);
+        const isLeave = timeLog[v].leave === '1';
+
+        if (timeLog[v].present !== '-') {
+          if (!timeLog[v].isHoliday) {
+            payload.days += 1;
+          }
+          payload.workedDays += parseFloat(timeLog[v].present);
+          // TODO:Refractor
+          let timeInHrsMin = timeLog[v].hours.split(':').filter((v, i) => {
+            v = parseInt(v);
+            if (i === 0) {
+              payload.hrs = payload.hrs + v;
+              // TODO: For Leave if (isHoliday || isLeave) {
+              if (isHoliday) {
+                payload.overTimeDays = payload.overTimeDays + 1;
+              }
+              if (isHoliday) {
+                payload.overTimeHrs = payload.overTimeHrs + v;
+              }
+            } else {
+              payload.mins = payload.mins + v;
+              if (isHoliday) {
+                payload.overTimeMins = payload.overTimeMins + v;
+              }
+            }
+          });
+        } else if (isLeave) {
+          payload.days += 1;
+          payload.workedDays += 1;
+          payload.hrs += 9;
+        }
+        if (isHoliday) {
+          payload.totalHolidays += 1;
+          if (v >= currentDate) {
+            payload.holidaysLeft += 1;
+          }
+        }
+        if (timeLog[v].present === '-' && !isHoliday && !isLeave) {
+          payload.absentDays += 1;
+        }
+        if (timeLog[v].present === '-' && !isHoliday && !isLeave) {
+          payload.daysLeft += 1;
+        }
+      });
+      return payload;
+    } catch (error) {
+      console.log('object');
+      return payload;
+    }
+  };
+
+  const {
+    days: tDays,
+    hrs,
+    mins,
+    workedDays,
+    totalHolidays,
+    holidaysLeft,
+    overTimeHrs,
+    overTimeMins,
+    overTimeDays,
+    absentDays,
+    daysLeft,
+  } = totalTimeObj();
+  const days = tDays - overTimeDays;
+
+  const totalTimeSpendInMins = hrs * 60 + mins;
+  const totalExpectedTimeSpendInMins = days * 9 * 60;
+  const timeDiffMins = -(totalExpectedTimeSpendInMins - totalTimeSpendInMins);
+  const totalMinsR = Math.abs(timeDiffMins % 60);
+  const totalHrsR = parseInt(Math.abs(timeDiffMins / 60));
+  const timeToCoverPerDay = (totalHrsR * 60 + totalMinsR) / daysLeft;
+  const hrsPerDay = Math.floor(timeToCoverPerDay / 60);
+  const minPerDay = Math.floor(timeToCoverPerDay % 60);
+  // console.log(hrsPerDay, minPerDay);
   // console.log(data);
   return (
     <main
@@ -193,7 +287,7 @@ export default function Attendance() {
           {data && !Object.values(data).includes(NaN) && (
             <>
               <p className='flex flex-col items-center justify-center text-center'>
-                <span className='font-semibold text-[18px] w-16'>
+                <span className='font-bold text-[18px] w-16'>
                   {data.hrs > 0 && data.hrs + ':'}
                   {data.mins.toString().padStart(2, '0')}:
                   {data.secs.toString().padStart(2, '0')}
@@ -227,6 +321,19 @@ export default function Attendance() {
                     isOfficeMode ? 'dark:bg-slate-700' : 'bg-slate-600'
                   } rounded-r-sm`}
                 ></span>
+              </p>
+              <p className='flex flex-col items-center justify-center text-center ml-4'>
+                <span
+                  className={`font-semibold text-[18px] ${
+                    Math.sign(timeDiffMins) === -1
+                      ? 'dark:text-red-500 text-red-600'
+                      : 'dark:text-green-500 text-green-600'
+                  }`}
+                >
+                  {hrsPerDay.toString().padStart(2, '0')}:
+                  {minPerDay.toString().padStart(2, '0')}
+                </span>
+                <span className='text-[0.57rem] -mt-1.5'>Time/Per</span>
               </p>
             </>
           )}
@@ -434,16 +541,10 @@ export default function Attendance() {
           );
         })}
       {isDeleteOpen && (
-        <DeleteModal
-          isOpen={isDeleteOpen}
-          setIsOpen={setIsDeleteOpen}
-        />
+        <DeleteModal isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} />
       )}
       {isEditOpen && (
-        <EditModal
-          isOpen={isEditOpen}
-          setIsOpen={setIsEditOpen}
-        />
+        <EditModal isOpen={isEditOpen} setIsOpen={setIsEditOpen} />
       )}
     </main>
   );
