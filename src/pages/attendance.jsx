@@ -32,6 +32,7 @@ import ToogleBtn from '@/components/HeadlessUI/ToggleBtn';
 import { toast } from 'react-toastify';
 import { useTheme } from 'next-themes';
 import Remark from '@/components/Remark';
+import ExtraTimePerDay from '@/components/ExtraTimePerDay';
 
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 
@@ -135,7 +136,10 @@ export default function Attendance() {
       <main
         className={`bg-slate-300 dark:bg-slate-900 dark:text-white text-slate-800 min-h-screen pb-16 ${inter.className}`}
       >
-        <TimeSpentIndicator year={year} month={month} />
+        <TimeSpentIndicator
+          year={year}
+          month={month}
+        />
         <h2 className='text-xl text-center mt-5'>No Data Found!</h2>
       </main>
     );
@@ -240,7 +244,9 @@ export default function Attendance() {
           payload.absentDays += 1;
         }
         if (timeLog[v].present === '-' && !isHoliday && !isLeave) {
-          payload.daysLeft += 1;
+          if (v >= currentDate.setHours(0, 0, 0, 0)) {
+            payload.daysLeft += 1;
+          }
         }
       });
       return payload;
@@ -322,6 +328,11 @@ export default function Attendance() {
                   } rounded-r-sm`}
                 ></span>
               </p>
+            </>
+          )}
+          {Math.sign(timeDiffMins) === -1 &&
+            daysLeft !== 0 &&
+            month === format(currentDate, 'MMMM') && (
               <p className='flex flex-col items-center justify-center text-center ml-4'>
                 <span
                   className={`font-semibold text-[18px] ${
@@ -330,13 +341,14 @@ export default function Attendance() {
                       : 'dark:text-green-500 text-green-600'
                   }`}
                 >
+                  <span className='text-xl'>-</span>{' '}
                   {hrsPerDay.toString().padStart(2, '0')}:
                   {minPerDay.toString().padStart(2, '0')}
                 </span>
-                <span className='text-[0.57rem] -mt-1.5'>Time/Per</span>
+                <span className='text-[0.57rem] -mt-1.5'>Extra-Time/Day</span>
               </p>
-            </>
-          )}
+            )}
+          {/* <ExtraTimePerDay /> */}
         </div>
 
         <div className='flex'>
@@ -541,10 +553,16 @@ export default function Attendance() {
           );
         })}
       {isDeleteOpen && (
-        <DeleteModal isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} />
+        <DeleteModal
+          isOpen={isDeleteOpen}
+          setIsOpen={setIsDeleteOpen}
+        />
       )}
       {isEditOpen && (
-        <EditModal isOpen={isEditOpen} setIsOpen={setIsEditOpen} />
+        <EditModal
+          isOpen={isEditOpen}
+          setIsOpen={setIsEditOpen}
+        />
       )}
     </main>
   );
