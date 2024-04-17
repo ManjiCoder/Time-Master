@@ -1,9 +1,13 @@
 import React from 'react';
+import { isHolidays } from '@/utils/dateService';
+import { format, getDate } from 'date-fns';
 import { useSelector } from 'react-redux';
 
 export default function ExtraTimePerDay() {
   const attendance = useSelector((state) => state.attendance);
   const { year, month } = useSelector((state) => state.dateSlice);
+  const currentDate = new Date();
+  const date = currentDate.setHours(0, 0, 0, 0);
 
   const totalTimeObj = () => {
     let payload = {
@@ -68,12 +72,14 @@ export default function ExtraTimePerDay() {
           payload.absentDays += 1;
         }
         if (timeLog[v].present === '-' && !isHoliday && !isLeave) {
-          payload.daysLeft += 1;
+          if (v >= date) {
+            payload.daysLeft += 1;
+          }
         }
       });
       return payload;
     } catch (error) {
-      console.log('object');
+      // console.log('object');
       return payload;
     }
   };
@@ -91,6 +97,7 @@ export default function ExtraTimePerDay() {
     absentDays,
     daysLeft,
   } = totalTimeObj();
+
   const days = tDays - overTimeDays;
 
   const totalTimeSpendInMins = hrs * 60 + mins;
@@ -101,20 +108,28 @@ export default function ExtraTimePerDay() {
   const timeToCoverPerDay = (totalHrsR * 60 + totalMinsR) / daysLeft;
   const hrsPerDay = Math.floor(timeToCoverPerDay / 60);
   const minPerDay = Math.floor(timeToCoverPerDay % 60);
-  //   alert(hrsPerDay);
-  return (
-    <p className='flex flex-col items-center justify-center text-center ml-4'>
-      <span
-        className={`font-semibold text-[18px] ${
-          Math.sign(timeDiffMins) === -1
-            ? 'dark:text-red-500 text-red-600'
-            : 'dark:text-green-500 text-green-600'
-        }`}
-      >
-        {hrsPerDay.toString().padStart(2, '0')}:
-        {minPerDay.toString().padStart(2, '0')}
-      </span>
-      <span className='text-[0.57rem] -mt-1.5'>Extra-Time/Day</span>
-    </p>
-  );
+  // console.log(hrsPerDay, minPerDay);
+
+  if (
+    Math.sign(timeDiffMins) === -1 &&
+    daysLeft !== 0 &&
+    month === format(currentDate, 'MMMM')
+  )
+    return (
+      <p className='flex flex-col items-center justify-center text-center ml-4'>
+        <span
+          className={`font-semibold text-[18px] ${
+            Math.sign(timeDiffMins) === -1
+              ? 'dark:text-red-500 text-red-600'
+              : 'dark:text-green-500 text-green-600'
+          }`}
+        >
+          <span className='text-xl'>-</span>{' '}
+          {hrsPerDay.toString().padStart(2, '0')}:
+          {minPerDay.toString().padStart(2, '0')}
+        </span>
+        <span className='text-[0.57rem] -mt-1.5'>Extra-Time/Day</span>
+      </p>
+    );
+  return null;
 }
