@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 
 const ExportData = (props) => {
   const year = props.year;
-  const month = Object.keys(monthNameToIndex)[props.month - 1];
+  const month = Object.keys(monthNameToIndex)[props.month - 1] || props.month;
   const attendance = useSelector((state) => state.attendance);
   // const { year, month } = useSelector((state) => state.dateSlice);
 
@@ -99,7 +99,6 @@ const ExportData = (props) => {
           },${obj.login.replace(/-/g, '')},${obj.logout.replace(/-/g, '')},${
             remark || ''
           }`;
-          let temp = obj.date;
           desc = `${desc}\n`;
           csvDesc += desc;
         });
@@ -113,7 +112,7 @@ const ExportData = (props) => {
           .replace(',Leave', '') +
         ',Remarks \n' +
         csvDesc;
-      console.log(csvData);
+      // console.log(csvData);
 
       // Download CSV file
       const blob = new Blob([csvData], { type: 'text/csv' });
