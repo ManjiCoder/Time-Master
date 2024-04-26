@@ -1,6 +1,12 @@
 import pdfParse from 'pdf-parse';
 
 export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(400).json({
+      error: 'Method Not Allowed!',
+    });
+  }
+
   const { pdfData } = req.body;
 
   if (!pdfData) {

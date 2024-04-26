@@ -78,22 +78,34 @@ const PdfReader = () => {
       );
     }
     if (file) {
+      const isCSVFile = file.type === 'text/csv';
+      let year;
+      let month;
       const reader = new FileReader();
 
       reader.onload = async (e) => {
         const pdfData = e.target.result.split('base64,')[1];
 
         try {
-          const response = await fetch('/api/pdf', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ pdfData }),
-          });
+          if (isCSVFile) {
+            const names = file.name.replace('.csv', '').split('-');
+            year = names[2];
+            month = names[1];
+          }
+          const response = await fetch(
+            isCSVFile ? `api/csv?q=${month}-${year}` : '/api/pdf',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': isCSVFile ? 'text/plain' : 'application/json',
+              },
+              body: isCSVFile ? e.target.result : JSON.stringify({ pdfData }),
+            }
+          );
 
           if (response.ok) {
             const data = await response.json();
+            console.log(data);
             setPdfText(data.text);
             if (data.text.toLowerCase().includes('holiday list')) {
               const payload = getHolidaysList(data.text);
@@ -133,7 +145,11 @@ const PdfReader = () => {
         }
       };
 
-      reader.readAsDataURL(file);
+      if (isCSVFile) {
+        reader.readAsText(file);
+      } else {
+        reader.readAsDataURL(file);
+      }
     }
   };
 
