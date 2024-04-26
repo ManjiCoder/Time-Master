@@ -120,7 +120,7 @@ const ExportData = (props) => {
 
       const a = document.createElement('a');
       a.href = url;
-      a.download = `MasterTime-${month}-${year}.csv`;
+      a.download = `${month}-${year}-MasterTime.csv`;
 
       document.body.appendChild(a);
       a.click();

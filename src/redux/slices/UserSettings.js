@@ -32,8 +32,8 @@ const initialState = {
   minRate: null,
   overTimeMinRate: null,
   theme: 'system',
-  sortBy: filterObj.fullMonth,
-  order: filterOrder.ascending,
+  sortBy: filterObj.today,
+  order: filterOrder.descending,
 };
 
 const userSettings = createSlice({

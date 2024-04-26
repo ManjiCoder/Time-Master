@@ -136,7 +136,10 @@ export default function Attendance() {
       <main
         className={`bg-slate-300 dark:bg-slate-900 dark:text-white text-slate-800 min-h-screen pb-16 ${inter.className}`}
       >
-        <TimeSpentIndicator year={year} month={month} />
+        <TimeSpentIndicator
+          year={year}
+          month={month}
+        />
         <h2 className='text-xl text-center mt-5'>No Data Found!</h2>
       </main>
     );
@@ -170,7 +173,8 @@ export default function Attendance() {
       const isPresent = ['0.5', '1'].includes(
         attendance[year][month][v].present
       );
-      return !isHoliday && !isLeave && !isPresent;
+      const isPastDate = v <= new Date().setHours(0, 0, 0, 0);
+      return isPastDate && !isHoliday && !isLeave && !isPresent;
     });
     showDates = absentDays;
   }
@@ -434,10 +438,16 @@ export default function Attendance() {
           );
         })}
       {isDeleteOpen && (
-        <DeleteModal isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} />
+        <DeleteModal
+          isOpen={isDeleteOpen}
+          setIsOpen={setIsDeleteOpen}
+        />
       )}
       {isEditOpen && (
-        <EditModal isOpen={isEditOpen} setIsOpen={setIsEditOpen} />
+        <EditModal
+          isOpen={isEditOpen}
+          setIsOpen={setIsEditOpen}
+        />
       )}
     </main>
   );
