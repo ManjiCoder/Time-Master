@@ -79,6 +79,7 @@ const PdfReader = () => {
     }
     if (file) {
       const isCSVFile = file.type === 'text/csv';
+      const fileTypeName = isCSVFile ? 'CSV' : 'PDF';
       let year;
       let month;
       const reader = new FileReader();
@@ -89,8 +90,8 @@ const PdfReader = () => {
         try {
           if (isCSVFile) {
             const names = file.name.replace('.csv', '').split('-');
-            year = names[2];
-            month = names[1];
+            month = names[0];
+            year = names[1];
           }
           const response = await fetch(
             isCSVFile ? `api/csv?q=${month}-${year}` : '/api/pdf',
@@ -126,22 +127,25 @@ const PdfReader = () => {
 
             toast.update(
               toastId,
-              toastifyOptions('success', 'PDF Uploaded Successfully!')
+              toastifyOptions(
+                'success',
+                `${fileTypeName} Uploaded Successfully!`
+              )
             );
             router.push('/attendance');
           } else {
             toast.update(
               toastId,
-              toastifyOptions('error', 'PDF processing failed.')
+              toastifyOptions('error', `${fileTypeName} processing failed.`)
             );
-            console.error('PDF processing failed.');
+            console.error(`${fileTypeName} processing failed.`);
           }
         } catch (error) {
           toast.update(
             toastId,
-            toastifyOptions('error', 'Error processing PDF')
+            toastifyOptions('error', `Error processing ${fileTypeName}`)
           );
-          console.error('Error processing PDF:', error);
+          console.error(`Error processing ${fileTypeName}:`, error);
         }
       };
 
@@ -165,7 +169,10 @@ const PdfReader = () => {
             isDragActive ? 'border-green-500' : 'border-gray-400'
           }`}
         >
-          <input {...getInputProps()} accept='.pdf, .csv' />
+          <input
+            {...getInputProps()}
+            accept='.pdf, .csv'
+          />
           <p className='text-center'>
             {isDragActive
               ? 'Drop the file here'
