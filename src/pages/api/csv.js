@@ -25,13 +25,20 @@ export default async function handler(req, res) {
       vl.split(',').map((v, i) => {
         if (i === 0) {
           timeStamp = new Date(`${v} ${year}`).setHours(0, 0, 0, 0);
-          payload.Date = format(timeStamp, 'yyyy-MM-dd');
+          payload.date = format(timeStamp, 'yyyy-MM-dd');
         } else {
-          payload[titles[i]] = v === '' ? '-' : v;
+          const title = titles[i].toLowerCase();
+          payload[title] = v === '' ? '-' : v;
         }
       });
-      delete payload.Difference;
+      delete payload.difference;
       timeLog[timeStamp] = payload;
+    });
+
+    Object.keys(timeLog).filter((key) => {
+      if (Object.keys(timeLog[key]).length !== 6) {
+        delete timeLog[key];
+      }
     });
 
     res.status(200).json({
