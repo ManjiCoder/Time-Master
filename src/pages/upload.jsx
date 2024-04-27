@@ -106,23 +106,27 @@ const PdfReader = () => {
 
           if (response.ok) {
             const data = await response.json();
-            console.log(data);
-            setPdfText(data.text);
-            if (data.text.toLowerCase().includes('holiday list')) {
-              const payload = getHolidaysList(data.text);
-              dispatch(setHolidays(payload));
-              // setNumPages(data.numPages);
+            // console.log(data);
+            if (isCSVFile) {
+              dispatch(setPdfData(data));
             } else {
-              const payload = getUserInfo(data.text);
-              if (
-                Object.keys(payload.data).length === 0 ||
-                !payload.month ||
-                !payload.year
-              ) {
-                throw new Error('PDF processing failed.');
+              setPdfText(data.text);
+              if (data.text.toLowerCase().includes('holiday list')) {
+                const payload = getHolidaysList(data.text);
+                dispatch(setHolidays(payload));
+                // setNumPages(data.numPages);
+              } else {
+                const payload = getUserInfo(data.text);
+                if (
+                  Object.keys(payload.data).length === 0 ||
+                  !payload.month ||
+                  !payload.year
+                ) {
+                  throw new Error('PDF processing failed.');
+                }
+                dispatch(setPdfData(payload));
+                setNumPages(data.numPages);
               }
-              dispatch(setPdfData(payload));
-              setNumPages(data.numPages);
             }
 
             toast.update(
@@ -169,10 +173,7 @@ const PdfReader = () => {
             isDragActive ? 'border-green-500' : 'border-gray-400'
           }`}
         >
-          <input
-            {...getInputProps()}
-            accept='.pdf, .csv'
-          />
+          <input {...getInputProps()} accept='.pdf, .csv' />
           <p className='text-center'>
             {isDragActive
               ? 'Drop the file here'
