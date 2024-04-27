@@ -1,5 +1,6 @@
 // PdfReader.js
 import { setPdfData } from '@/redux/slices/attendanceSlice';
+import { setMonth, setYear } from '@/redux/slices/dateSlice';
 import { setHolidays } from '@/redux/slices/holidaysSlice';
 import { getHolidaysList, getUserInfo } from '@/utils/dateService';
 import { toastifyOptions } from '@/utils/toastify';
@@ -109,6 +110,8 @@ const PdfReader = () => {
             // console.log(data);
             if (isCSVFile) {
               dispatch(setPdfData(data));
+              dispatch(setYear(data.year));
+              dispatch(setMonth(data.month));
             } else {
               setPdfText(data.text);
               if (data.text.toLowerCase().includes('holiday list')) {
@@ -125,6 +128,8 @@ const PdfReader = () => {
                   throw new Error('PDF processing failed.');
                 }
                 dispatch(setPdfData(payload));
+                dispatch(setYear(payload.year));
+                dispatch(setMonth(payload.month));
                 setNumPages(data.numPages);
               }
             }
