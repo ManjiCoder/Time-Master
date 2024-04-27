@@ -27,10 +27,12 @@ export default async function handler(req, res) {
           timeStamp = new Date(`${v} ${year}`).setHours(0, 0, 0, 0);
           payload.date = format(timeStamp, 'yyyy-MM-dd');
         } else {
-          const title = titles[i].toLowerCase();
+          let title = titles[i].toLowerCase().trim();
+          title = title === 'remarks' ? 'remark' : title;
           payload[title] = v === '' ? '-' : v;
         }
       });
+
       delete payload.difference;
       timeLog[timeStamp] = payload;
     });
@@ -38,6 +40,19 @@ export default async function handler(req, res) {
     Object.keys(timeLog).filter((key) => {
       if (Object.keys(timeLog[key]).length !== 6) {
         delete timeLog[key];
+      } else {
+        timeLog[key].leave = ['Leave', 'Floating Leave'].includes(
+          timeLog[key].remark
+        )
+          ? '1'
+          : '-';
+        const isRemark = timeLog[key].remark === '-';
+        if (isRemark) {
+          delete timeLog[key].remark;
+        }
+        if (timeLog[key].remark === 'Holiday') {
+          delete timeLog[key].remark;
+        }
       }
     });
 
