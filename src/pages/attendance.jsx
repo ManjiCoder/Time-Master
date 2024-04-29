@@ -295,13 +295,19 @@ export default function Attendance() {
             (isAbsent && 'Absent') ||
             null;
 
+          if (remark && remark.includes('Others - ')) {
+            remark = remark.replaceAll('Others - ', '');
+          }
           if (isHoliday) {
-            if (obj.remark) {
-              remark =
-                obj.remark !== '' ? `Holiday - ${obj.remark}` : 'Holiday';
+            if (obj.remark && obj.remark !== '') {
+              remark = `Holiday - ${
+                obj.remark.includes('Holiday - ')
+                  ? obj.remark.replaceAll('Holiday - ', '')
+                  : obj.remark
+              }`;
             } else {
               if (holidayDetails[parseInt(date)]) {
-                remark = holidayDetails[parseInt(date)].desc;
+                remark = `Holiday - ${holidayDetails[parseInt(date)].desc}`;
               } else {
                 remark = 'Holiday';
               }

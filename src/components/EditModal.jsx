@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import ListBoxComp from './HeadlessUI/ListBoxComp';
 
-const months = {
+export const remarkObj = {
   leave: 'Leave',
   floatingLeave: 'Floating Leave',
   workFromHome: 'Work From Home',
@@ -262,7 +262,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
                     </div>
                     <div className='time flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
                       <ListBoxComp
-                        options={months}
+                        options={remarkObj}
                         note={note}
                         setNote={setNote}
                         setIsLeave={setIsLeave}

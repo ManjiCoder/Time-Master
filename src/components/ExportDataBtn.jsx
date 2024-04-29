@@ -70,11 +70,19 @@ const ExportData = (props) => {
           delete obj?.isHoliday;
 
           let remark = obj.remark;
+          // This will lead to Others - test to test in Remark
+          // if (remark && remark.includes('Others - ')) {
+          //   remark = remark.replaceAll('Others - ', '');
+          // }
           if (isHoliday) {
             if (holidayDetails[parseInt(date)]) {
-              remark = holidayDetails[parseInt(date)].desc;
+              remark = `Holiday - ${holidayDetails[parseInt(date)].desc}`;
             } else if (obj.remark && obj.remark !== '') {
-              remark = `Holiday - ${obj.remark}`;
+              remark = `Holiday - ${
+                obj.remark.includes('Holiday - ')
+                  ? obj.remark.replaceAll('Holiday - ', '')
+                  : obj.remark
+              }`;
             } else {
               remark = 'Holiday';
             }

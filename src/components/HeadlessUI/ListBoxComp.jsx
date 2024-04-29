@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { remarkObj } from '../EditModal';
 
 export default function ListBoxComp(props) {
   const options = Object.values(props.options);
@@ -22,8 +23,14 @@ export default function ListBoxComp(props) {
         value={selected}
         onChange={(e) => {
           setSelected(e);
-          if (['Leave', 'Floating Leave'].includes(e)) {
-            setIsLeave(true);
+          if (
+            [
+              remarkObj.leave,
+              remarkObj.floatingLeave,
+              remarkObj.workFromHome,
+            ].includes(e)
+          ) {
+            if (e !== remarkObj.workFromHome) setIsLeave(true);
             setLoginTime('09:00');
             setLogoutTime('18:00');
             setHoursTime('09:00');
