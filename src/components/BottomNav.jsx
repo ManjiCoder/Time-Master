@@ -60,10 +60,14 @@ export default function BottomNavbar() {
               className={`flex flex-col justify-center items-center text-xs ${
                 pathname === href
                   ? 'text-slate-800 dark:text-white'
-                  : 'text-gray-400'
-              } hover:scale-90 hover:dark:text-white hover:text-slate-800 transition-all`}
+                  : 'text-gray-400 hover:scale-110 hover:dark:text-white hover:text-slate-800'
+              }  transition-all`}
             >
-              <motion.span className='h-7 w-7'>{icon}</motion.span>
+              <motion.span
+                className={`${pathname === href ? 'h-8 w-8' : 'h-7 w-7'}`}
+              >
+                {icon}
+              </motion.span>
               {linkName}
             </Link>
           </motion.li>

@@ -1,14 +1,34 @@
-import { toggleOfficeMode } from '@/redux/slices/UserSettings';
+import { setIsOfficeMode, toggleOfficeMode } from '@/redux/slices/UserSettings';
 import { Switch } from '@headlessui/react';
 import { BriefcaseIcon, HomeIcon } from '@heroicons/react/20/solid';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
-export default function ToogleBtn() {
+export default function ToogleBtn({ loginTime = '-' }) {
   const { isOfficeMode } = useSelector((state) => state.userSettings);
+  const attendance = useSelector((state) => state.attendance);
+  const { month, year } = useSelector((state) => state.dateSlice);
   const dispatch = useDispatch();
+
   // Office Mode
   const handleOfficeMode = () => {
-    dispatch(toggleOfficeMode());
+    const isTodayLogin = (() => {
+      try {
+        return (
+          attendance[year][month][new Date().setHours(0, 0, 0, 0).toString()]
+            .login !== '-' || !['', '-'].includes(loginTime)
+        );
+      } catch (error) {
+        return !['', '-'].includes(loginTime);
+      }
+    })();
+
+    if (isTodayLogin) {
+      dispatch(toggleOfficeMode());
+    } else {
+      toast.warn('Please Login First!');
+      dispatch(setIsOfficeMode(false));
+    }
   };
 
   return (

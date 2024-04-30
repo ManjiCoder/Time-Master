@@ -96,7 +96,7 @@ export default function Home() {
         <section className='flex justify-between items-center'>
           <h3 className='text-xl font-medium'>Welcome </h3>
           {/* ToggleBtn */}
-          <ToogleBtn />
+          <ToogleBtn loginTime={loginTime} />
         </section>
 
         <form

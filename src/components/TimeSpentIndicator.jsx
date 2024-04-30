@@ -7,6 +7,7 @@ import { isHolidays, monthNameToIndex } from '@/utils/dateService';
 import { getDate, getDaysInMonth } from 'date-fns';
 import { calculateSalary } from '@/utils/salary';
 import { toast } from 'react-toastify';
+import { useMotionValueEvent, useScroll, motion } from 'framer-motion';
 
 export const formatAmt = {
   style: 'currency',
@@ -32,6 +33,18 @@ export default function TimeSpentIndicator({
     .filter((v) => v !== 'undefined')
     .reverse();
   const { pathname } = useRouter();
+
+  // For Hiding/Showing Heading based on scrollY
+  const [hidden, setHidden] = useState(false);
+  const { scrollY } = useScroll();
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    const previous = scrollY.getPrevious();
+    if (latest > previous && latest > 150) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+  });
   // const noOfDaysInMonth = getDaysInMonth(
   //   new Date().setFullYear(year, monthNameToIndex[month])
   // );
@@ -191,7 +204,17 @@ export default function TimeSpentIndicator({
       : -(expectedSalaryAmount - salaryAmount);
 
   return (
-    <header
+    <motion.header
+      variants={{
+        visible: {
+          y: 0,
+        },
+        hidden: {
+          y: '-100%',
+        },
+      }}
+      animate={hidden ? 'hidden' : 'visible'}
+      transition={{ duration: 0.3, ease: 'easeInOut' }}
       className={`sticky top-0 w-full z-10 space-x-1 p-2 text-center shadow-md flex items-center justify-evenly text-slate-950 dark:text-white bg-white/70 dark:bg-slate-700/40 backdrop-blur-sm dark:backdrop-brightness-75 ${extraStyle}`}
     >
       <h1
@@ -258,6 +281,6 @@ export default function TimeSpentIndicator({
           <ListBoxMonths />
         </>
       )}
-    </header>
+    </motion.header>
   );
 }
