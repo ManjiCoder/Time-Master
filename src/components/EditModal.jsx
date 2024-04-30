@@ -147,8 +147,16 @@ export default function EditModal({ isOpen, setIsOpen }) {
 
   return (
     <>
-      <Transition appear show={true} as={Fragment}>
-        <Dialog as='div' className='relative z-10' onClose={closeModal}>
+      <Transition
+        appear
+        show={true}
+        as={Fragment}
+      >
+        <Dialog
+          as='div'
+          className='relative z-10'
+          onClose={closeModal}
+        >
           <Transition.Child
             as={Fragment}
             enter='ease-out duration-300'
@@ -253,7 +261,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
                     </div>
                     <div className='time flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
                       <ListBoxComp
-                        note={note}
+                        note={note.includes('Others') ? 'Others' : note}
                         loginTime={loginTime}
                         logoutTime={logoutTime}
                         hoursTime={hoursTime}
@@ -265,7 +273,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         setOtherNote={setOtherNote}
                       />
 
-                      {note === 'Others' && (
+                      {note.includes('Others') && (
                         <input
                           className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 w-36 dark:bg-slate-700 pl-3 capitalize'
                           type='search'
