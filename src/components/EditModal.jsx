@@ -43,7 +43,6 @@ export default function EditModal({ isOpen, setIsOpen }) {
   };
   const otherRemark = getOtherRemark(remark);
   const [otherNote, setOtherNote] = useState(otherRemark);
-
   function closeModal() {
     setIsOpen(false);
   }
@@ -148,16 +147,8 @@ export default function EditModal({ isOpen, setIsOpen }) {
 
   return (
     <>
-      <Transition
-        appear
-        show={true}
-        as={Fragment}
-      >
-        <Dialog
-          as='div'
-          className='relative z-10'
-          onClose={closeModal}
-        >
+      <Transition appear show={true} as={Fragment}>
+        <Dialog as='div' className='relative z-10' onClose={closeModal}>
           <Transition.Child
             as={Fragment}
             enter='ease-out duration-300'
@@ -262,13 +253,12 @@ export default function EditModal({ isOpen, setIsOpen }) {
                     </div>
                     <div className='time flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
                       <ListBoxComp
-                        options={remarkObj}
                         note={note}
-                        setNote={setNote}
-                        setIsLeave={setIsLeave}
                         loginTime={loginTime}
                         logoutTime={logoutTime}
                         hoursTime={hoursTime}
+                        setNote={setNote}
+                        setIsLeave={setIsLeave}
                         setLoginTime={setLoginTime}
                         setLogoutTime={setLogoutTime}
                         setHoursTime={setHoursTime}

@@ -7,6 +7,8 @@ import {
 } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { motion } from 'framer-motion';
+import { pageAnimationVariants } from '@/utils/Animation';
 
 const navList = [
   {
@@ -34,25 +36,39 @@ const navList = [
 export default function BottomNavbar() {
   const { pathname } = useRouter();
   return (
-    <nav className="print:hidden fixed border-t-[1px]  bottom-0 py-2 z-50 bg-slate-200 dark:bg-slate-900 w-full dark:text-white border-white dark:border-slate-400">
-      <hr className="hidden bg-slate-200 dark:bg-white mb-2" />
-      <ul className="flex gap-2 items-center justify-evenly">
-        {navList.map(({ linkName, icon, href }) => (
-          <li key={linkName} className={`font-semibold text-lg px-4`}>
+    <motion.nav
+      variants={pageAnimationVariants}
+      initial='initial'
+      animate='animate'
+      className='print:hidden fixed border-t-[1px]  bottom-0 py-2 z-50 bg-slate-200 dark:bg-slate-900 w-full dark:text-white border-white dark:border-slate-400'
+    >
+      <hr className='hidden bg-slate-200 dark:bg-white mb-2' />
+      <ul className='flex gap-2 items-center justify-evenly'>
+        {navList.map(({ linkName, icon, href }, index) => (
+          <motion.li
+            key={linkName}
+            className={`font-semibold text-lg px-4`}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            viewport={{
+              once: true,
+            }}
+            transition={{ duration: 0.2, delay: 0.2 * index }}
+          >
             <Link
               href={href}
               className={`flex flex-col justify-center items-center text-xs ${
                 pathname === href
                   ? 'text-slate-800 dark:text-white'
                   : 'text-gray-400'
-              }`}
+              } hover:scale-90 hover:dark:text-white hover:text-slate-800 transition-all`}
             >
-              <span className="h-7 w-7">{icon}</span>
+              <motion.span className='h-7 w-7'>{icon}</motion.span>
               {linkName}
             </Link>
-          </li>
+          </motion.li>
         ))}
       </ul>
-    </nav>
+    </motion.nav>
   );
 }

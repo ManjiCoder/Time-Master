@@ -4,7 +4,7 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { remarkObj } from '../EditModal';
 
 export default function ListBoxComp(props) {
-  const options = Object.values(props.options);
+  const options = Object.values(remarkObj);
   const {
     note: selected,
     loginTime,
@@ -30,7 +30,7 @@ export default function ListBoxComp(props) {
               remarkObj.workFromHome,
             ].includes(e)
           ) {
-            if (e !== remarkObj.workFromHome) setIsLeave(true);
+            setIsLeave(e !== remarkObj.workFromHome);
             setLoginTime('09:00');
             setLogoutTime('18:00');
             setHoursTime('09:00');
