@@ -24,7 +24,7 @@ export default async function handler(req, res) {
       const payload = {};
       vl.split(',').map((v, i) => {
         if (i === 0) {
-          timeStamp = new Date(new Date(`${v} ${year}`).toISOString()).setHours(0, 0, 0, 0);
+          timeStamp = new Date(new Date(`${v} ${year}`).toUTCString()).setHours(0, 0, 0, 0);
           payload.date = format(timeStamp, 'yyyy-MM-dd');
         } else {
           let title = titles[i].toLowerCase().trim();
