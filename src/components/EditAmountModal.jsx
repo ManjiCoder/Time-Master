@@ -2,7 +2,7 @@ import { setMinRate, setSalaryAmount } from '@/redux/slices/UserSettings';
 import { toggleIsShowAmt } from '@/redux/slices/dateSlice';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/20/solid';
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -24,11 +24,13 @@ export default function EditAmountModal({ isOpen, setIsOpen }) {
   const dispatch = useDispatch();
   const { salaryAmount } = useSelector((state) => state.userSettings);
   const [salaryAmt, setSalaryAmt] = useState(formatNumber(salaryAmount));
+  const inputRef = useRef(null);
 
   function closeModal() {
     setIsOpen(false);
     dispatch(toggleIsShowAmt());
   }
+
   const handleEdit = () => {
     dispatch(setSalaryAmount(parseFloat(salaryAmt.replace(/,/g, ''))));
     dispatch(setMinRate(salaryAmt / 30 / 9 / 60));
@@ -39,6 +41,11 @@ export default function EditAmountModal({ isOpen, setIsOpen }) {
   const handleChange = (e) => {
     setSalaryAmt(formatNumber(e.target.value));
   };
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
@@ -87,9 +94,10 @@ export default function EditAmountModal({ isOpen, setIsOpen }) {
                       <input
                         className='outline-none focus-within:ring-2 p-4 rounded-md shadow-md dark:bg-slate-700'
                         type='tel'
-                        placeholder='Enter your salary amount'
+                        placeholder='₹ Enter your salary amount'
                         onChange={handleChange}
-                        value={'₹' + salaryAmt || ''}
+                        value={salaryAmt ? `₹ ${salaryAmt}` : ''}
+                        ref={inputRef}
                       />
                     </div>
 
