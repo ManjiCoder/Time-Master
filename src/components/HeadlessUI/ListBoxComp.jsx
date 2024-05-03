@@ -15,7 +15,6 @@ export default function ListBoxComp(props) {
     setLoginTime,
     setLogoutTime,
     setHoursTime,
-    setOtherNote,
   } = props;
   return (
     <div className='w-36'>
@@ -34,7 +33,6 @@ export default function ListBoxComp(props) {
             setLoginTime('09:00');
             setLogoutTime('18:00');
             setHoursTime('09:00');
-            setOtherNote('');
           } else {
             setIsLeave(!true);
             setLoginTime(loginTime);

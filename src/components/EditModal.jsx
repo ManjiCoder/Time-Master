@@ -43,6 +43,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
   };
   const otherRemark = getOtherRemark(remark);
   const [otherNote, setOtherNote] = useState(otherRemark);
+
   function closeModal() {
     setIsOpen(false);
   }
@@ -93,6 +94,8 @@ export default function EditModal({ isOpen, setIsOpen }) {
       editedData.remark = `${remarkObj.others} - ${otherNote}`;
     } else if (otherNote === '' && note.includes(remarkObj.others)) {
       editedData.remark = remarkObj.others;
+    } else if (note !== '') {
+      editedData.remark = note;
     } else {
       delete editedData.remark;
     }
@@ -265,7 +268,6 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         setLoginTime={setLoginTime}
                         setLogoutTime={setLogoutTime}
                         setHoursTime={setHoursTime}
-                        setOtherNote={setOtherNote}
                       />
 
                       {note.includes('Others') && (

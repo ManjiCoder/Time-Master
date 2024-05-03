@@ -339,9 +339,14 @@ export function getHolidaysList(str) {
 }
 
 export const isHolidays = (parseDate, dayNum) => {
-  return (
-    (isSaturday(parseDate) && (dayNum <= 7 || (dayNum > 14 && dayNum <= 21))) ||
-    isSunday(parseDate) ||
-    Object.values(holidays).includes(format(parseDate, 'dd-MMM-yyyy'))
-  );
+  try {
+    return (
+      (isSaturday(parseDate) &&
+        (dayNum <= 7 || (dayNum > 14 && dayNum <= 21))) ||
+      isSunday(parseDate) ||
+      Object.values(holidays).includes(format(parseDate, 'dd-MMM-yyyy'))
+    );
+  } catch (error) {
+    return false;
+  }
 };
