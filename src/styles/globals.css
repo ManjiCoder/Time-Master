@@ -27,3 +27,8 @@ body {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: saturate(180%) blur(4px);
 } */
+
+html,
+body {
+  scroll-behavior: smooth;
+}

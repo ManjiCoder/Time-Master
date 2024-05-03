@@ -34,6 +34,7 @@ import { useTheme } from 'next-themes';
 import Remark from '@/components/Remark';
 import ExtraTimePerDay from '@/components/ExtraTimePerDay';
 import { motion } from 'framer-motion';
+import ScrollToTopBtn from '@/components/ScrollToTopBtn';
 
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 
@@ -457,6 +458,7 @@ export default function Attendance() {
       {isEditOpen && (
         <EditModal isOpen={isEditOpen} setIsOpen={setIsEditOpen} />
       )}
+      <ScrollToTopBtn/>
     </main>
   );
 }
