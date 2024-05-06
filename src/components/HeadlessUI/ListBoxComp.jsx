@@ -1,21 +1,35 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect, useRef } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { remarkObj } from '../EditModal';
 
 export default function ListBoxComp(props) {
   const options = Object.values(remarkObj);
+  const inputRef = useRef(null);
   const {
     note: selected,
     loginTime,
     logoutTime,
     hoursTime,
     setNote: setSelected,
+    otherNote,
     setIsLeave,
     setLoginTime,
     setLogoutTime,
     setHoursTime,
+    setOtherNote,
   } = props;
+
+  const setFocus = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
+  useEffect(() => {
+    setFocus();
+  }, []);
+
   return (
     <div className='w-36'>
       <Listbox
@@ -33,6 +47,8 @@ export default function ListBoxComp(props) {
             setLoginTime('09:00');
             setLogoutTime('18:00');
             setHoursTime('09:00');
+          } else if (e === remarkObj.others) {
+            setFocus();
           } else {
             setIsLeave(!true);
             setLoginTime(loginTime);
@@ -93,6 +109,18 @@ export default function ListBoxComp(props) {
             </Listbox.Options>
           </Transition>
         </div>
+
+        {selected === remarkObj.others && (
+          <input
+            className='outline-none mt-2 focus-within:ring-2 rounded-md shadow-md px-1 py-2 w-36 dark:bg-slate-700 pl-3 capitalize'
+            type='search'
+            onChange={(e) => setOtherNote(e.target.value)}
+            placeholder='Remark'
+            maxLength={100}
+            value={otherNote}
+            ref={inputRef}
+          />
+        )}
       </Listbox>
     </div>
   );

@@ -268,9 +268,11 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         setLoginTime={setLoginTime}
                         setLogoutTime={setLogoutTime}
                         setHoursTime={setHoursTime}
+                        otherNote={otherNote}
+                        setOtherNote={setOtherNote}
                       />
 
-                      {note.includes('Others') && (
+                      {/* {note.includes('Others') && (
                         <input
                           className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 w-36 dark:bg-slate-700 pl-3 capitalize'
                           type='search'
@@ -279,7 +281,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
                           maxLength={100}
                           value={otherNote}
                         />
-                      )}
+                      )} */}
 
                       <h4 className='text-lg font-medium'>Remark</h4>
                     </div>
