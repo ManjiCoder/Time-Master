@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { csvToJSON } from '@/utils/csvToJson';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -16,46 +16,8 @@ export default async function handler(req, res) {
     const query = req.query.q.split('-');
     let year = parseInt(query[1]);
     let month = query[0];
-    const timeLog = {};
-    const csvText = csvData.split('\n');
-    const titles = csvText.shift().split(',');
-    csvText.map((vl) => {
-      let timeStamp;
-      const payload = {};
-      vl.split(',').map((v, i) => {
-        if (i === 0) {
-          timeStamp = new Date(new Date(`${v} ${year}`)).getTime();
-          payload.date = format(timeStamp, 'yyyy-MM-dd');
-        } else {
-          let title = titles[i].toLowerCase().trim();
-          title = title === 'remarks' ? 'remark' : title;
-          payload[title] = v === '' ? '-' : v;
-        }
-      });
-
-      delete payload.difference;
-      timeLog[timeStamp] = payload;
-    });
-
-    Object.keys(timeLog).filter((key) => {
-      if (Object.keys(timeLog[key]).length !== 6) {
-        delete timeLog[key];
-      } else {
-        timeLog[key].leave = ['Leave', 'Floating Leave'].includes(
-          timeLog[key].remark
-        )
-          ? '1'
-          : '-';
-        const isRemark = timeLog[key].remark === '-';
-        if (isRemark) {
-          delete timeLog[key].remark;
-        }
-        if (timeLog[key].remark === 'Holiday') {
-          delete timeLog[key].remark;
-        }
-      }
-    });
-
+    const timeLog = csvToJSON(year, csvData);
+    // console.log({ timeLog });
     res.status(200).json({
       year,
       month,

@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { isHolidays } from '@/utils/dateService';
+import { calculateSalary } from '@/utils/salary';
+import { getDate } from 'date-fns';
+import { motion, useMotionValueEvent, useScroll } from 'framer-motion';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ListBoxMonths from './ListBoxMonths';
 import ListBoxYears from './ListBoxYears';
-import { useRouter } from 'next/router';
-import { isHolidays, monthNameToIndex } from '@/utils/dateService';
-import { getDate, getDaysInMonth } from 'date-fns';
-import { calculateSalary } from '@/utils/salary';
-import { toast } from 'react-toastify';
-import { useMotionValueEvent, useScroll, motion } from 'framer-motion';
 
 export const formatAmt = {
   style: 'currency',
@@ -154,7 +153,7 @@ export default function TimeSpentIndicator({
     overTimeDays,
     absentDays,
   } = totalTimeSpent;
-  const days = tDays - overTimeDays;
+  const days = tDays - overTimeDays === 0 ? tDays : tDays - overTimeDays;
 
   const holidaysTimeInMins = (totalHolidays - holidaysLeft) * 9 * 60;
   const overTimeInMins = overTimeHrs * 60 + overTimeMins;
