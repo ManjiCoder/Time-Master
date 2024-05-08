@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
 
 const initialState = {};
 
@@ -63,6 +64,17 @@ const attendanceSlice = createSlice({
       // console.log(state[year][month][date]);
       state[year][month][date] = data;
     },
+    deleteByMonthYear: (state, action) => {
+      const { year, month } = action.payload;
+      try {
+        if (state[year][month]) {
+          delete state[year][month];
+          toast.success(`Deleted Successfully!`);
+        }
+      } catch (error) {
+        toast.error(`No Data Found!`);
+      }
+    },
     filterDate: (state, action) => {
       const { year, month } = action.payload;
       // state[year][month] =
@@ -75,6 +87,7 @@ export const {
   setLogin,
   setPdfData,
   deleteByDate,
+  deleteByMonthYear,
   editByDate,
   filterDate,
 } = attendanceSlice.actions;

@@ -1,14 +1,13 @@
-import React from 'react';
+import { pageAnimationVariants } from '@/utils/Animation';
 import {
-  HomeIcon,
-  IdentificationIcon,
   CogIcon,
   FolderPlusIcon,
+  HomeIcon,
+  IdentificationIcon,
 } from '@heroicons/react/20/solid';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { motion } from 'framer-motion';
-import { pageAnimationVariants } from '@/utils/Animation';
 
 const navList = [
   {
@@ -40,7 +39,7 @@ export default function BottomNavbar() {
       variants={pageAnimationVariants}
       initial='initial'
       animate='animate'
-      className='print:hidden fixed border-t-[1px]  bottom-0 py-2 z-50 bg-slate-200 dark:bg-slate-900 w-full dark:text-white border-white dark:border-slate-400'
+      className='print:hidden fixed border-t-[1px]  bottom-0 py-2 z-10 bg-slate-200 dark:bg-slate-900 w-full dark:text-white border-white dark:border-slate-400'
     >
       <hr className='hidden bg-slate-200 dark:bg-white mb-2' />
       <ul className='flex gap-2 items-center justify-evenly'>

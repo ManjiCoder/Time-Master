@@ -142,7 +142,7 @@ const ExportData = (props) => {
 
   return (
     <button
-      className='ml-2 bg-blue-700 px-3 font-bold text-sm py-2.5 rounded-md shadow-md text-white'
+      className='ml-2 w-24 bg-blue-700 px-3 font-bold text-sm py-2.5 rounded-md shadow-md text-white'
       onClick={downloadCSVFile}
     >
       {' '}

@@ -1,15 +1,17 @@
 import { Baloo_Bhai_2 } from 'next/font/google';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import EditAmountModal from '@/components/EditAmountModal';
-import { PencilSquareIcon } from '@heroicons/react/20/solid';
-import ToggleThemeBtn from '@/components/ToggleThemeBtn';
 import ExportData from '@/components/ExportDataBtn';
-import { toggleIsShowAmt } from '@/redux/slices/dateSlice';
+import MyModal from '@/components/HeadlessUI/Modal';
+import ToggleThemeBtn from '@/components/ToggleThemeBtn';
 import YearMonthPicker from '@/components/YearMonthPicker';
-import { monthNameToIndex } from '@/utils/dateService';
+import { deleteByMonthYear } from '@/redux/slices/attendanceSlice';
+import { toggleIsShowAmt } from '@/redux/slices/dateSlice';
+import { PencilSquareIcon } from '@heroicons/react/20/solid';
+import { toast } from 'react-toastify';
 
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 
@@ -24,9 +26,39 @@ export default function Setting() {
 
   const [isOpen, setIsOpen] = useState(false);
   const [expDetails, setExpDetails] = useState(initialState);
+  const [clearDetails, setClearDetails] = useState({
+    ...initialState,
+    year: null,
+    month: null,
+  });
+
+  let [isOpenModal, setIsOpenModal] = useState(false);
+
+  function closeModal() {
+    setIsOpenModal(false);
+  }
+
+  function openModal() {
+    setIsOpenModal(true);
+  }
+
   const handleClick = () => {
     dispatch(toggleIsShowAmt());
     setIsOpen(!isOpen);
+  };
+  const handleDeleteByMonth = () => {
+    const { month, year } = clearDetails;
+    if (month && year) {
+      dispatch(
+        deleteByMonthYear({
+          month: month,
+          year: year,
+        })
+      );
+    } else {
+      toast.warn(`Select The Month First!`);
+    }
+    closeModal();
   };
 
   return (
@@ -46,20 +78,13 @@ export default function Setting() {
         </li> */}
         <li className='bg-slate-200 dark:bg-slate-800 shadow-md rounded-md py-4 px-4 border border-slate-400 flex space-x-2 items-center justify-start'>
           Salary Amount :
-          <span
-            className='ml-1 font-semibold'
-            hidden
-          >
+          <span className='ml-1 font-semibold' hidden>
             {salaryAmount}
           </span>
           <span className='ml-1 relative top-1.5 text-center text-2xl leading-[0] font-bold'>
             *********
           </span>
-          <button
-            className='outline-none'
-            type='button'
-            onClick={handleClick}
-          >
+          <button className='outline-none' type='button' onClick={handleClick}>
             <PencilSquareIcon className='w-5 mb-1 text-blue-600' />
           </button>
         </li>
@@ -79,15 +104,42 @@ export default function Setting() {
             month={expDetails.month || initialState.month}
           />
         </li>
+        <li className='bg-slate-200 dark:bg-slate-800 shadow-md rounded-md py-4 px-4 border border-slate-400 flex space-x-2 items-center justify-start'>
+          Delete Data - <YearMonthPicker setExpDetails={setClearDetails} />
+          <button
+            type='button'
+            onClick={() => {
+              const { month, year } = clearDetails;
+              if (month && year) {
+                openModal();
+              } else {
+                toast.warn(`Select The Month First!`);
+              }
+            }}
+            className='ml-2 w-24 bg-red-700 px-3 font-bold text-sm py-2.5 rounded-md shadow-md text-white'
+          >
+            Delete
+          </button>
+        </li>
       </ol>
-
-      {/* Set Amount Modal */}
-      {isOpen && (
-        <EditAmountModal
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
+      {isOpenModal && (
+        <MyModal
+          title={`Delete ${clearDetails.month}-${clearDetails.year} Records`}
+          desc={
+            <p>
+              Are you sure you want to delete {clearDetails.month}-
+              {clearDetails.year}?
+              <br />
+              All of your data will be permanently removed.
+              <br /> This action cannot be undone.
+            </p>
+          }
+          closeModal={closeModal}
+          handleClick={handleDeleteByMonth}
         />
       )}
+      {/* Set Amount Modal */}
+      {isOpen && <EditAmountModal isOpen={isOpen} setIsOpen={setIsOpen} />}
     </main>
   );
 }
