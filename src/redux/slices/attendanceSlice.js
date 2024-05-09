@@ -70,6 +70,8 @@ const attendanceSlice = createSlice({
         if (state[year][month]) {
           delete state[year][month];
           toast.success(`Deleted Successfully!`);
+        } else {
+          toast.error(`No Data Found!`);
         }
       } catch (error) {
         toast.error(`No Data Found!`);

@@ -32,7 +32,7 @@ export default function Setting() {
     month: null,
   });
 
-  let [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   function closeModal() {
     setIsOpenModal(false);
