@@ -51,8 +51,8 @@ export default function MyModal({ title, desc, closeModal, handleClick }) {
                       >
                         {title}
                       </Dialog.Title>
-                      <div className='mt-2'>
-                        <p className='text-sm leading-relaxed text-gray-500 dark:text-slate-300'>{desc}</p>
+                      <div className='mt-2 text-sm leading-relaxed text-gray-500 dark:text-slate-300'>
+                        {desc}
                       </div>
                     </div>
                   </div>
