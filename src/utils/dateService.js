@@ -218,8 +218,8 @@ export function getUserInfo(text) {
       let pmLastIndex = str.lastIndexOf('PM') + 2;
       const isBothAM = str.toUpperCase().match(/AM/g);
       const isBothPM = str.toUpperCase().match(/PM/g);
-      // let dateInTime = new Date(date).setHours(0, 0, 0, 0);
-      let dateInTime = format(new Date(date), 'yyyy-MM-dd');
+      let dateInTime = new Date(date).setHours(0, 0, 0, 0);
+      // let dateInTime = format(new Date(date), 'yyyy-MM-dd');
       // let hours = isPresent ? str.slice(11, 16) : str.slice(11, 12);
       // let isHoursEmpty = hours === '-';
 

@@ -9,8 +9,10 @@ export const csvToJSON = (year, csvData) => {
     const payload = {};
     vl.split(',').map((v, i) => {
       if (i === 0) {
-        timeStamp = format(new Date(new Date(`${v} ${year}`)), 'yyyy-MM-dd');
-        payload.date = timeStamp;
+        timeStamp = new Date(new Date(`${v} ${year}`)).getTime();
+        payload.date = format(timeStamp, 'yyyy-MM-dd');
+        // timeStamp = format(new Date(new Date(`${v} ${year}`)), 'yyyy-MM-dd');
+        // payload.date = timeStamp;
       } else {
         let title = titles[i].toLowerCase().trim();
         title = title === 'remarks' ? 'remark' : title;
