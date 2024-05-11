@@ -1,11 +1,9 @@
-import { Baloo_Bhai_2 } from 'next/font/google';
-import ToogleBtn from '@/components/HeadlessUI/ToggleBtn';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
-import { format } from 'date-fns';
-import { setLogin } from '@/redux/slices/attendanceSlice';
 import CurrentTimeSpent from '@/components/CurrentTimeSpent';
+import ToogleBtn from '@/components/HeadlessUI/ToggleBtn';
+import TimeSpentIndicator from '@/components/TimeSpentIndicator';
+import ToggleCheckBox from '@/components/ToggleCheckBox';
+import { setIsOfficeMode } from '@/redux/slices/UserSettings';
+import { setLogin } from '@/redux/slices/attendanceSlice';
 import {
   calculateTimeSpent,
   format24To12,
@@ -13,9 +11,11 @@ import {
   isLogoutTime,
   removeAMorPM,
 } from '@/utils/dateService';
-import TimeSpentIndicator from '@/components/TimeSpentIndicator';
-import ToggleCheckBox from '@/components/ToggleCheckBox';
-import { setIsOfficeMode, toggleOfficeMode } from '@/redux/slices/UserSettings';
+import { format } from 'date-fns';
+import { Baloo_Bhai_2 } from 'next/font/google';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 
@@ -49,8 +49,15 @@ export default function Home() {
       isOfficeMode ? format(new Date(), 'HH:mm') : logoutTime
     );
 
-    const isTodayData = attendance[year][month][date];
+    const isTodayData = (() => {
+      try {
+        return attendance[year][month][date];
+      } catch (error) {
+        return {};
+      }
+    })();
     // console.log(isTodayData);
+
     const payload = {
       date: format(date, 'yyyy-MM-dd'),
       login: format24To12(loginTime),

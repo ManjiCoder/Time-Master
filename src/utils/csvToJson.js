@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+const serverTimeDiff = 19800000;
 
 export const csvToJSON = (year, csvData) => {
   const timeLog = {};
@@ -9,7 +10,7 @@ export const csvToJSON = (year, csvData) => {
     const payload = {};
     vl.split(',').map((v, i) => {
       if (i === 0) {
-        timeStamp = new Date(new Date(`${v} ${year}`)).getTime();
+        timeStamp = new Date(new Date(`${v} ${year}`)).setHours(0,0,0,0) - serverTimeDiff;
         payload.date = format(timeStamp, 'yyyy-MM-dd');
         // timeStamp = format(new Date(new Date(`${v} ${year}`)), 'yyyy-MM-dd');
         // payload.date = timeStamp;

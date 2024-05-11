@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setLogin } from '../redux/slices/attendanceSlice';
-import { format } from 'date-fns';
 import { calculateTimeSpent, format24To12 } from '@/utils/dateService';
+import { format } from 'date-fns';
+import { setLogin } from '../redux/slices/attendanceSlice';
 
 export default function CurrentTimeSpent({ loginTime, logoutTime }) {
   const attendance = useSelector((state) => state.attendance);
@@ -29,16 +29,17 @@ export default function CurrentTimeSpent({ loginTime, logoutTime }) {
         let timeSpendPayload = calculateTimeSpent(loginTime, logout);
         seTimeSpent(timeSpendPayload);
 
-         // IIFE
-         const isTodayData = (() => {
+        // IIFE
+        const isTodayData = (() => {
           try {
-            return attendance[year][month];
+            return attendance[year][month][date];
           } catch (error) {
             return {};
           }
         })();
 
-        
+        // console.table(isTodayData)
+
         const payload = {
           date: format(date, 'yyyy-MM-dd'),
           login: format24To12(loginTime),
