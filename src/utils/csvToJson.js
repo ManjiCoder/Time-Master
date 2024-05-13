@@ -61,7 +61,8 @@ export const csvToJson = (year, csvData) => {
         timeStamp = new Date(`${v}${year}`).setHours(0, 0, 0, 0);
         payload.date = format(new Date(`${v}${year}`), 'yyyy-MM-dd');
       } else {
-        payload[titles[i]] = v === '' ? '-' : v;
+        const title = titles[i]==='remarks':'remark':titles[i];
+        payload[title] = v === '' ? '-' : v;
       }
     });
     timeLogs[timeStamp] = payload;
