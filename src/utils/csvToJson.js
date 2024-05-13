@@ -10,7 +10,9 @@ export const csvToJSON = (year, csvData) => {
     const payload = {};
     vl.split(',').map((v, i) => {
       if (i === 0) {
-        timeStamp = new Date(new Date(`${v} ${year}`)).setHours(0,0,0,0) - serverTimeDiff;
+        timeStamp =
+          new Date(new Date(`${v} ${year}`)).setHours(0, 0, 0, 0) -
+          serverTimeDiff;
         payload.date = format(timeStamp, 'yyyy-MM-dd');
         // timeStamp = format(new Date(new Date(`${v} ${year}`)), 'yyyy-MM-dd');
         // payload.date = timeStamp;
@@ -44,4 +46,26 @@ export const csvToJSON = (year, csvData) => {
     }
   });
   return timeLog;
+};
+
+export const csvToJson = (year, csvData) => {
+  const csvText = csvData.split('\n').filter((v) => v !== '');
+  const titles = csvText.shift().toLowerCase().split(',');
+
+  const timeLogs = {};
+  csvText.map((str) => {
+    const payload = {};
+    let timeStamp = null;
+    str.split(',').map((v, i) => {
+      if (i === 0) {
+        timeStamp = new Date(`${v}${year}`).setHours(0, 0, 0, 0);
+        payload.date = format(new Date(`${v}${year}`), 'yyyy-MM-dd');
+      } else {
+        payload[titles[i]] = v === '' ? '-' : v;
+      }
+    });
+    timeLogs[timeStamp] = payload;
+    timeStamp = null;
+  });
+  return timeLogs;
 };

@@ -2,11 +2,12 @@
 import { setPdfData } from '@/redux/slices/attendanceSlice';
 import { setMonth, setYear } from '@/redux/slices/dateSlice';
 import { setHolidays } from '@/redux/slices/holidaysSlice';
+import { csvToJson } from '@/utils/csvToJson';
 import { getHolidaysList, getUserInfo } from '@/utils/dateService';
 import { toastifyOptions } from '@/utils/toastify';
 import { Baloo_Bhai_2 } from 'next/font/google';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -93,47 +94,11 @@ const PdfReader = () => {
             const names = file.name.replace('.csv', '').split('-');
             month = names[0];
             year = names[1];
-          }
-          const response = await fetch(
-            isCSVFile ? `api/csv?q=${month}-${year}` : '/api/pdf',
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': isCSVFile ? 'text/plain' : 'application/json',
-              },
-              body: isCSVFile ? e.target.result : JSON.stringify({ pdfData }),
-            }
-          );
-
-          if (response.ok) {
-            const data = await response.json();
-            // console.log(data);
-            if (isCSVFile) {
-              dispatch(setPdfData(data));
-              dispatch(setYear(data.year));
-              dispatch(setMonth(data.month));
-            } else {
-              setPdfText(data.text);
-              if (data.text.toLowerCase().includes('holiday list')) {
-                const payload = getHolidaysList(data.text);
-                dispatch(setHolidays(payload));
-                // setNumPages(data.numPages);
-              } else {
-                const payload = getUserInfo(data.text);
-                if (
-                  Object.keys(payload.data).length === 0 ||
-                  !payload.month ||
-                  !payload.year
-                ) {
-                  throw new Error('PDF processing failed.');
-                }
-                dispatch(setPdfData(payload));
-                dispatch(setYear(payload.year));
-                dispatch(setMonth(payload.month));
-                setNumPages(data.numPages);
-              }
-            }
-
+            const payload = csvToJson(year, e.target.result);
+            // console.table(payload);
+            dispatch(setPdfData({ year, month, data: payload }));
+            dispatch(setYear(year));
+            dispatch(setMonth(month));
             toast.update(
               toastId,
               toastifyOptions(
@@ -143,11 +108,58 @@ const PdfReader = () => {
             );
             router.push('/attendance');
           } else {
-            toast.update(
-              toastId,
-              toastifyOptions('error', `${fileTypeName} processing failed.`)
-            );
-            console.error(`${fileTypeName} processing failed.`);
+            const response = await fetch('/api/pdf', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ pdfData }),
+            });
+
+            if (response.ok) {
+              const data = await response.json();
+              // console.log(data);
+              if (isCSVFile) {
+                // dispatch(setPdfData(data));
+                dispatch(setYear(data.year));
+                dispatch(setMonth(data.month));
+              } else {
+                setPdfText(data.text);
+                if (data.text.toLowerCase().includes('holiday list')) {
+                  const payload = getHolidaysList(data.text);
+                  dispatch(setHolidays(payload));
+                  // setNumPages(data.numPages);
+                } else {
+                  const payload = getUserInfo(data.text);
+                  if (
+                    Object.keys(payload.data).length === 0 ||
+                    !payload.month ||
+                    !payload.year
+                  ) {
+                    throw new Error('PDF processing failed.');
+                  }
+                  dispatch(setPdfData(payload));
+                  dispatch(setYear(payload.year));
+                  dispatch(setMonth(payload.month));
+                  setNumPages(data.numPages);
+                }
+              }
+
+              toast.update(
+                toastId,
+                toastifyOptions(
+                  'success',
+                  `${fileTypeName} Uploaded Successfully!`
+                )
+              );
+              router.push('/attendance');
+            } else {
+              toast.update(
+                toastId,
+                toastifyOptions('error', `${fileTypeName} processing failed.`)
+              );
+              console.error(`${fileTypeName} processing failed.`);
+            }
           }
         } catch (error) {
           toast.update(
