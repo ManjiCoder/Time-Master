@@ -1,8 +1,7 @@
-import React from 'react';
-import { isHolidays, monthNameToIndex } from '@/utils/dateService';
-import { useSelector } from 'react-redux';
-import { differenceInMinutes, format, getDate, parse } from 'date-fns';
 import { holidayDetails } from '@/pages/attendance';
+import { isHolidays, monthNameToIndex } from '@/utils/dateService';
+import { differenceInMinutes, format, getDate, parse } from 'date-fns';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 const ExportData = (props) => {
@@ -30,9 +29,17 @@ const ExportData = (props) => {
   };
 
   const downloadCSVFile = () => {
+    const csvTitle = [
+      'Date',
+      'Present',
+      'Hours',
+      'Difference',
+      'Login',
+      'Logout',
+      'Remarks',
+    ];
     try {
       const jsonData = JSON.parse(JSON.stringify(attendance));
-      let csvTitle = [];
       let csvDesc = [];
       const arr = Object.keys(jsonData[year][month])
         .sort((a, b) => parseInt(a) - parseInt(b))
@@ -49,9 +56,9 @@ const ExportData = (props) => {
           delete obj?.tour;
           // console.log(obj)
           // For getting Titles
-          if (csvTitle !== Object.keys(jsonData[year][month][date])) {
-            csvTitle = Object.keys(jsonData[year][month][date]);
-          }
+          // if (csvTitle !== Object.keys(jsonData[year][month][date])) {
+          //   csvTitle = Object.keys(jsonData[year][month][date]);
+          // }
 
           // For Half Day
           if (obj.present === '0.5') {
@@ -111,15 +118,9 @@ const ExportData = (props) => {
           csvDesc += desc;
         });
 
-      csvTitle.splice(3, 0, 'difference');
+      // csvTitle.splice(3, 0, 'difference');
 
-      const csvData =
-        csvTitle
-          .map((v) => v.replace(v[0], v[0].toUpperCase()))
-          .toString()
-          .replace(',Leave', '') +
-        ',Remarks \n' +
-        csvDesc;
+      const csvData = csvTitle + '\n' + csvDesc;
       // console.log(csvData);
 
       // Download CSV file
