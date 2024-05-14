@@ -64,7 +64,7 @@ export const csvToJson = (year, csvData) => {
         const title = titles[i] === 'remarks' ? 'remark' : titles[i];
         payload[title] = v === '' ? '-' : v;
         const remark = payload.remark;
-        if (remark === '-') {
+        if (['-', 'Holiday'].includes(remark)) {
           delete payload.remark;
         } else if (['Leave', 'Floating Leave'].includes(remark)) {
           payload.leave = '1';
