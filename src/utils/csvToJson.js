@@ -61,8 +61,14 @@ export const csvToJson = (year, csvData) => {
         timeStamp = new Date(`${v}${year}`).setHours(0, 0, 0, 0);
         payload.date = format(new Date(`${v}${year}`), 'yyyy-MM-dd');
       } else {
-        const title = titles[i]==='remarks':'remark':titles[i];
+        const title = titles[i] === 'remarks' ? 'remark' : titles[i];
         payload[title] = v === '' ? '-' : v;
+        const remark = payload.remark;
+        if (remark === '-') {
+          delete payload.remark;
+        } else if (['Leave', 'Floating Leave'].includes(remark)) {
+          payload.leave = '1';
+        }
       }
     });
     timeLogs[timeStamp] = payload;
