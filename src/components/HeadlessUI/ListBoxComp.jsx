@@ -1,6 +1,6 @@
-import { Fragment, useEffect, useRef } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { Fragment, useEffect, useRef } from 'react';
 import { remarkObj } from '../EditModal';
 
 export default function ListBoxComp(props) {
@@ -48,9 +48,12 @@ export default function ListBoxComp(props) {
             setLogoutTime('18:00');
             setHoursTime('09:00');
           } else if (e === remarkObj.others) {
-            setFocus();
+            setIsLeave(false);
+            setTimeout(() => {
+              setFocus();
+            }, 150);
           } else {
-            setIsLeave(!true);
+            setIsLeave(false);
             setLoginTime(loginTime);
             setLogoutTime(logoutTime);
             setHoursTime(hoursTime);
