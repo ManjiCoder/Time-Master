@@ -1,9 +1,9 @@
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 import { useMotionValueEvent, useScroll } from 'framer-motion';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
 const radius = 22;
-const circumference = 2 * Math.PI * radius;
+const circumference = Math.round(2 * Math.PI * radius);
 export default function ScrollToTopBtn() {
   const progressRef = useRef(0);
   const circleRef = useRef(0);
@@ -13,7 +13,9 @@ export default function ScrollToTopBtn() {
     const percent = Math.round(latest * 100);
     if (scrollY.current > 150) {
       progressRef.current.style.display = 'flex';
-      circleRef.current.style.strokeDashoffset = circumference - (circumference * percent) / 100;
+      circleRef.current.style.strokeDashoffset = Math.round(
+        circumference - (circumference * percent) / 100
+      );
     } else {
       progressRef.current.style.display = 'none';
     }

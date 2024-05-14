@@ -4,7 +4,6 @@ import {
   differenceInMinutes,
   differenceInSeconds,
   format,
-  getDate,
   isSaturday,
   isSunday,
   isValid,
@@ -273,6 +272,11 @@ export function getUserInfo(text) {
           break: breakTime,
           tour,
         };
+        if (userTimeLog[dateInTime].leave === '1') {
+          userTimeLog[dateInTime].login = '09:00 AM';
+          userTimeLog[dateInTime].logout = '06:00 PM';
+          userTimeLog[dateInTime].hours = '09:00';
+        }
         year = format(Number(dateInTime), 'yyyy');
         month = format(Number(dateInTime), 'MMMM');
       }

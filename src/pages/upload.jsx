@@ -119,30 +119,24 @@ const PdfReader = () => {
             if (response.ok) {
               const data = await response.json();
               // console.log(data);
-              if (isCSVFile) {
-                // dispatch(setPdfData(data));
-                dispatch(setYear(data.year));
-                dispatch(setMonth(data.month));
+              setPdfText(data.text);
+              if (data.text.toLowerCase().includes('holiday list')) {
+                const payload = getHolidaysList(data.text);
+                dispatch(setHolidays(payload));
+                // setNumPages(data.numPages);
               } else {
-                setPdfText(data.text);
-                if (data.text.toLowerCase().includes('holiday list')) {
-                  const payload = getHolidaysList(data.text);
-                  dispatch(setHolidays(payload));
-                  // setNumPages(data.numPages);
-                } else {
-                  const payload = getUserInfo(data.text);
-                  if (
-                    Object.keys(payload.data).length === 0 ||
-                    !payload.month ||
-                    !payload.year
-                  ) {
-                    throw new Error('PDF processing failed.');
-                  }
-                  dispatch(setPdfData(payload));
-                  dispatch(setYear(payload.year));
-                  dispatch(setMonth(payload.month));
-                  setNumPages(data.numPages);
+                const payload = getUserInfo(data.text);
+                if (
+                  Object.keys(payload.data).length === 0 ||
+                  !payload.month ||
+                  !payload.year
+                ) {
+                  throw new Error('PDF processing failed.');
                 }
+                dispatch(setPdfData(payload));
+                dispatch(setYear(payload.year));
+                dispatch(setMonth(payload.month));
+                setNumPages(data.numPages);
               }
 
               toast.update(
