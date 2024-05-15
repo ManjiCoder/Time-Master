@@ -6,7 +6,7 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
-const formatNumber = (value) => {
+export const formatNumber = (value) => {
   value = String(value);
   try {
     // Remove non-numeric characters

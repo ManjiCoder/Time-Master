@@ -28,6 +28,7 @@ export default function TimeSpentIndicator({
     salaryAmount: salaryAmt,
   } = useSelector((state) => state.userSettings);
   const { isShowAmt, year, month } = useSelector((state) => state.dateSlice);
+  const { taxRates } = useSelector((state) => state.proTax);
   const years = Object.keys(attendance)
     .filter((v) => v !== 'undefined')
     .reverse();
@@ -193,10 +194,17 @@ export default function TimeSpentIndicator({
           hoursLeft,
           absentDays,
           month,
-          overTimeInMins / 60
+          overTimeInMins / 60,
+          taxRates
         );
-  const expectedSalaryAmount = calculateSalary(salaryAmt, 0, 0, month);
-
+  const expectedSalaryAmount = calculateSalary(
+    salaryAmt,
+    0,
+    0,
+    month,
+    0,
+    taxRates
+  );
   const detuctedAmount =
     Math.sign(expectedSalaryAmount - salaryAmount) === -1
       ? 0

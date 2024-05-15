@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import EditAmountModal from '@/components/EditAmountModal';
 import ExportData from '@/components/ExportDataBtn';
 import MyModal from '@/components/HeadlessUI/Modal';
+import ProTax from '@/components/ProTax';
 import ToggleThemeBtn from '@/components/ToggleThemeBtn';
 import YearMonthPicker from '@/components/YearMonthPicker';
 import { deleteByMonthYear } from '@/redux/slices/attendanceSlice';
@@ -88,6 +89,7 @@ export default function Setting() {
             <PencilSquareIcon className='w-5 mb-1 text-blue-600' />
           </button>
         </li>
+        <ProTax />
         <li className='bg-slate-200 dark:bg-slate-800 shadow-md rounded-md py-4 px-4 border border-slate-400 flex space-x-2 items-center justify-start'>
           Theme Mode - <ToggleThemeBtn />
         </li>
