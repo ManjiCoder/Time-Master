@@ -43,7 +43,9 @@ export default function EditAmountModal({ isOpen, setIsOpen }) {
   };
 
   useEffect(() => {
-    inputRef.current.focus();
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   }, []);
 
   return (

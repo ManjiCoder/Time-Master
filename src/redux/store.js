@@ -13,9 +13,9 @@ import {
   persistStore,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import ProfessionalTaxSlice from './slices/ProfessionalTaxSlice';
 import dateSlice from './slices/dateSlice';
 import holidaysSlice from './slices/holidaysSlice';
+import ProfessionalTax from './slices/ProfessionalTax';
 const persistConfig = {
   key: 'root',
   storage,
@@ -27,7 +27,7 @@ const rootReducer = combineReducers({
   attendance: attendanceSlice,
   dateSlice,
   holidays: holidaysSlice,
-  proTax: ProfessionalTaxSlice,
+  proTax: ProfessionalTax,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

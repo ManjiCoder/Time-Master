@@ -1,4 +1,4 @@
-import { setTaxRates } from '@/redux/slices/ProfessionalTaxSlice';
+import { setTaxRates } from '@/redux/slices/ProfessionalTax';
 import { PencilSquareIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
@@ -47,12 +47,12 @@ export function ProTaxForm({ closeModal }) {
 
   const handleSubmit = () => {
     try {
+      const isAmtString = typeof amount === 'string';
       const newTaxRates = {};
       Object.keys(taxRates).map((month) => {
-        newTaxRates[month] = isChecked ? amount : taxRates[month];
+        newTaxRates[month] = isChecked ? parseInt(isAmtString ? amount.replaceAll(',', '') : amount) : taxRates[month];
       });
       console.log(newTaxRates);
-      const isAmtString = typeof amount === 'string';
       //   dispatch(
       //     setMonthTax({
       //       month,
@@ -60,7 +60,9 @@ export function ProTaxForm({ closeModal }) {
       //     })
       //   );
       dispatch(setTaxRates(newTaxRates));
-      toast.success(`${month} Tax updated Successfully!`);
+      toast.success(
+        `Tax Updated Successfully!`
+      );
     } catch (error) {
       console.log(error);
       toast.error('Some error occured! Please try after sometime.');
@@ -140,6 +142,9 @@ export function ProTaxForm({ closeModal }) {
                 onChange={handleChange}
                 value={isChecked ? amount : taxRates[key]}
               />
+              <button>
+                <PencilSquareIcon className='w-5 text-blue-500' />
+              </button>
             </div>
           ))}
         </motion.section>
