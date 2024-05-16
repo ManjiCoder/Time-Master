@@ -1,7 +1,7 @@
-import { setTaxRates } from '@/redux/slices/ProfessionalTax';
+import { setMonthTax, setTaxRates } from '@/redux/slices/ProfessionalTax';
 import { PencilSquareIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import { motion } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { formatNumber } from './EditAmountModal';
@@ -36,33 +36,35 @@ export default function ProTax() {
 }
 
 export function ProTaxForm({ closeModal }) {
-  const { taxRates, month } = useSelector((state) => state.proTax);
+  const { taxRates } = useSelector((state) => state.proTax);
   const dispatch = useDispatch();
-  const [amount, setAmount] = useState(taxRates[month] || '');
-  const [isChecked, setIsChecked] = useState(true);
+  const [amount, setAmount] = useState('');
+  const [isChecked, setIsChecked] = useState(false);
+  const [editMonth, setEditMonth] = useState(null);
   const inputRef = useRef(null);
   const handleChange = (e) => {
     setAmount(formatNumber(e.target.value));
+  };
+  const handleEdit = (month) => {
+    setEditMonth(month);
+    setIsChecked(false);
+    console.log(month);
   };
 
   const handleSubmit = () => {
     try {
       const isAmtString = typeof amount === 'string';
+      const amt = parseInt(isAmtString ? amount.replaceAll(',', '') : amount);
       const newTaxRates = {};
       Object.keys(taxRates).map((month) => {
-        newTaxRates[month] = isChecked ? parseInt(isAmtString ? amount.replaceAll(',', '') : amount) : taxRates[month];
+        newTaxRates[month] = isChecked ? amt : taxRates[month];
       });
-      console.log(newTaxRates);
-      //   dispatch(
-      //     setMonthTax({
-      //       month,
-      //       amount: parseInt(isAmtString ? amount.replaceAll(',', '') : amount),
-      //     })
-      //   );
-      dispatch(setTaxRates(newTaxRates));
-      toast.success(
-        `Tax Updated Successfully!`
-      );
+      if (editMonth) {
+        dispatch(setMonthTax({ month: editMonth, amount: amt }));
+      } else {
+        dispatch(setTaxRates(newTaxRates));
+      }
+      toast.success(`Tax Updated Successfully!`);
     } catch (error) {
       console.log(error);
       toast.error('Some error occured! Please try after sometime.');
@@ -71,9 +73,9 @@ export function ProTaxForm({ closeModal }) {
     }
   };
 
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
+  // useEffect(() => {
+  //   inputRef.current.focus();
+  // }, []);
   return (
     <>
       <button onClick={closeModal}>
@@ -85,7 +87,7 @@ export function ProTaxForm({ closeModal }) {
       >
         <div className='time inline-flex flex-col justify-center items-center gap-2 rounded-md shadow-md bg-slate-50 dark:bg-slate-800'>
           <input
-            className='outline-none focus-within:ring-2 p-4 rounded-md shadow-md dark:bg-slate-700'
+            className='outline-none focus-within:ring-2 px-4 py-2.5 rounded-md shadow-md dark:bg-slate-700'
             type='tel'
             placeholder='₹ Enter Your Professtion Tax Amount'
             onChange={handleChange}
@@ -95,19 +97,21 @@ export function ProTaxForm({ closeModal }) {
         </div>
 
         <label htmlFor='showAmt' className='flex items-center space-x-1.5'>
-          <input
-            type='checkbox'
-            checked={isChecked}
-            onChange={(e) => {}}
-            id='showAmt'
-            className='outline-none'
-            onClick={() => setIsChecked(!isChecked)}
-          />
-          <span>
-            {isChecked
-              ? 'Apply to every month.'
-              : `Apply to ${[month]} month only.`}
-          </span>
+          {!editMonth && (
+            <input
+              type='checkbox'
+              checked={isChecked}
+              onChange={(e) => {}}
+              id='showAmt'
+              className='outline-none'
+              onClick={() => setIsChecked(!isChecked)}
+            />
+          )}
+          {editMonth ? (
+            <span>{editMonth} Month</span>
+          ) : (
+            <span>Apply to every month.</span>
+          )}
         </label>
 
         <button
@@ -118,37 +122,57 @@ export function ProTaxForm({ closeModal }) {
         </button>
       </form>
 
-      {isChecked && (
-        <motion.section
-          variants={{
-            initial: {
-              opacity: 0,
-            },
-            animate: {
-              opacity: 1,
-            },
-          }}
-          initial='initial'
-          animate='animate'
-          className='flex flex-col items-center my-5'
-        >
-          {Object.keys(taxRates).map((key) => (
-            <div key={key} className='flex space-x-2 gap-3 mb-2'>
-              <span className='w-20'>{key}</span>
-              <span>:</span>
-              <input
-                className='w-20 px-3 py-0.5 rounded-md shadow-md outline-none bg-slate-800 focus:ring-2'
-                type='tel'
-                onChange={handleChange}
-                value={isChecked ? amount : taxRates[key]}
-              />
-              <button>
-                <PencilSquareIcon className='w-5 text-blue-500' />
-              </button>
-            </div>
-          ))}
-        </motion.section>
-      )}
+      <motion.section
+        variants={{
+          initial: {
+            opacity: 0,
+          },
+          animate: {
+            opacity: 1,
+          },
+        }}
+        initial='initial'
+        animate='animate'
+        className='flex flex-col items-center my-5'
+      >
+        {Object.keys(taxRates).map((key, index) => (
+          <motion.div
+            key={key}
+            className='flex gap-3 mb-2 text-gray-900 dark:text-white'
+            variants={{
+              initial: {
+                opacity: 0,
+              },
+              animate: {
+                opacity: 1,
+              },
+            }}
+            initial='initial'
+            animate='animate'
+            transition={{
+              delay: 0.07 * index,
+            }}
+          >
+            <span className='w-20'>{key}</span>
+            <span>:</span>
+            <input
+              className='w-20 px-3 py-0.5 rounded-md shadow-md outline-none dark:bg-slate-800 focus:ring-2'
+              type='tel'
+              readOnly
+              value={
+                isChecked
+                  ? amount === ''
+                    ? taxRates[key]
+                    : amount
+                  : taxRates[key]
+              }
+            />
+            <button onClick={() => handleEdit(key)}>
+              <PencilSquareIcon className='w-5 text-blue-500' />
+            </button>
+          </motion.div>
+        ))}
+      </motion.section>
     </>
   );
 }

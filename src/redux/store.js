@@ -19,7 +19,7 @@ import ProfessionalTax from './slices/ProfessionalTax';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['userSettings', 'attendance', 'holidays'],
+  whitelist: ['userSettings', 'attendance', 'holidays','proTax'],
 };
 
 const rootReducer = combineReducers({
