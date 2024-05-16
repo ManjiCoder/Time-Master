@@ -48,7 +48,7 @@ export function ProTaxForm({ closeModal }) {
   const handleEdit = (month) => {
     setEditMonth(month);
     setIsChecked(false);
-    console.log(month);
+    setAmount(taxRates[month]);
   };
 
   const handleSubmit = () => {
@@ -156,7 +156,9 @@ export function ProTaxForm({ closeModal }) {
             <span className='w-20'>{key}</span>
             <span>:</span>
             <input
-              className='w-20 px-3 py-0.5 rounded-md shadow-md outline-none dark:bg-slate-800 focus:ring-2'
+              className={`w-20 px-3 py-0.5 rounded-md shadow-md outline-none dark:bg-slate-800 ${
+                editMonth === key && 'ring-2'
+              }`}
               type='tel'
               readOnly
               value={
