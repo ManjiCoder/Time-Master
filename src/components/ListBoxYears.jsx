@@ -31,7 +31,7 @@ export default function ListBoxYears({ years }) {
             leaveFrom='opacity-100'
             leaveTo='opacity-0'
           >
-            <Listbox.Options className='absolute text-sm mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-slate-700 py-1 shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm'>
+            <Listbox.Options className='absolute text-sm mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-slate-700 shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm'>
               {years.map((year, yearsIdx) => (
                 <Listbox.Option
                   key={yearsIdx}

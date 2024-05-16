@@ -1,5 +1,7 @@
 import CurrentTimeSpent from '@/components/CurrentTimeSpent';
 import ToogleBtn from '@/components/HeadlessUI/ToggleBtn';
+import ListBoxMonths from '@/components/ListBoxMonths';
+import ListBoxYears from '@/components/ListBoxYears';
 import TimeSpentIndicator from '@/components/TimeSpentIndicator';
 import ToggleCheckBox from '@/components/ToggleCheckBox';
 import { setIsOfficeMode } from '@/redux/slices/UserSettings';
@@ -161,9 +163,13 @@ export default function Home() {
               Log-Out
             </button>
           </div>
-          <div className='pl-3 col-span-2 flex items-center text-sm'>
+          <section className='px-3 col-span-2 flex justify-between items-center text-sm'>
             <ToggleCheckBox />
-          </div>
+            <div className='flex space-x-2 text-center'>
+              <ListBoxYears years={Object.keys(attendance)} />
+              <ListBoxMonths />
+            </div>
+          </section>
           <button
             type='submit'
             className='col-span-2 mx-auto bg-slate-700 px-4 py-2 rounded-md shadow-md text-white'
