@@ -28,6 +28,9 @@ export default function Home() {
   const currentDate = new Date().setHours(0, 0, 0, 0);
   const year = new Date().getFullYear();
   const month = format(currentDate, 'MMMM');
+  const years = Object.keys(attendance)
+    .filter((v) => v !== 'undefined')
+    .reverse();
 
   const isLogin = isLoginTime(year, month, currentDate, attendance);
   const isLogout = isLogoutTime(year, month, currentDate, attendance);
@@ -166,7 +169,7 @@ export default function Home() {
           <section className='px-3 col-span-2 flex justify-between items-center text-sm'>
             <ToggleCheckBox />
             <div className='flex space-x-2 text-center'>
-              <ListBoxYears years={Object.keys(attendance)} />
+              <ListBoxYears years={years} />
               <ListBoxMonths />
             </div>
           </section>
