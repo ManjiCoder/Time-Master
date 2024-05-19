@@ -1,4 +1,3 @@
-import { holidays } from '@/pages/attendance';
 import {
   differenceInHours,
   differenceInMinutes,
@@ -346,15 +345,12 @@ export function getHolidaysList(str) {
 
 export const isHolidays = (parseDate, dayNum) => {
   try {
-    const dateInMilisec = new Date(parseDate).setHours(0, 0, 0, 0);
-    if (holidayDetails[dateInMilisec].desc !== undefined) {
-      return true;
-    }
     return (
       (isSaturday(parseDate) &&
         (dayNum <= 7 || (dayNum > 14 && dayNum <= 21))) ||
       isSunday(parseDate) ||
-      Object.values(holidays).includes(format(parseDate, 'dd-MMM-yyyy'))
+      holidayDetails[new Date(parseDate).setHours(0, 0, 0, 0)].desc !==
+        undefined
     );
   } catch (error) {
     return false;
