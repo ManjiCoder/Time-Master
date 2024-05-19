@@ -5,8 +5,9 @@ export const pageAnimationVariants = (customDelay) => ({
 
 export const variants = {
   hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.2 } },
+  show: { opacity: 1, transition: { staggerChildren: 0.5 } },
 };
+
 export const items = {
   hidden: {
     opacity: 0,
