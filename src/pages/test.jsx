@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
 const nums = new Array(50).fill(null);
 
 const variants = {
@@ -28,10 +29,10 @@ export default function Test() {
         animate='show'
         className='text-3xl'
       >
-        {text.map((char) => (
+        {text.map((char, i) => (
           <motion.span
             variants={items}
-            key={char}
+            key={i}
           >
             {char}
           </motion.span>
@@ -42,16 +43,44 @@ export default function Test() {
         initial='hidden'
         animate='show'
       >
-        {nums.map((v, idx) => (
-          <motion.div
-            variants={variants}
-            className='p-3 bg-slate-800 mt-5 rounded-sm shadow-sm'
-            key={idx}
-          >
-            {++idx}
-          </motion.div>
-        ))}
+        {nums.map((_, idx) => {
+          if (idx < 11) {
+            return (
+              <motion.div
+                variants={variants}
+                className='p-3 bg-slate-800 mt-5 rounded-sm shadow-sm'
+                key={idx}
+              >
+                {++idx}
+              </motion.div>
+            );
+          } else {
+            return (
+              <InViewItems
+                key={idx}
+                idx={idx}
+              />
+            );
+          }
+        })}
       </motion.section>
     </div>
+  );
+}
+
+export function InViewItems({ idx }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+
+  return (
+    <motion.div
+      ref={ref}
+      variants={variants}
+      animate={isInView ? 'show' : 'hidden'}
+      className='p-3 bg-slate-800 mt-5 rounded-sm shadow-sm'
+      key={idx}
+    >
+      {++idx}
+    </motion.div>
   );
 }
