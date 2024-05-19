@@ -9,6 +9,7 @@ import {
   isValid,
   parse,
 } from 'date-fns';
+import { holidayDetails } from './constants';
 
 const officeHours = 9;
 const officeMintues = officeHours * 60;
@@ -345,6 +346,10 @@ export function getHolidaysList(str) {
 
 export const isHolidays = (parseDate, dayNum) => {
   try {
+    const dateInMilisec = new Date(parseDate).setHours(0, 0, 0, 0);
+    if (holidayDetails[dateInMilisec].desc !== undefined) {
+      return true;
+    }
     return (
       (isSaturday(parseDate) &&
         (dayNum <= 7 || (dayNum > 14 && dayNum <= 21))) ||

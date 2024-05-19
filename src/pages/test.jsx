@@ -75,7 +75,7 @@ export function InViewItems({ idx }) {
   return (
     <motion.div
       ref={ref}
-      variants={variants}
+      variants={items}
       animate={isInView ? 'show' : 'hidden'}
       className='p-3 bg-slate-800 mt-5 rounded-sm shadow-sm'
       key={idx}

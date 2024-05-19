@@ -22,13 +22,12 @@ export default function AttendanceItems({
   const dispatch = useDispatch();
 
   const currentDate = new Date();
-  const date = currentDate.setHours(0, 0, 0, 0);
 
   return (
     <motion.section
       variants={variants}
       initial='hidden'
-      whileInView='show'
+      animate='show'
     >
       {showDates
         .sort((a, b) => {
