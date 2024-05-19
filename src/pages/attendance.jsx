@@ -1,17 +1,19 @@
-import { Baloo_Bhai_2 } from 'next/font/google';
+import DeleteModal from '@/components/DeleteModal';
+import EditModal from '@/components/EditModal';
+import ExtraTimePerDay from '@/components/ExtraTimePerDay';
+import ToogleBtn from '@/components/HeadlessUI/ToggleBtn';
+import ListBoxFilter from '@/components/ListBoxFilter';
+import Remark from '@/components/Remark';
+import ScrollToTopBtn from '@/components/ScrollToTopBtn';
 import TimeSpentIndicator from '@/components/TimeSpentIndicator';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { format, getDate, isSaturday, isSunday } from 'date-fns';
 import {
-  ArrowDownCircleIcon,
-  ArrowUpCircleIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-  PencilSquareIcon,
-  TrashIcon,
-} from '@heroicons/react/20/solid';
+  filterObj,
+  filterOrder,
+  setSortByOrder,
+} from '@/redux/slices/UserSettings';
+import { setCurrentTimeSpent } from '@/redux/slices/attendanceSlice';
 import { setTargetDate } from '@/redux/slices/dateSlice';
+import { items, variants } from '@/utils/Animation';
 import {
   calculateTimeSpent,
   format24To12,
@@ -19,22 +21,18 @@ import {
   isHolidays,
   removeAMorPM,
 } from '@/utils/dateService';
-import DeleteModal from '@/components/DeleteModal';
-import EditModal from '@/components/EditModal';
-import { setCurrentTimeSpent, setLogin } from '@/redux/slices/attendanceSlice';
 import {
-  filterObj,
-  filterOrder,
-  setSortByOrder,
-} from '@/redux/slices/UserSettings';
-import ListBoxFilter from '@/components/ListBoxFilter';
-import ToogleBtn from '@/components/HeadlessUI/ToggleBtn';
-import { toast } from 'react-toastify';
-import { useTheme } from 'next-themes';
-import Remark from '@/components/Remark';
-import ExtraTimePerDay from '@/components/ExtraTimePerDay';
+  ChevronDownIcon,
+  ChevronUpIcon,
+  PencilSquareIcon,
+  TrashIcon,
+} from '@heroicons/react/20/solid';
+import { format, getDate } from 'date-fns';
 import { motion } from 'framer-motion';
-import ScrollToTopBtn from '@/components/ScrollToTopBtn';
+import { useTheme } from 'next-themes';
+import { Baloo_Bhai_2 } from 'next/font/google';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 
@@ -138,7 +136,10 @@ export default function Attendance() {
       <main
         className={`bg-slate-300 dark:bg-slate-900 dark:text-white text-slate-800 min-h-screen pb-16 ${inter.className}`}
       >
-        <TimeSpentIndicator year={year} month={month} />
+        <TimeSpentIndicator
+          year={year}
+          month={month}
+        />
         <h2 className='text-xl text-center mt-5'>No Data Found!</h2>
       </main>
     );
@@ -185,7 +186,7 @@ export default function Attendance() {
   // console.log(data);
   return (
     <main
-      className={`bg-slate-300 dark:bg-slate-900 text-slate-800 min-h-screen pb-16 ${inter.className}`}
+      className={`bg-slate-300 dark:bg-slate-900 text-slate-800 min-h-screen pb-20 ${inter.className}`}
     >
       <TimeSpentIndicator />
       <section className='flex font-semibold justify-between mx-2 mt-2 items-center dark:text-white'>
@@ -264,7 +265,11 @@ export default function Attendance() {
         </h2>
       )}
 
-      <>
+      <motion.section
+        variants={variants}
+        initial='hidden'
+        whileInView='show'
+      >
         {showDates
           .sort((a, b) => {
             a = parseInt(a);
@@ -336,15 +341,16 @@ export default function Attendance() {
             // // TODO: total days
 
             return (
-              <motion.section
-                initial={{ opacity: 0, x: -100 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{
-                  duration: 0.2,
-                  ease: 'easeInOut',
-                  delay: 0.2 * index,
-                }}
-                viewport={{ once: true, amount:0 }}
+              <motion.div
+                variants={items}
+                // initial={{ opacity: 0, x: -100 }}
+                // animate={{ opacity: 1, x: 0 }}
+                // transition={{
+                //   duration: 0.2,
+                //   ease: 'easeInOut',
+                //   delay: 0.2 * index,
+                // }}
+                // viewport={{ once: true, amount:0 }}
                 key={date}
                 className='h-36 md:h-44 w-full md:max-w-xl lg:max-w-2xl p-2 flex m-auto'
               >
@@ -448,17 +454,23 @@ export default function Attendance() {
                   {/* For IMP Note */}
                   <Remark msg={remark} />
                 </div>
-              </motion.section>
+              </motion.div>
             );
           })}
-      </>
+      </motion.section>
       {isDeleteOpen && (
-        <DeleteModal isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} />
+        <DeleteModal
+          isOpen={isDeleteOpen}
+          setIsOpen={setIsDeleteOpen}
+        />
       )}
       {isEditOpen && (
-        <EditModal isOpen={isEditOpen} setIsOpen={setIsEditOpen} />
+        <EditModal
+          isOpen={isEditOpen}
+          setIsOpen={setIsEditOpen}
+        />
       )}
-      <ScrollToTopBtn/>
+      <ScrollToTopBtn />
     </main>
   );
 }

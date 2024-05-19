@@ -3,7 +3,7 @@ import { useMotionValueEvent, useScroll } from 'framer-motion';
 import { useRef } from 'react';
 
 const radius = 22;
-const circumference = Math.round(2 * Math.PI * radius);
+const circumference = Math.round(2 * Math.PI * radius) + 4;
 export default function ScrollToTopBtn() {
   const progressRef = useRef(0);
   const circleRef = useRef(0);
