@@ -153,8 +153,16 @@ export default function EditModal({ isOpen, setIsOpen }) {
 
   return (
     <>
-      <Transition appear show={true} as={Fragment}>
-        <Dialog as='div' className='relative z-10' onClose={closeModal}>
+      <Transition
+        appear
+        show={true}
+        as={Fragment}
+      >
+        <Dialog
+          as='div'
+          className='relative z-10'
+          onClose={closeModal}
+        >
           <Transition.Child
             as={Fragment}
             enter='ease-out duration-300'
@@ -301,10 +309,10 @@ export default function EditModal({ isOpen, setIsOpen }) {
                       <p className='mt-0.5 lg:-mt-0.5'>Mark as Leave?</p>
                     </label>
 
-                    <section className='flex col-span-2'>
+                    <section className='flex col-span-2 mt-7'>
                       <button
                         type='submit'
-                        className='col-span-2 mx-auto w-28 font-bold bg-slate-700 px-4 py-2 rounded-md shadow-md text-white'
+                        className='col-span-2 mx-auto order-1 w-28 font-bold bg-slate-700 px-4 py-2 rounded-md shadow-md text-white'
                       >
                         Submit
                       </button>

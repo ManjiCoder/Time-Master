@@ -4,7 +4,10 @@ const nums = new Array(50).fill(null);
 
 const variants = {
   hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.2 } },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.3, delayChildren: 0.5 },
+  },
 };
 const items = {
   hidden: {
@@ -14,7 +17,7 @@ const items = {
   show: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.3 },
+    transition: { duration: 0.5 },
   },
 };
 
@@ -70,7 +73,7 @@ export default function Test() {
 
 export function InViewItems({ idx }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
+  const isInView = useInView(ref, { once: false });
 
   return (
     <motion.div
