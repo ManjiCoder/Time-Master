@@ -1,4 +1,4 @@
-import { holidayDetails } from '@/pages/attendance';
+import { holidayDetails } from '@/utils/constants';
 import { isHolidays, monthNameToIndex } from '@/utils/dateService';
 import { differenceInMinutes, format, getDate, parse } from 'date-fns';
 import { useSelector } from 'react-redux';
