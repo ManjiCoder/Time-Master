@@ -127,7 +127,8 @@ export default function EditModal({ isOpen, setIsOpen }) {
       present: '-',
       leave: '-',
     };
-
+    delete editByDate.remark;
+    
     if (isOfficeMode && targetDate == new Date().setHours(0, 0, 0, 0)) {
       toast.warn('Disable Office Mode!');
       closeModal();
@@ -140,7 +141,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
       date: targetDate,
       data: editedData,
     };
-    dispatch(editByDate(payload));
+    // dispatch(editByDate(payload));
   };
 
   const handleLeave = () => {
