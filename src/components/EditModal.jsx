@@ -29,7 +29,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
   const { login, logout, hours, leave, remark } = data;
   const [loginTime, setLoginTime] = useState(removeAMorPM(login));
   const [logoutTime, setLogoutTime] = useState(removeAMorPM(logout));
-  const [hoursTime, setHoursTime] = useState(hours === '-' ? null : hours);
+  const [hoursTime, setHoursTime] = useState(hours ? null : hours);
   const [isLeave, setIsLeave] = useState(leave === '1' || false);
   const [note, setNote] = useState(remark || (isLeave && 'Leave') || '');
 
@@ -65,12 +65,11 @@ export default function EditModal({ isOpen, setIsOpen }) {
     const dayNum = getDate(parseDate);
     const isHoliday = isHolidays(parseDate, dayNum);
     const isTargetDateLeave = targetDateData.leave === '1';
-
     const editedData = {
       ...targetDateData,
       login: format24To12(loginTime),
       logout: format24To12(logoutTime),
-      hours: hoursTime,
+      hours: [null, ''].includes(hoursTime) ? '-' : hoursTime,
       present: loginTime.includes(':') && logoutTime.includes(':') ? '1' : '-',
     };
 
@@ -100,13 +99,16 @@ export default function EditModal({ isOpen, setIsOpen }) {
       delete editedData.remark;
     }
 
+    if (loginTime === '-' && logoutTime === '-') {
+      editedData.present = '-';
+    }
     const payload = {
       year,
       month,
       date: targetDate,
       data: editedData,
     };
-    // console.table(payload.data);
+    // console.table(editedData);
     dispatch(editByDate(payload));
     closeModal();
     toast.success('TimeLog Updated Successfully!');
@@ -127,8 +129,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
       present: '-',
       leave: '-',
     };
-    delete editByDate.remark;
-    
+
     if (isOfficeMode && targetDate == new Date().setHours(0, 0, 0, 0)) {
       toast.warn('Disable Office Mode!');
       closeModal();
@@ -154,16 +155,8 @@ export default function EditModal({ isOpen, setIsOpen }) {
 
   return (
     <>
-      <Transition
-        appear
-        show={true}
-        as={Fragment}
-      >
-        <Dialog
-          as='div'
-          className='relative z-10'
-          onClose={closeModal}
-        >
+      <Transition appear show={true} as={Fragment}>
+        <Dialog as='div' className='relative z-10' onClose={closeModal}>
           <Transition.Child
             as={Fragment}
             enter='ease-out duration-300'
@@ -310,10 +303,10 @@ export default function EditModal({ isOpen, setIsOpen }) {
                       <p className='mt-0.5 lg:-mt-0.5'>Mark as Leave?</p>
                     </label>
 
-                    <section className='flex col-span-2 mt-7'>
+                    <section className='flex col-span-2 mt-5'>
                       <button
                         type='submit'
-                        className='col-span-2 mx-auto order-1 w-28 font-bold bg-slate-700 px-4 py-2 rounded-md shadow-md text-white'
+                        className='col-span-2 mx-auto order-1 w-28 font-bold bg-blue-700 dark:bg-blue-500 px-4 py-2 rounded-md shadow-md text-white'
                       >
                         Submit
                       </button>

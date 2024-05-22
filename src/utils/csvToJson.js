@@ -1,5 +1,4 @@
 import { format } from 'date-fns';
-const serverTimeDiff = 19800000;
 
 export const csvToJSON = (year, csvData) => {
   const timeLog = {};
@@ -69,8 +68,10 @@ export const csvToJson = (year, csvData) => {
         } else if (['Leave', 'Floating Leave'].includes(remark)) {
           payload.leave = '1';
         }
+        
       }
     });
+    delete payload.difference
     timeLogs[timeStamp] = payload;
     timeStamp = null;
   });
