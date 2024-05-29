@@ -205,7 +205,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
                   >
                     <div className='time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
                       <input
-                        className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700 w-36'
+                        className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700 max-ss:w-24 max-xs:w-28 w-36'
                         type='time'
                         name='login'
                         id='login'
@@ -223,11 +223,11 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         placeholder='hh:mm AM/PM'
                         value={loginTime}
                       />
-                      <h4 className='text-lg font-medium'>Log-In</h4>
+                      <h4 className='max-ss:text-sm xs:text-lg font-medium'>Log-In</h4>
                     </div>
                     <div className='time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
                       <input
-                        className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700 w-36'
+                        className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700 max-ss:w-24 max-xs:w-28 w-36'
                         type='time'
                         name='logout'
                         id='logout'
@@ -244,12 +244,12 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         value={logoutTime}
                       />
 
-                      <h4 className='text-lg font-medium'>Log-Out</h4>
+                      <h4 className='max-ss:text-sm xs:text-lg font-medium'>Log-Out</h4>
                     </div>
 
                     <div className='time flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
                       <input
-                        className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 w-36 dark:bg-slate-700 text-center'
+                        className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 max-ss:w-24 max-xs:w-28 w-36 dark:bg-slate-700 text-center'
                         type='text'
                         onChange={(e) => setHoursTime(e.target.value)}
                         placeholder='HH:MM'
@@ -257,7 +257,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         value={hoursTime === '-' ? null : hoursTime}
                       />
 
-                      <h4 className='text-lg font-medium'>Time-Spent</h4>
+                      <h4 className='max-ss:text-sm xs:text-lg font-medium'>Time-Spent</h4>
                     </div>
                     <div className='time flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
                       <ListBoxComp
@@ -276,7 +276,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
 
                       {/* {note.includes('Others') && (
                         <input
-                          className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 w-36 dark:bg-slate-700 pl-3 capitalize'
+                          className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 max-ss:w-24 max-xs:w-28 w-36 dark:bg-slate-700 pl-3 capitalize'
                           type='search'
                           onChange={(e) => setOtherNote(e.target.value)}
                           placeholder='Remark'
@@ -285,12 +285,12 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         />
                       )} */}
 
-                      <h4 className='text-lg font-medium'>Remark</h4>
+                      <h4 className='max-ss:text-sm xs:text-lg font-medium'>Remark</h4>
                     </div>
 
                     <label
                       htmlFor='leave'
-                      className='flex items-center space-x-1.5'
+                      className='flex items-center space-x-1.5 col-span-2'
                     >
                       <input
                         type='checkbox'
@@ -306,7 +306,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
                     <section className='flex col-span-2 mt-5'>
                       <button
                         type='submit'
-                        className='col-span-2 mx-auto order-1 w-28 font-bold bg-blue-700 dark:bg-blue-500 px-4 py-2 rounded-md shadow-md text-white'
+                        className='col-span-2 mx-auto w-28 font-bold bg-blue-700 dark:bg-blue-500 px-4 py-2 rounded-md shadow-md text-white'
                       >
                         Submit
                       </button>

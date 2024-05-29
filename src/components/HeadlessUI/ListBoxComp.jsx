@@ -31,7 +31,7 @@ export default function ListBoxComp(props) {
   }, []);
 
   return (
-    <div className='w-36'>
+    <div className='max-ss:w-24 max-xs:w-28 w-36'>
       <Listbox
         value={selected}
         onChange={(e) => {
@@ -115,7 +115,7 @@ export default function ListBoxComp(props) {
 
         {selected === remarkObj.others && (
           <input
-            className='outline-none mt-2 focus-within:ring-2 rounded-md shadow-md px-1 py-2 w-36 dark:bg-slate-700 pl-3 capitalize'
+            className='outline-none mt-2 focus-within:ring-2 rounded-md shadow-md px-1 py-2 max-ss:w-24 max-xs:w-28 w-36 dark:bg-slate-700 pl-3 capitalize'
             type='search'
             onChange={(e) => setOtherNote(e.target.value)}
             placeholder='Remark'
