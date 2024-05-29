@@ -10,6 +10,7 @@ export default function Toastify() {
       className='mt-12'
       theme={theme === 'system' ? systemTheme : theme}
       // theme='colored'
+      autoClose={2000}
     />
   );
 }

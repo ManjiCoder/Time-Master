@@ -42,5 +42,5 @@ export const calculateSalary = (
     const overTimeAmount = overTimeInHrs * hourlyRate * overTimeMultiplyer;
     salary = salary + overTimeAmount;
   }
-  return salary;
+  return Math.round(salary);
 };

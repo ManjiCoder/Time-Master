@@ -3,7 +3,7 @@ export const toastifyOptions = (type, message) => {
     type,
     render: message,
     isLoading: false,
-    autoClose: 5000,
+    autoClose: 2000,
     closeButton: true,
     closeOnClick: true,
   };
