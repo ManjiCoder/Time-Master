@@ -38,7 +38,7 @@ export default function InViewItems({
       className='h-36 md:h-44 w-full md:max-w-xl lg:max-w-2xl p-2 flex m-auto'
     >
       <div className='bg-cyan-800 w-[30%] flex flex-col items-center justify-center rounded-l-lg'>
-        <div className='bg-slate-50 w-[70%] rounded-tr-lg rounded-tl-lg h-6 mb-0.5 text-sm font-bold grid place-items-center'>
+        <div className='bg-slate-50 w-[70%] rounded-tr-lg rounded-tl-lg h-6 mb-0.5 max-ss:text-xs text-sm font-bold grid place-items-center'>
           {day}
         </div>
         <div
@@ -83,7 +83,7 @@ export default function InViewItems({
         <div className='flex text-center gap-1'>
           <div>
             <div
-              className={`bg-slate-600 flex items-center justify-center w-[5rem] md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 `}
+              className={`bg-slate-600 flex items-center justify-center max-ss:w-[4rem] max-ss:text-sm w-[5rem] md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 `}
             >
               {loginTime?.toLowerCase().includes('am')
                 ? loginTime.slice(0, loginTime.length - 3)
@@ -98,13 +98,13 @@ export default function InViewItems({
                   : 'AM'}
               </span>
             </div>
-            <div className='w-[5rem] md:w-28 max-w-full rounded-md shadow-md font-semibold'>
+            <div className='max-ss:w-[4rem] max-ss:text-sm w-[5rem] md:w-28 max-w-full rounded-md shadow-md font-semibold'>
               Login
             </div>
           </div>
           <div>
             <div
-              className={`bg-slate-600 flex justify-center items-center w-[5rem] md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 `}
+              className={`bg-slate-600 flex justify-center items-center max-ss:w-[4rem] max-ss:text-sm w-[5rem] md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 `}
             >
               {logoutTime?.toLowerCase().includes('pm')
                 ? logoutTime.slice(0, logoutTime.length - 3)
@@ -119,17 +119,17 @@ export default function InViewItems({
                   : 'AM'}
               </span>
             </div>
-            <div className='w-[5rem] md:w-28 max-w-full rounded-md shadow-md font-semibold'>
+            <div className='max-ss:w-[4rem] max-ss:text-sm w-[5rem] md:w-28 max-w-full rounded-md shadow-md font-semibold'>
               Logout
             </div>
           </div>
           <div>
             <div
-              className={`bg-slate-600 w-[5rem] md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 `}
+              className={`bg-slate-600 max-ss:w-[4rem] max-ss:text-sm w-[5rem] md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 `}
             >
               {hours}
             </div>
-            <div className='w-[5rem] md:w-28 max-w-full rounded-md shadow-md font-semibold'>
+            <div className='max-ss:w-[4rem] max-ss:text-sm w-[5rem] md:w-28 max-w-full rounded-md shadow-md font-semibold'>
               Time
             </div>
           </div>

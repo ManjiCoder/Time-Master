@@ -159,7 +159,7 @@ export default function Attendance() {
           {data && !Object.values(data).includes(NaN) && (
             <>
               <p className='flex flex-col items-center justify-center text-center'>
-                <span className='font-bold text-[18px] w-16'>
+                <span className='font-bold xs:text-lg w-16'>
                   {data.hrs > 0 && data.hrs + ':'}
                   {data.mins.toString().padStart(2, '0')}:
                   {data.secs.toString().padStart(2, '0')}
@@ -167,7 +167,7 @@ export default function Attendance() {
                 <span className='text-[0.57rem] -mt-1.5'>Time Spend</span>
               </p>
               <p
-                className={`ml-2 relative font-semibold flex items-center justify-center text-white text-lg ${
+                className={`hidden ml-2 relative font-semibold xs:flex items-center justify-center text-white text-lg ${
                   Math.floor(data.percent) > 100 ? 'w-16' : 'w-14'
                 } rounded-md shadow-sm text-center from-slate-700`}
                 style={{

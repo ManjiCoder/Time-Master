@@ -13,7 +13,7 @@ export default function ListBoxYears({ years }) {
   return (
     <div className=''>
       <Listbox value={selected} onChange={(e) => dispatch(setYear(e))}>
-        <div className='relative text-sm'>
+        <div className='relative max-ss:text-xs text-sm'>
           <Listbox.Button className='relative w-full cursor-pointer rounded-lg bg-white dark:bg-slate-700 py-1.5 pl-3 pr-8 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm'>
             <span className='block truncate dark:text-white text-gray-900 font-semibold'>
               {selected}

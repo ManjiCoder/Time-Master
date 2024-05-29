@@ -118,7 +118,7 @@ export default function ExtraTimePerDay() {
     return (
       <p className='flex flex-col items-center justify-center text-center ml-4'>
         <span
-          className={`font-semibold text-[18px] ${
+          className={`font-semibold xs:text-lg ${
             Math.sign(timeDiffMins) === -1
               ? 'dark:text-red-500 text-red-600'
               : 'dark:text-green-500 text-green-600'

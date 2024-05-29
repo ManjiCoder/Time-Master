@@ -18,7 +18,7 @@ export default function ListBoxFilter() {
         value={selected}
         onChange={(e) => dispatch(setSortBy(e))}
       >
-        <div className='relative text-sm'>
+        <div className='relative max-ss:text-xs text-sm'>
           <Listbox.Button className='relative w-full flex items-center space-x-2 cursor-pointer rounded-lg rounded-r-none bg-slate-50 dark:bg-slate-700 py-2 pl-3 pr-1.5 text-left  focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm'>
             <span className='block truncate dark:text-white text-gray-900 font-semibold'>
               {selected || filterObj.date}
