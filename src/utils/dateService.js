@@ -356,3 +356,11 @@ export const isHolidays = (parseDate, dayNum) => {
     return false;
   }
 };
+
+export const parsedTime = (timeStr) => {
+  return parse(timeStr, 'HH:mm', new Date()).getTime();
+};
+
+export const isValidTime = (loginTime, logoutTime) => {
+  return Math.sign(parsedTime(logoutTime) - parsedTime(loginTime)) === -1;
+};

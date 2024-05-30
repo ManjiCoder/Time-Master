@@ -1,8 +1,10 @@
 import { editByDate } from '@/redux/slices/attendanceSlice';
+import { remarkObj } from '@/utils/constants';
 import {
   calculateTimeSpent,
   format24To12,
   isHolidays,
+  isValidTime,
   removeAMorPM,
 } from '@/utils/dateService';
 import { Dialog, Transition } from '@headlessui/react';
@@ -12,13 +14,6 @@ import { Fragment, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import ListBoxComp from './HeadlessUI/ListBoxComp';
-
-export const remarkObj = {
-  leave: 'Leave',
-  floatingLeave: 'Floating Leave',
-  workFromHome: 'Work From Home',
-  others: 'Others',
-};
 
 export default function EditModal({ isOpen, setIsOpen }) {
   const attendance = useSelector((state) => state.attendance);
@@ -81,6 +76,10 @@ export default function EditModal({ isOpen, setIsOpen }) {
     if (!isLeave) {
       delete editedData?.leave;
       delete editedData?.remark;
+    }
+
+    if (isValidTime(loginTime, logoutTime)) {
+      return toast.warn('Invalid Time!');
     }
 
     if (isOfficeMode && targetDate == new Date().setHours(0, 0, 0, 0)) {
@@ -205,7 +204,10 @@ export default function EditModal({ isOpen, setIsOpen }) {
                   >
                     <div className='time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
                       <input
-                        className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700 max-ss:w-24 max-xs:w-28 w-36'
+                        className={`outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700 max-ss:w-24 max-xs:w-28 w-36 ${
+                          isValidTime(loginTime, logoutTime) &&
+                          'ring-2 ring-red-500'
+                        }`}
                         type='time'
                         name='login'
                         id='login'
@@ -223,11 +225,16 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         placeholder='hh:mm AM/PM'
                         value={loginTime}
                       />
-                      <h4 className='max-ss:text-sm xs:text-lg font-medium'>Log-In</h4>
+                      <h4 className='max-ss:text-sm xs:text-lg font-medium'>
+                        Log-In
+                      </h4>
                     </div>
                     <div className='time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
                       <input
-                        className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700 max-ss:w-24 max-xs:w-28 w-36'
+                        className={`outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700 max-ss:w-24 max-xs:w-28 w-36 ${
+                          isValidTime(loginTime, logoutTime) &&
+                          'ring-2 ring-red-500'
+                        }`}
                         type='time'
                         name='logout'
                         id='logout'
@@ -244,7 +251,9 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         value={logoutTime}
                       />
 
-                      <h4 className='max-ss:text-sm xs:text-lg font-medium'>Log-Out</h4>
+                      <h4 className='max-ss:text-sm xs:text-lg font-medium'>
+                        Log-Out
+                      </h4>
                     </div>
 
                     <div className='time flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
@@ -257,7 +266,9 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         value={hoursTime === '-' ? null : hoursTime}
                       />
 
-                      <h4 className='max-ss:text-sm xs:text-lg font-medium'>Time-Spent</h4>
+                      <h4 className='max-ss:text-sm xs:text-lg font-medium'>
+                        Time-Spent
+                      </h4>
                     </div>
                     <div className='time flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
                       <ListBoxComp
@@ -285,7 +296,9 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         />
                       )} */}
 
-                      <h4 className='max-ss:text-sm xs:text-lg font-medium'>Remark</h4>
+                      <h4 className='max-ss:text-sm xs:text-lg font-medium'>
+                        Remark
+                      </h4>
                     </div>
 
                     <label

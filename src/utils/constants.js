@@ -12,3 +12,13 @@ export const holidayDetails = {
   1730399400000: { date: '01-Nov-2024', desc: 'Diwali' },
   1735065000000: { date: '25-Dec-2024', desc: 'Christmas' },
 };
+
+export const toastDuration = 1400;
+
+// Remarks List
+export const remarkObj = {
+  leave: 'Leave',
+  floatingLeave: 'Floating Leave',
+  workFromHome: 'Work From Home',
+  others: 'Others',
+};

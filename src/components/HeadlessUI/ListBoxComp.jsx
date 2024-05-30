@@ -1,7 +1,7 @@
+import { remarkObj } from '@/utils/constants';
 import { Listbox, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { Fragment, useEffect, useRef } from 'react';
-import { remarkObj } from '../EditModal';
 
 export default function ListBoxComp(props) {
   const options = Object.values(remarkObj);
