@@ -47,10 +47,10 @@ export default function Home() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (isValidTime(loginTime, logoutTime)) {
-      dispatch(setIsOfficeMode(false));
-      return toast.warn('Invalid Time');
-    }
+    // if (isValidTime(loginTime, logoutTime)) {
+    //   dispatch(setIsOfficeMode(false));
+    //   return toast.warn('Invalid Time');
+    // }
     const currentDate = new Date();
     const year = format(currentDate, 'yyyy');
     const month = format(currentDate, 'MMMM');
@@ -123,18 +123,21 @@ export default function Home() {
         >
           <div className='time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
             <input
-              className={`outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700 max-xs:w-28 ${
-                isValidTime(loginTime, logoutTime) && 'ring-2 ring-red-500'
-              }`}
+              className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700 max-xs:w-28'
+              // className={`outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700 max-xs:w-28 ${
+              //   !isOfficeMode &&
+              //   isValidTime(loginTime, logoutTime) &&
+              //   'ring-2 ring-red-500'
+              // }`}
               type='time'
               name='login'
               id='login'
               onChange={(e) => {
                 setLoginTime(e.target.value);
-                if (isValidTime(loginTime, logoutTime)) {
-                  dispatch(setIsOfficeMode(false));
-                  toast.warn('Invalid Time');
-                }
+                // if (isValidTime(e.target.value, logoutTime)) {
+                //   dispatch(setIsOfficeMode(false));
+                //   toast.warn('Invalid Time');
+                // }
               }}
               placeholder='hh:mm AM/PM'
               value={loginTime}
@@ -155,18 +158,16 @@ export default function Home() {
           </div>
           <div className='time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
             <input
-              className={`outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700 max-xs:w-28 ${
-                isValidTime(loginTime, logoutTime) && 'ring-2 ring-red-500'
-              }`}
+              className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700 max-xs:w-28'
               type='time'
               name='logout'
               id='logout'
               onChange={(e) => {
                 setLogoutTime(e.target.value);
-                if (isValidTime(loginTime, logoutTime)) {
-                  dispatch(setIsOfficeMode(false));
-                  toast.warn('Invalid Time');
-                }
+                // if (isValidTime(loginTime, e.target.value)) {
+                //   dispatch(setIsOfficeMode(false));
+                //   toast.warn('Invalid Time');
+                // }
               }}
               placeholder='hh:mm AM/PM'
               value={logoutTime}
