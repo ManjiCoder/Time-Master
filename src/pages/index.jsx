@@ -11,6 +11,7 @@ import {
   format24To12,
   isLoginTime,
   isLogoutTime,
+  isValidTime,
   removeAMorPM,
 } from '@/utils/dateService';
 import { format } from 'date-fns';
@@ -18,6 +19,7 @@ import { Baloo_Bhai_2 } from 'next/font/google';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 
@@ -45,6 +47,10 @@ export default function Home() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (isValidTime(loginTime, logoutTime)) {
+      dispatch(setIsOfficeMode(false));
+      return toast.warn('Invalid Time');
+    }
     const currentDate = new Date();
     const year = format(currentDate, 'yyyy');
     const month = format(currentDate, 'MMMM');
@@ -121,9 +127,13 @@ export default function Home() {
               type='time'
               name='login'
               id='login'
-              // step={300}
-              // pattern="(?:1[012]|0[0-9]):[0-5][0-9] (?:AM|PM)"
-              onChange={(e) => setLoginTime(e.target.value)}
+              onChange={(e) => {
+                setLoginTime(e.target.value);
+                if (isValidTime(loginTime, logoutTime)) {
+                  dispatch(setIsOfficeMode(false));
+                  toast.warn('Invalid Time');
+                }
+              }}
               placeholder='hh:mm AM/PM'
               value={loginTime}
             />

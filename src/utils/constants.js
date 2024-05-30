@@ -13,7 +13,7 @@ export const holidayDetails = {
   1735065000000: { date: '25-Dec-2024', desc: 'Christmas' },
 };
 
-export const toastDuration = 1400;
+export const toastDuration = 1000;
 
 // Remarks List
 export const remarkObj = {
