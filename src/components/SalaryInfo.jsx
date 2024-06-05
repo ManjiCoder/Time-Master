@@ -24,9 +24,10 @@ export default function SalaryInfo() {
         <InformationCircleIcon className='w-5 text-yellow-400' />
       </button>
       {isOpen && (
-        <MyModal closeModal={closeModal}>
-          <ModalContent closeModal={closeModal} />
-        </MyModal>
+        <MyModal
+          closeModal={closeModal}
+          children={<ModalContent closeModal={closeModal} />}
+        />
       )}
     </>
   );
@@ -130,7 +131,7 @@ export function ModalContent({ closeModal }) {
     // Update the state with the total hours
     const data = totalTimeObj();
     setTotalTimeSpent(data);
-    // console.log(data);
+    console.log(data);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [attendance, year, month]);
@@ -184,12 +185,12 @@ export function ModalContent({ closeModal }) {
   const detuctedAmount =
     Math.sign(expectedSalaryAmount - salaryAmount) === -1
       ? 0
-      : expectedSalaryAmount - salaryAmount;
+      : (expectedSalaryAmount - salaryAmount);
 
   return (
-    <div className='min-h-96 max-sm:w-[80vw]'>
+    <div className='min-h-96 text-gray-900 dark:text-white max-sm:w-[80vw]'>
       <div>
-        <h2 className='text-xl dark:text-white text-center font-semibold'>
+        <h2 className='text-xl  dark:text-white text-center font-semibold'>
           Salary Info
         </h2>
         <button onClick={closeModal}>
@@ -201,7 +202,7 @@ export function ModalContent({ closeModal }) {
         <ListBoxMonths />
       </div>
       <section className='flex justify-center mt-10'>
-        <div className='flex mx-auto flex-col gap-y-1 mt-3 justify-start'>
+        <div className='flex mx-auto flex-col gap-y-1 mt-3 justify-start border dark:border-slate-700 p-3 rounded-md shadow-sm'>
           <span className='font-semibold flex justify-between gap-x-12'>
             <span>Basic Salary</span>{' '}
             {salaryAmt.toLocaleString('en-IN', formatAmt)}
