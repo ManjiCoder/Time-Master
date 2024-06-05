@@ -22,3 +22,10 @@ export const remarkObj = {
   workFromHome: 'Work From Home',
   others: 'Others',
 };
+export const formatAmt = {
+  style: 'currency',
+  currency: 'INR',
+  currencyDisplay: 'symbol',
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 2,
+};

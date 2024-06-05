@@ -1,18 +1,39 @@
 import { formatAmt } from '@/utils/constants';
 import { isHolidays } from '@/utils/dateService';
 import { calculateSalary } from '@/utils/salary';
+import { InformationCircleIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import { getDate } from 'date-fns';
-import { motion, useMotionValueEvent, useScroll } from 'framer-motion';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import MyModal from './HeadlessUI/Modal';
 import ListBoxMonths from './ListBoxMonths';
 import ListBoxYears from './ListBoxYears';
 
-export default function TimeSpentIndicator({
-  isYearMonthPickerVisible = true,
-  extraStyle = '',
-}) {
+export default function SalaryInfo() {
+  const [isOpen, setIsOpen] = useState(false);
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+  return (
+    <>
+      <button
+        className='outline-none rounded-full bg-slate-950 dark:bg-slate-700'
+        type='button'
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <InformationCircleIcon className='w-5 text-yellow-400' />
+      </button>
+      {isOpen && (
+        <MyModal
+          closeModal={closeModal}
+          children={<ModalContent closeModal={closeModal} />}
+        />
+      )}
+    </>
+  );
+}
+
+export function ModalContent({ closeModal }) {
   const currentDate = new Date().setHours(0, 0, 0, 0);
   const attendance = useSelector((state) => state.attendance);
   const {
@@ -22,25 +43,6 @@ export default function TimeSpentIndicator({
   } = useSelector((state) => state.userSettings);
   const { isShowAmt, year, month } = useSelector((state) => state.dateSlice);
   const { taxRates } = useSelector((state) => state.proTax);
-  const years = Object.keys(attendance)
-    .filter((v) => v !== 'undefined')
-    .reverse();
-  const { pathname } = useRouter();
-
-  // For Hiding/Showing Heading based on scrollY
-  const [hidden, setHidden] = useState(false);
-  const { scrollY } = useScroll();
-  useMotionValueEvent(scrollY, 'change', (latest) => {
-    const previous = scrollY.getPrevious();
-    if (latest > previous && latest > 150) {
-      setHidden(true);
-    } else {
-      setHidden(false);
-    }
-  });
-  // const noOfDaysInMonth = getDaysInMonth(
-  //   new Date().setFullYear(year, monthNameToIndex[month])
-  // );
 
   const [totalTimeSpent, setTotalTimeSpent] = useState({
     hrs: 0,
@@ -129,12 +131,10 @@ export default function TimeSpentIndicator({
     // Update the state with the total hours
     const data = totalTimeObj();
     setTotalTimeSpent(data);
-    // console.log(data);
-    // alert(calculateSalary(salaryAmt, 6, data.absentDays, month));
+    console.log(data);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [attendance, year, month]);
-
   const {
     days: tDays,
     hrs,
@@ -158,27 +158,11 @@ export default function TimeSpentIndicator({
   const totalHrsR = parseInt(Math.abs(timeDiffMins / 60));
   const rawAvg = totalTimeSpendInMins / 60 / days;
   const avg = Math.floor(rawAvg * 100) / 100;
-  // let salaryAmount = Math.round(
-  //   totalTimeSpendInMins > totalExpectedTimeSpendInMins && overTimeInMins === 0
-  //     ? (totalExpectedTimeSpendInMins + holidaysTimeInMins) * minRate
-  //     : (totalTimeSpendInMins + holidaysTimeInMins) * minRate
-  // );
-  // // For OverTime Calculation with 1x
-  // if (overTimeInMins !== 0) {
-  //   const overTimeAmt = overTimeInMins * overTimeMinRate;
-  //   salaryAmount =
-  //     (totalTimeSpendInMins - overTimeInMins + holidaysTimeInMins) * minRate +
-  //     overTimeAmt;
-  // }
-  // const expectedSalaryAmount = Math.round(
-  //   (totalExpectedTimeSpendInMins + holidaysTimeInMins) * minRate
-  // );
+
   const hoursLeft =
     totalTimeSpendInMins > totalExpectedTimeSpendInMins
       ? 0
       : Math.abs(timeDiffMins / 60);
-  // alert(totalTimeSpendInHrs);
-  // if (workedDays === 0) toast.warn('oops'); // TODO Use MEMO
   const salaryAmount =
     days === 0
       ? 0
@@ -201,86 +185,44 @@ export default function TimeSpentIndicator({
   const detuctedAmount =
     Math.sign(expectedSalaryAmount - salaryAmount) === -1
       ? 0
-      : -(expectedSalaryAmount - salaryAmount);
+      : (expectedSalaryAmount - salaryAmount);
 
   return (
-    <motion.header
-      variants={{
-        visible: {
-          y: 0,
-        },
-        hidden: {
-          y: '-100%',
-        },
-      }}
-      animate={hidden ? 'hidden' : 'visible'}
-      transition={{ duration: 0.3, ease: 'easeInOut' }}
-      className={`sticky top-0 w-full z-10 space-x-1 p-2 text-center shadow-md flex items-center justify-evenly text-slate-950 dark:text-white bg-white/70 dark:bg-slate-700/40 backdrop-blur-sm dark:backdrop-brightness-75 ${extraStyle}`}
-    >
-      <h1
-        className={`flex flex-1 ${
-          totalHrsR > 9 ? 'xs:text-[17px]' : 'xs:text-lg'
-        } space-x-1 justify-evenly items-center max-xs:text-sm`}
-      >
-        <span
-          className={`font-bold ${
-            Math.sign(timeDiffMins) === -1 ? 'text-red-500' : 'text-green-500'
-          }`}
-        >
-          <span
-            className={`${
-              Math.sign(timeDiffMins) === -1 ? 'text-red-500' : 'text-green-500'
-            } font-bold`}
-          >
-            {Math.sign(timeDiffMins) === -1 ? '- ' : '+ '}
+    <div className='min-h-96 max-sm:w-[80vw]'>
+      <div>
+        <h2 className='text-xl dark:text-white text-center font-semibold'>
+          Salary Info
+        </h2>
+        <button onClick={closeModal}>
+          <XMarkIcon className='absolute top-5 right-4 w-7 text-gray-900 dark:text-white text-xl' />
+        </button>
+      </div>
+      <div className='flex justify-end space-x-2 text-center'>
+        <ListBoxYears />
+        <ListBoxMonths />
+      </div>
+      <section className='flex justify-center mt-10'>
+        <div className='flex mx-auto flex-col gap-y-1 mt-3 justify-start'>
+          <span className='font-semibold flex justify-between gap-x-12'>
+            <span>Basic Salary</span>{' '}
+            {salaryAmt.toLocaleString('en-IN', formatAmt)}
           </span>
-          {totalHrsR > 0 && totalHrsR + 'hr : '}
-          {totalMinsR}min
-        </span>
 
-        <span>
-          Days: <span className='font-bold'> {workedDays}</span>
-          {/* {noOfDaysInMonth - totalHolidays - workedDays > 0 && (
-            <span className='font-bold text-red-500 ml-2'>
-              -{noOfDaysInMonth - totalHolidays - workedDays}
-            </span>
-          )} */}
-        </span>
+          <span className='text-red-500 font-semibold flex justify-between gap-x-12'>
+            <span>P.T. Tax</span>{' '}
+            {taxRates[month].toLocaleString('en-IN', formatAmt)}
+          </span>
 
-        <span>
-          Avg: <span className='font-bold'>{isNaN(avg) ? 0 : avg}</span>
-        </span>
-        {isShowAmt && pathname === '/' && !isNaN(salaryAmount) && (
-          <>
-            {/* <span className='text-green-500 font-semibold'>
-              {salaryAmount.toLocaleString('en-IN', formatAmt)}
-            </span> */}
-            <span className='text-red-500 font-semibold'>
-              {detuctedAmount.toLocaleString('en-IN', formatAmt)}
-            </span>
-          </>
-        )}
-        {!isShowAmt && pathname === '/' && (
-          <>
-            <span>
-              Hr:{' '}
-              <span className='font-bold'>
-                {Math.floor(totalTimeSpendInMins / 60)}
-              </span>
-            </span>
-            <span>
-              Min:{' '}
-              <span className='font-bold'>{totalTimeSpendInMins % 60}</span>
-            </span>
-          </>
-        )}
-      </h1>
-      {isYearMonthPickerVisible && (
-        <>
-          <ListBoxYears years={years} />
-          <ListBoxMonths />
-        </>
-      )}
-    </motion.header>
+          <span className='text-red-500 font-semibold flex justify-between gap-x-12'>
+            <span>Loss Of Pay</span>{' '}
+            {detuctedAmount.toLocaleString('en-IN', formatAmt)}
+          </span>
+          <span className='text-green-500 font-semibold flex justify-between gap-x-12'>
+            <span>Salary</span>{' '}
+            {salaryAmount.toLocaleString('en-IN', formatAmt)}
+          </span>
+        </div>
+      </section>
+    </div>
   );
 }

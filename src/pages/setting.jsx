@@ -7,6 +7,7 @@ import EditAmountModal from '@/components/EditAmountModal';
 import ExportData from '@/components/ExportDataBtn';
 import MyModal from '@/components/HeadlessUI/Modal';
 import ProTax from '@/components/ProTax';
+import SalaryInfo from '@/components/SalaryInfo';
 import ToggleThemeBtn from '@/components/ToggleThemeBtn';
 import YearMonthPicker from '@/components/YearMonthPicker';
 import { deleteByMonthYear } from '@/redux/slices/attendanceSlice';
@@ -85,9 +86,15 @@ export default function Setting() {
           <span className='ml-1 relative top-1.5 text-center text-2xl leading-[0] font-bold'>
             *********
           </span>
-          <button className='outline-none' type='button' onClick={handleClick}>
-            <PencilSquareIcon className='w-5 mb-1 text-blue-600' />
+          <button
+            className='outline-none pr-3'
+            type='button'
+            onClick={handleClick}
+            title='Edit'
+          >
+            <PencilSquareIcon className='w-5 text-blue-600' />
           </button>
+          <SalaryInfo />
         </li>
         <ProTax />
         <li className='bg-slate-200 dark:bg-slate-800 shadow-md rounded-md py-4 px-4 border border-slate-400 flex space-x-2 items-center justify-start'>

@@ -6,8 +6,10 @@ import { setYear } from '@/redux/slices/dateSlice';
 
 // const years = [2024, 2023];
 
-export default function ListBoxYears({ years }) {
+export default function ListBoxYears() {
   const { year: selected } = useSelector((state) => state.dateSlice);
+  const attendance = useSelector((state) => state.attendance);
+  const years = Object.keys(attendance).filter((yr)=> yr)
   const dispatch = useDispatch();
 
   return (
