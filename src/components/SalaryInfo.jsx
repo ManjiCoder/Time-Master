@@ -130,7 +130,7 @@ export function ModalContent({ closeModal }) {
     // Update the state with the total hours
     const data = totalTimeObj();
     setTotalTimeSpent(data);
-    console.log(data);
+    // console.log(data);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [attendance, year, month]);
@@ -204,7 +204,7 @@ export function ModalContent({ closeModal }) {
         <div className='flex mx-auto flex-col gap-y-1 mt-3 justify-start border dark:border-slate-700 p-3 rounded-md shadow-sm'>
           <span className='font-semibold flex justify-between gap-x-12'>
             <span>Basic Salary</span>{' '}
-            {salaryAmt.toLocaleString('en-IN', formatAmt)}
+            {(salaryAmt ? salaryAmt : 0).toLocaleString('en-IN', formatAmt)}
           </span>
 
           <span className='text-red-500 font-semibold flex justify-between gap-x-12'>
