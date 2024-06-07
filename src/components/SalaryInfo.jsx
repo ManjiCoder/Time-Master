@@ -5,24 +5,40 @@ import { InformationCircleIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import { getDate } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import EditAmountModal from './EditAmountModal';
 import MyModal from './HeadlessUI/Modal';
 import ListBoxMonths from './ListBoxMonths';
 import ListBoxYears from './ListBoxYears';
 
 export default function SalaryInfo() {
+  const { salaryAmount } = useSelector((state) => state.userSettings);
   const [isOpen, setIsOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const closeModal = () => {
     setIsOpen(false);
   };
+
   return (
     <>
       <button
         className='outline-none rounded-full bg-slate-950 dark:bg-slate-700'
         type='button'
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          if (salaryAmount) {
+            setIsOpen(!isOpen);
+          } else {
+            setIsEditModalOpen(!isEditModalOpen);
+          }
+        }}
       >
         <InformationCircleIcon className='w-5 text-yellow-400' />
       </button>
+      {isEditModalOpen && (
+        <EditAmountModal
+          isOpen={isEditModalOpen}
+          setIsOpen={setIsEditModalOpen}
+        />
+      )}
       {isOpen && (
         <MyModal closeModal={closeModal}>
           <ModalContent closeModal={closeModal} />
