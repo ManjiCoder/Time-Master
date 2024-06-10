@@ -319,7 +319,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
                     <section className='flex col-span-2 mt-5'>
                       <button
                         type='submit'
-                        className='col-span-2 mx-auto w-28 font-bold bg-blue-700 dark:bg-blue-500 px-4 py-2 rounded-md shadow-md text-white'
+                        className='col-span-2 order-1 mx-auto w-28 font-bold bg-blue-700 dark:bg-blue-500 px-4 py-2 rounded-md shadow-md text-white'
                       >
                         Submit
                       </button>
