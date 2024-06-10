@@ -3,6 +3,7 @@ import {
   differenceInMinutes,
   differenceInSeconds,
   format,
+  getDaysInMonth,
   isSaturday,
   isSunday,
   isValid,
@@ -286,6 +287,7 @@ export function getUserInfo(text) {
       month,
       data: userTimeLog,
     };
+    payload.data = getTimeLogs(year, monthNameToIndex[month], userTimeLog);
     return payload;
   } catch (error) {
     return {
@@ -294,6 +296,32 @@ export function getUserInfo(text) {
       data: {},
     };
   }
+}
+
+export function getTimeLogs(year, month, data) {
+  const newTimeLog = {};
+  const n = getDaysInMonth(new Date(year, month));
+  const defaultTimeLog = {
+    date: '-',
+    present: '-',
+    hours: '-',
+    login: '-',
+    logout: '-',
+    leave: '-',
+    break: '-',
+    tour: '-',
+  };
+
+  for (let i = 1; i <= n; i++) {
+    const timeStamp = new Date(year, month, i).setHours(0, 0, 0, 0);
+    if (data[timeStamp]) {
+      newTimeLog[timeStamp] = data[timeStamp];
+    } else {
+      const date = format(timeStamp, 'yyyy-MM-dd');
+      newTimeLog[timeStamp] = { ...defaultTimeLog, date };
+    }
+  }
+  return newTimeLog;
 }
 
 export const monthNameToIndex = {

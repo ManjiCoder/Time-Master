@@ -3,7 +3,12 @@ import { setPdfData } from '@/redux/slices/attendanceSlice';
 import { setMonth, setYear } from '@/redux/slices/dateSlice';
 import { setHolidays } from '@/redux/slices/holidaysSlice';
 import { csvToJson } from '@/utils/csvToJson';
-import { getHolidaysList, getUserInfo } from '@/utils/dateService';
+import {
+  getHolidaysList,
+  getTimeLogs,
+  getUserInfo,
+  monthNameToIndex,
+} from '@/utils/dateService';
 import { toastifyOptions } from '@/utils/toastify';
 import { Baloo_Bhai_2 } from 'next/font/google';
 import { useRouter } from 'next/router';
@@ -94,7 +99,13 @@ const PdfReader = () => {
             const names = file.name.replace('.csv', '').split('-');
             month = names[0];
             year = names[1];
-            const payload = csvToJson(year, e.target.result);
+            const timeLogs = csvToJson(year, e.target.result);
+            const payload = getTimeLogs(
+              year,
+              monthNameToIndex[month],
+              timeLogs
+            );
+
             // console.table(payload);
             dispatch(setPdfData({ year, month, data: payload }));
             dispatch(setYear(year));
@@ -184,7 +195,10 @@ const PdfReader = () => {
             isDragActive ? 'border-green-500' : 'border-gray-400'
           }`}
         >
-          <input {...getInputProps()} accept='.pdf, .csv' />
+          <input
+            {...getInputProps()}
+            accept='.pdf, .csv'
+          />
           <p className='text-center'>
             {isDragActive
               ? 'Drop the file here'
