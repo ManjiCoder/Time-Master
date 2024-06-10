@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 export default function ListBoxYears() {
   const { year: selected } = useSelector((state) => state.dateSlice);
   const attendance = useSelector((state) => state.attendance);
-  const years = Object.keys(attendance).filter((yr) => yr != undefined);
+  const years = Object.keys(attendance).filter((v) => v !== 'undefined').reverse();
   const dispatch = useDispatch();
 
   return (
