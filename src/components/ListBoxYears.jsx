@@ -11,7 +11,8 @@ export default function ListBoxYears() {
   const attendance = useSelector((state) => state.attendance);
   const years = Object.keys(attendance)
     .filter((v) => v !== 'undefined')
-    .toSorted();
+    .toSorted()
+    .toReversed()
   const dispatch = useDispatch();
 
   return (
