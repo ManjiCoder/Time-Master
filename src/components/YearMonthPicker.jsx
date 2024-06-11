@@ -13,7 +13,7 @@ export default function YearMonthPicker({ defaultDate, setExpDetails }) {
   };
   return (
     <input
-      className='outline-none text-sm font-medium ml-1.5 focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-black/20 bg-slate-100'
+      className='ml-1.5 rounded-md bg-slate-100 px-1 py-2 text-sm font-medium shadow-md outline-none focus-within:ring-2 dark:bg-black/20'
       type='month'
       onChange={handleChange}
       defaultValue={defaultDate}

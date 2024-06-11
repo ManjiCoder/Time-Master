@@ -68,10 +68,9 @@ export const csvToJson = (year, csvData) => {
         } else if (['Leave', 'Floating Leave'].includes(remark)) {
           payload.leave = '1';
         }
-        
       }
     });
-    delete payload.difference
+    delete payload.difference;
     timeLogs[timeStamp] = payload;
     timeStamp = null;
   });

@@ -107,23 +107,23 @@ export default function Home() {
   return (
     // <PersistGate loading={null} persistor={persistor}>
     <main
-      className={`bg-slate-300 dark:bg-slate-900 dark:text-white text-slate-800 min-h-screen pb-10 ${inter.className}`}
+      className={`min-h-screen bg-slate-300 pb-10 text-slate-800 dark:bg-slate-900 dark:text-white ${inter.className}`}
     >
       <TimeSpentIndicator isYearMonthPickerVisible={false} />
       <div className='p-4'>
-        <section className='flex justify-between items-center'>
+        <section className='flex items-center justify-between'>
           <h3 className='text-xl font-medium'>Welcome </h3>
           {/* ToggleBtn */}
           <ToogleBtn loginTime={loginTime} />
         </section>
 
         <form
-          className='grid grid-cols-2 my-5 gap-3 justify-evenly items-center'
+          className='my-5 grid grid-cols-2 items-center justify-evenly gap-3'
           onSubmit={handleSubmit}
         >
-          <div className='time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
+          <div className='time inline-flex flex-col items-center justify-center gap-2 rounded-md bg-slate-200 p-4 shadow-md dark:bg-slate-800'>
             <input
-              className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700 max-xs:w-28'
+              className='rounded-md px-1 py-2 shadow-md outline-none focus-within:ring-2 dark:bg-slate-700 max-xs:w-28'
               // className={`outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700 max-xs:w-28 ${
               //   !isOfficeMode &&
               //   isValidTime(loginTime, logoutTime) &&
@@ -149,16 +149,16 @@ export default function Home() {
                 setLogoutTime('');
                 dispatch(setIsOfficeMode(true));
               }}
-              className={`text-lg text-white font-medium shadow-md w-28 text-center py-1.5 rounded-md hover:bg-slate-800 hover:dark:bg-slate-900 ${
+              className={`w-28 rounded-md py-1.5 text-center text-lg font-medium text-white shadow-md hover:bg-slate-800 hover:dark:bg-slate-900 ${
                 isOfficeMode ? 'bg-slate-800 dark:bg-slate-900' : 'bg-slate-700'
               }`}
             >
               Log-In
             </button>
           </div>
-          <div className='time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
+          <div className='time inline-flex flex-col items-center justify-center gap-2 rounded-md bg-slate-200 p-4 shadow-md dark:bg-slate-800'>
             <input
-              className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700 max-xs:w-28'
+              className='rounded-md px-1 py-2 shadow-md outline-none focus-within:ring-2 dark:bg-slate-700 max-xs:w-28'
               type='time'
               name='logout'
               id='logout'
@@ -178,7 +178,7 @@ export default function Home() {
                 setLogoutTime(format(new Date(), 'HH:mm'));
                 dispatch(setIsOfficeMode(false));
               }}
-              className={`text-lg text-white font-medium shadow-md w-28 text-center py-1.5 rounded-md hover:bg-slate-800 hover:dark:bg-slate-900 ${
+              className={`w-28 rounded-md py-1.5 text-center text-lg font-medium text-white shadow-md hover:bg-slate-800 hover:dark:bg-slate-900 ${
                 !isOfficeMode
                   ? 'bg-slate-800 dark:bg-slate-900'
                   : 'bg-slate-700'
@@ -187,7 +187,7 @@ export default function Home() {
               Log-Out
             </button>
           </div>
-          <section className='px-3 col-span-2 flex justify-between items-center text-sm'>
+          <section className='col-span-2 flex items-center justify-between px-3 text-sm'>
             <ToggleCheckBox />
             <div className='flex space-x-2 text-center'>
               <ListBoxYears years={years} />
@@ -196,7 +196,7 @@ export default function Home() {
           </section>
           <button
             type='submit'
-            className='col-span-2 mx-auto bg-slate-700 px-4 py-2 rounded-md shadow-md text-white'
+            className='col-span-2 mx-auto rounded-md bg-slate-700 px-4 py-2 text-white shadow-md'
           >
             Submit
           </button>

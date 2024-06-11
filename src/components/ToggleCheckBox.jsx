@@ -30,10 +30,7 @@ export default function ToggleCheckBox() {
   };
   return (
     <>
-      <label
-        htmlFor='showAmt'
-        className='flex items-center space-x-1.5'
-      >
+      <label htmlFor='showAmt' className='flex items-center space-x-1.5'>
         <input
           type='checkbox'
           checked={isChecked}
@@ -44,12 +41,7 @@ export default function ToggleCheckBox() {
         />
         <span className='mt-1'>{!isChecked ? 'Show' : 'hide'} Amount</span>
       </label>
-      {isOpen && (
-        <EditAmountModal
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-        />
-      )}
+      {isOpen && <EditAmountModal isOpen={isOpen} setIsOpen={setIsOpen} />}
     </>
   );
 }

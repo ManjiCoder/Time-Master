@@ -92,7 +92,7 @@ export default function CurrentTimeSpent({ loginTime, logoutTime }) {
 
   if (loginTime.length === 0) {
     return (
-      <p className='text-red-700 text-sm capitalize'>
+      <p className='text-sm capitalize text-red-700'>
         Select the time first & then try again!
       </p>
     );
@@ -107,12 +107,8 @@ export default function CurrentTimeSpent({ loginTime, logoutTime }) {
         </b>
       </h2> */}
 
-      <section className='flex justify-center items-center'>
-        <svg
-          className='fill-none -rotate-90 scale-90 '
-          height={300}
-          width={300}
-        >
+      <section className='flex items-center justify-center'>
+        <svg className='-rotate-90 scale-90 fill-none' height={300} width={300}>
           <circle
             className='stroke-slate-700'
             cx={150}
@@ -137,7 +133,7 @@ export default function CurrentTimeSpent({ loginTime, logoutTime }) {
           {/* Start After 100% */}
           {timeSpent.percent > 100 && (
             <circle
-              className='stroke-green-800 dark:stroke-green-900 transition-all duration-500 ease-in-out'
+              className='stroke-green-800 transition-all duration-500 ease-in-out dark:stroke-green-900'
               cx={150}
               cy={150}
               r={135}
@@ -152,10 +148,10 @@ export default function CurrentTimeSpent({ loginTime, logoutTime }) {
             ></circle>
           )}
         </svg>
-        <div className='absolute text-center justify-center items-center flex flex-col'>
-          <span className='text-4xl font-semibold mt-9'>
+        <div className='absolute flex flex-col items-center justify-center text-center'>
+          <span className='mt-9 text-4xl font-semibold'>
             {timeSpent?.percent}
-            <span className='text-3xl pb-2'>%</span>
+            <span className='pb-2 text-3xl'>%</span>
             {/* <sub>{timeSpent.secs}</sub> */}
           </span>
 

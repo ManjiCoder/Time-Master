@@ -116,19 +116,19 @@ export default function ExtraTimePerDay() {
     month === format(currentDate, 'MMMM')
   )
     return (
-      <p className='flex flex-col items-center justify-center text-center ml-4'>
+      <p className='ml-4 flex flex-col items-center justify-center text-center'>
         <span
           className={`font-semibold xs:text-lg ${
             Math.sign(timeDiffMins) === -1
-              ? 'dark:text-red-500 text-red-600'
-              : 'dark:text-green-500 text-green-600'
+              ? 'text-red-600 dark:text-red-500'
+              : 'text-green-600 dark:text-green-500'
           }`}
         >
           <span className='text-xl'>-</span>{' '}
           {hrsPerDay.toString().padStart(2, '0')}:
           {minPerDay.toString().padStart(2, '0')}
         </span>
-        <span className='text-[0.57rem] -mt-1.5'>Extra-Time/Day</span>
+        <span className='-mt-1.5 text-[0.57rem]'>Extra-Time/Day</span>
       </p>
     );
   return null;

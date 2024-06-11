@@ -1,4 +1,4 @@
-import { toastDuration } from "./constants";
+import { toastDuration } from './constants';
 
 export const toastifyOptions = (type, message) => {
   return {

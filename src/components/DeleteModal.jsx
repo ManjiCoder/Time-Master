@@ -49,16 +49,8 @@ export default function DeleteModal({ isOpen, setIsOpen }) {
 
   return (
     <>
-      <Transition
-        appear
-        show={true}
-        as={Fragment}
-      >
-        <Dialog
-          as='div'
-          className='relative z-10'
-          onClose={closeModal}
-        >
+      <Transition appear show={true} as={Fragment}>
+        <Dialog as='div' className='relative z-10' onClose={closeModal}>
           <Transition.Child
             as={Fragment}
             enter='ease-out duration-300'
@@ -82,14 +74,14 @@ export default function DeleteModal({ isOpen, setIsOpen }) {
                 leaveFrom='opacity-100 scale-100'
                 leaveTo='opacity-0 scale-95'
               >
-                <Dialog.Panel className='w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-slate-800 p-6 text-left align-middle shadow-xl transition-all'>
+                <Dialog.Panel className='w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all dark:bg-slate-800'>
                   <Dialog.Title
                     as='h3'
-                    className='text-2xl font-medium text-center mb-3 leading-6 text-gray-900 dark:text-white'
+                    className='mb-3 text-center text-2xl font-medium leading-6 text-gray-900 dark:text-white'
                   >
                     Are you sure?
                   </Dialog.Title>
-                  <h2 className='text-center font-medium mb-4 text-gray-900 dark:text-white'>
+                  <h2 className='mb-4 text-center font-medium text-gray-900 dark:text-white'>
                     Do you want to delete the{' '}
                     {format(
                       attendance[year][month][targetDate].date,
@@ -98,7 +90,7 @@ export default function DeleteModal({ isOpen, setIsOpen }) {
                     TimeLog?
                   </h2>
 
-                  <div className='w-full mt-4 flex justify-evenly'>
+                  <div className='mt-4 flex w-full justify-evenly'>
                     <button
                       type='button'
                       className='inline-flex justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-700 focus-visible:ring-offset-2'

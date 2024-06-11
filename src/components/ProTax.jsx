@@ -17,13 +17,13 @@ export default function ProTax() {
   };
   return (
     <>
-      <li className='bg-slate-200 dark:bg-slate-800 shadow-md rounded-md py-4 px-4 border border-slate-400 flex space-x-2 items-center justify-start'>
+      <li className='flex items-center justify-start space-x-2 rounded-md border border-slate-400 bg-slate-200 px-4 py-4 shadow-md dark:bg-slate-800'>
         Professional Tax :<span className='ml-1 font-semibold' hidden></span>
-        <span className='ml-2 relative top-1.5 text-center text-2xl leading-[0] font-bold'>
+        <span className='relative top-1.5 ml-2 text-center text-2xl font-bold leading-[0]'>
           *******
         </span>
         <button className='outline-none' type='button' onClick={toggleModal}>
-          <PencilSquareIcon className='w-5 mb-1 text-blue-600' />
+          <PencilSquareIcon className='mb-1 w-5 text-blue-600' />
         </button>
       </li>
       {isOpen && (
@@ -79,15 +79,15 @@ export function ProTaxForm({ closeModal }) {
   return (
     <>
       <button onClick={closeModal}>
-        <XMarkIcon className='absolute top-5 right-4 w-7 text-gray-900 dark:text-white text-xl' />
+        <XMarkIcon className='absolute right-4 top-5 w-7 text-xl text-gray-900 dark:text-white' />
       </button>
       <form
-        className='flex flex-col text-gray-900 dark:text-white gap-4 justify-evenly items-center'
+        className='flex flex-col items-center justify-evenly gap-4 text-gray-900 dark:text-white'
         onSubmit={handleSubmit}
       >
-        <div className='time inline-flex flex-col justify-center items-center gap-2 rounded-md shadow-md bg-slate-50 dark:bg-slate-800'>
+        <div className='time inline-flex flex-col items-center justify-center gap-2 rounded-md bg-slate-50 shadow-md dark:bg-slate-800'>
           <input
-            className='outline-none focus-within:ring-2 px-4 py-2.5 rounded-md shadow-md dark:bg-slate-700'
+            className='rounded-md px-4 py-2.5 shadow-md outline-none focus-within:ring-2 dark:bg-slate-700'
             type='tel'
             placeholder='₹ Enter Your Professtion Tax Amount'
             onChange={handleChange}
@@ -116,7 +116,7 @@ export function ProTaxForm({ closeModal }) {
 
         <button
           type='submit'
-          className='col-span-2 mx-auto bg-slate-700 px-4 py-2 rounded-md shadow-md text-white'
+          className='col-span-2 mx-auto rounded-md bg-slate-700 px-4 py-2 text-white shadow-md'
         >
           Submit
         </button>
@@ -133,12 +133,12 @@ export function ProTaxForm({ closeModal }) {
         }}
         initial='initial'
         animate='animate'
-        className='flex flex-col items-center my-5'
+        className='my-5 flex flex-col items-center'
       >
         {Object.keys(taxRates).map((key, index) => (
           <motion.div
             key={key}
-            className='flex gap-3 mb-2 text-gray-900 dark:text-white'
+            className='mb-2 flex gap-3 text-gray-900 dark:text-white'
             variants={{
               initial: {
                 opacity: 0,
@@ -156,7 +156,7 @@ export function ProTaxForm({ closeModal }) {
             <span className='w-20'>{key}</span>
             <span>:</span>
             <input
-              className={`w-20 px-3 py-0.5 rounded-md shadow-md outline-none dark:bg-slate-800 ${
+              className={`w-20 rounded-md px-3 py-0.5 shadow-md outline-none dark:bg-slate-800 ${
                 editMonth === key && 'ring-2'
               }`}
               type='tel'

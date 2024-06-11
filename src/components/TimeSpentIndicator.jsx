@@ -215,12 +215,12 @@ export default function TimeSpentIndicator({
       }}
       animate={hidden ? 'hidden' : 'visible'}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
-      className={`sticky top-0 w-full z-10 space-x-1 p-2 text-center shadow-md flex items-center justify-evenly text-slate-950 dark:text-white bg-white/70 dark:bg-slate-700/40 backdrop-blur-sm dark:backdrop-brightness-75 ${extraStyle}`}
+      className={`sticky top-0 z-10 flex w-full items-center justify-evenly space-x-1 bg-white/70 p-2 text-center text-slate-950 shadow-md backdrop-blur-sm dark:bg-slate-700/40 dark:text-white dark:backdrop-brightness-75 ${extraStyle}`}
     >
       <h1
         className={`flex flex-1 ${
           totalHrsR > 9 ? 'xs:text-[17px]' : 'xs:text-lg'
-        } space-x-1 justify-evenly items-center max-xs:text-sm`}
+        } items-center justify-evenly space-x-1 max-xs:text-sm`}
       >
         <span
           className={`font-bold ${
@@ -255,7 +255,7 @@ export default function TimeSpentIndicator({
             {/* <span className='text-green-500 font-semibold'>
               {salaryAmount.toLocaleString('en-IN', formatAmt)}
             </span> */}
-            <span className='text-red-500 font-semibold'>
+            <span className='font-semibold text-red-500'>
               {detuctedAmount.toLocaleString('en-IN', formatAmt)}
             </span>
           </>

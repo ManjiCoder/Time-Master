@@ -3,12 +3,25 @@ import { isHolidays } from '@/utils/dateService';
 import { calculateSalary } from '@/utils/salary';
 import { InformationCircleIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import { getDate } from 'date-fns';
+import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import EditAmountModal from './EditAmountModal';
 import MyModal from './HeadlessUI/Modal';
 import ListBoxMonths from './ListBoxMonths';
 import ListBoxYears from './ListBoxYears';
+
+const items = {
+  hidden: {
+    opacity: 0,
+    x: '-100%',
+  },
+  show: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.4 },
+  },
+};
 
 export default function SalaryInfo() {
   const { salaryAmount } = useSelector((state) => state.userSettings);
@@ -21,7 +34,7 @@ export default function SalaryInfo() {
   return (
     <>
       <button
-        className='outline-none rounded-full bg-slate-950 dark:bg-slate-700'
+        className='rounded-full bg-slate-950 outline-none dark:bg-slate-700'
         type='button'
         onClick={() => {
           if (salaryAmount) {
@@ -205,38 +218,70 @@ export function ModalContent({ closeModal }) {
   return (
     <div className='min-h-96 text-gray-900 dark:text-white max-sm:w-[80vw]'>
       <div>
-        <h2 className='text-xl  dark:text-white text-center font-semibold'>
+        <h2 className='text-center text-xl font-semibold dark:text-white'>
           Salary Info
         </h2>
         <button onClick={closeModal}>
-          <XMarkIcon className='absolute top-5 right-4 w-7 text-gray-900 dark:text-white text-xl' />
+          <XMarkIcon className='absolute right-4 top-5 w-7 text-xl text-gray-900 dark:text-white' />
         </button>
       </div>
       <div className='flex justify-end space-x-2 text-center'>
         <ListBoxYears />
         <ListBoxMonths />
       </div>
-      <section className='flex justify-center mt-10'>
-        <div className='flex mx-auto flex-col gap-y-1 mt-3 justify-start border dark:border-slate-700 p-3 rounded-md shadow-sm'>
-          <span className='font-semibold flex justify-between gap-x-12'>
+      <section className='mt-10 flex justify-center'>
+        <motion.div
+          variants={{
+            hidden: {
+              opacity: 0,
+              y: '-100',
+            },
+            show: {
+              opacity: 1,
+              y: 0,
+              transition: { staggerChildren: 0.15, delayChildren: 0.15 },
+            },
+          }}
+          initial={'hidden'}
+          animate={'show'}
+          className='mx-auto mt-3 flex flex-col justify-start gap-y-1 rounded-md border p-3 shadow-sm dark:border-slate-700'
+        >
+          <motion.span
+            variants={items}
+            custom={0.25}
+            className='flex justify-between gap-x-12 font-semibold'
+          >
             <span>Basic Salary</span>{' '}
             {(salaryAmt ? salaryAmt : 0).toLocaleString('en-IN', formatAmt)}
-          </span>
+          </motion.span>
 
-          <span className='text-red-500 font-semibold flex justify-between gap-x-12'>
+          <motion.span
+            variants={items}
+            custom={0.25}
+            className='flex justify-between gap-x-12 font-semibold text-red-500'
+          >
             <span>P.T. Tax</span>{' '}
             {taxRates[month].toLocaleString('en-IN', formatAmt)}
-          </span>
+          </motion.span>
 
-          <span className='text-red-500 font-semibold flex justify-between gap-x-12'>
+          <motion.span
+            variants={items}
+            custom={0.25}
+            className='flex justify-between gap-x-12 font-semibold text-red-500'
+          >
             <span>Loss Of Pay</span>{' '}
             {detuctedAmount.toLocaleString('en-IN', formatAmt)}
-          </span>
-          <span className='text-green-500 font-semibold flex justify-between gap-x-12'>
+          </motion.span>
+
+          <motion.span
+            variants={items}
+            custom={0.25}
+            className='flex justify-between gap-x-12 font-semibold text-green-500'
+          >
             <span>Salary</span>{' '}
             {salaryAmount.toLocaleString('en-IN', formatAmt)}
-          </span>
-        </div>
+          </motion.span>
+        </motion.div>
       </section>
     </div>
   );

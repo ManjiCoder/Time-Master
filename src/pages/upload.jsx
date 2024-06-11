@@ -185,20 +185,17 @@ const PdfReader = () => {
 
   return (
     <main
-      className={`bg-slate-300 dark:bg-slate-900 dark:text-white text-slate-800 min-h-screen pb-10 ${inter.className} p-4`}
+      className={`min-h-screen bg-slate-300 pb-10 text-slate-800 dark:bg-slate-900 dark:text-white ${inter.className} p-4`}
     >
       <h2 className='text-2xl font-semibold'>Upload</h2>
       <div className='container mx-auto mt-5 bg-slate-200 dark:bg-slate-950'>
         <div
           {...getRootProps()}
-          className={`p-6 border-4 border-dashed rounded-md ${
+          className={`rounded-md border-4 border-dashed p-6 ${
             isDragActive ? 'border-green-500' : 'border-gray-400'
           }`}
         >
-          <input
-            {...getInputProps()}
-            accept='.pdf, .csv'
-          />
+          <input {...getInputProps()} accept='.pdf, .csv' />
           <p className='text-center'>
             {isDragActive
               ? 'Drop the file here'

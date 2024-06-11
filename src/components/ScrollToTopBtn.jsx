@@ -24,7 +24,7 @@ export default function ScrollToTopBtn() {
   return (
     <button
       type='button'
-      className='fixed w-11 h-11 bottom-20 right-3 hidden justify-center items-center rounded-full shadow-lg bg-slate-950 text-white p-1'
+      className='fixed bottom-20 right-3 hidden h-11 w-11 items-center justify-center rounded-full bg-slate-950 p-1 text-white shadow-lg'
       ref={progressRef}
       onClick={() => scrollTo(0, 0)}
     >

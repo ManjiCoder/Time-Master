@@ -32,9 +32,9 @@ export default function ListBoxMonths() {
           dispatch(setMonth(e));
         }}
       >
-        <div className='relative max-ss:text-xs text-sm'>
-          <Listbox.Button className='relative w-full cursor-pointer rounded-lg bg-white dark:bg-slate-700 py-1.5 pl-3 pr-6 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm'>
-            <span className='block truncate text-gray-900 dark:text-white font-semibold'>
+        <div className='relative text-sm max-ss:text-xs'>
+          <Listbox.Button className='relative w-full cursor-pointer rounded-lg bg-white py-1.5 pl-3 pr-6 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 dark:bg-slate-700 sm:text-sm'>
+            <span className='block truncate font-semibold text-gray-900 dark:text-white'>
               {selected}
             </span>
             <span className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-1'>
@@ -50,12 +50,12 @@ export default function ListBoxMonths() {
             leaveFrom='opacity-100'
             leaveTo='opacity-0'
           >
-            <Listbox.Options className='absolute text-sm mt-1 max-h-60 w-full min-w-24 right-0 overflow-auto rounded-md bg-white dark:bg-slate-700 py-1 shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm z-10'>
+            <Listbox.Options className='absolute right-0 z-10 mt-1 max-h-60 w-full min-w-24 overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black/5 focus:outline-none dark:bg-slate-700 sm:text-sm'>
               {months.map((month, monthIdx) => (
                 <Listbox.Option
                   key={monthIdx}
                   className={({ active }) =>
-                    `relative cursor-default select-none py-2   ${
+                    `relative cursor-default select-none py-2 ${
                       active
                         ? 'bg-slate-200 dark:bg-slate-600'
                         : 'text-gray-900 dark:text-white'

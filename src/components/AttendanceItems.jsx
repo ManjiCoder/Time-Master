@@ -22,11 +22,7 @@ export default function AttendanceItems({
   const currentDate = new Date();
 
   return (
-    <motion.section
-      variants={variants}
-      initial='hidden'
-      animate='show'
-    >
+    <motion.section variants={variants} initial='hidden' animate='show'>
       {showDates
         .sort((a, b) => {
           a = parseInt(a);

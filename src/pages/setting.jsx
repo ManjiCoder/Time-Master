@@ -65,29 +65,29 @@ export default function Setting() {
 
   return (
     <main
-      className={`bg-slate-300 dark:bg-slate-900 dark:text-white text-slate-800 min-h-screen pb-10 ${inter.className} py-4`}
+      className={`min-h-screen bg-slate-300 pb-10 text-slate-800 dark:bg-slate-900 dark:text-white ${inter.className} py-4`}
     >
-      <h2 className='text-2xl font-semibold px-4'>Settings</h2>
-      <ol className='flex flex-col mt-4 text-lg'>
-        <li className='bg-slate-200 dark:bg-slate-800 shadow-md rounded-md py-4 px-4 border border-slate-400'>
+      <h2 className='px-4 text-2xl font-semibold'>Settings</h2>
+      <ol className='mt-4 flex flex-col text-lg'>
+        <li className='rounded-md border border-slate-400 bg-slate-200 px-4 py-4 shadow-md dark:bg-slate-800'>
           <Link href={'/'}>Home</Link>
         </li>
-        <li className='bg-slate-200 dark:bg-slate-800 shadow-md rounded-md py-4 px-4 border border-slate-400'>
+        <li className='rounded-md border border-slate-400 bg-slate-200 px-4 py-4 shadow-md dark:bg-slate-800'>
           <Link href={'/upload'}>Upload File</Link>
         </li>
         {/* <li className="bg-slate-200 dark:bg-slate-800 shadow-md rounded-md py-4 px-4 border border-slate-400">
           <Link href={'/text'}>Text-To-TimeLogs</Link>
         </li> */}
-        <li className='bg-slate-200 dark:bg-slate-800 shadow-md rounded-md py-4 px-4 border border-slate-400 flex space-x-2 items-center justify-start'>
+        <li className='flex items-center justify-start space-x-2 rounded-md border border-slate-400 bg-slate-200 px-4 py-4 shadow-md dark:bg-slate-800'>
           Salary Amount :
           <span className='ml-1 font-semibold' hidden>
             {salaryAmount}
           </span>
-          <span className='ml-1 relative top-1.5 text-center text-2xl leading-[0] font-bold'>
+          <span className='relative top-1.5 ml-1 text-center text-2xl font-bold leading-[0]'>
             *********
           </span>
           <button
-            className='outline-none pr-3'
+            className='pr-3 outline-none'
             type='button'
             onClick={handleClick}
             title='Edit'
@@ -97,10 +97,10 @@ export default function Setting() {
           <SalaryInfo />
         </li>
         <ProTax />
-        <li className='bg-slate-200 dark:bg-slate-800 shadow-md rounded-md py-4 px-4 border border-slate-400 flex space-x-2 items-center justify-start'>
+        <li className='flex items-center justify-start space-x-2 rounded-md border border-slate-400 bg-slate-200 px-4 py-4 shadow-md dark:bg-slate-800'>
           Theme Mode - <ToggleThemeBtn />
         </li>
-        <li className='bg-slate-200 dark:bg-slate-800 shadow-md rounded-md py-4 px-4 border border-slate-400 flex space-x-2 items-center justify-start'>
+        <li className='flex items-center justify-start space-x-2 rounded-md border border-slate-400 bg-slate-200 px-4 py-4 shadow-md dark:bg-slate-800'>
           Export Data -{' '}
           <YearMonthPicker
             defaultDate={`${initialState.year}-${initialState.month
@@ -113,7 +113,7 @@ export default function Setting() {
             month={expDetails.month || initialState.month}
           />
         </li>
-        <li className='bg-slate-200 dark:bg-slate-800 shadow-md rounded-md py-4 px-4 border border-slate-400 flex space-x-2 items-center justify-start'>
+        <li className='flex items-center justify-start space-x-2 rounded-md border border-slate-400 bg-slate-200 px-4 py-4 shadow-md dark:bg-slate-800'>
           Delete Data - <YearMonthPicker setExpDetails={setClearDetails} />
           <button
             type='button'
@@ -125,7 +125,7 @@ export default function Setting() {
                 toast.warn(`Select The Month First!`);
               }
             }}
-            className='ml-2 w-24 bg-red-700 px-3 font-bold text-sm py-2.5 rounded-md shadow-md text-white'
+            className='ml-2 w-24 rounded-md bg-red-700 px-3 py-2.5 text-sm font-bold text-white shadow-md'
           >
             Delete
           </button>

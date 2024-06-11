@@ -35,7 +35,7 @@ export default function Example() {
     <div className='ml-2'>
       <Menu as='div' className='relative inline-block text-left'>
         <div>
-          <Menu.Button className='inline-flex w-full justify-center rounded-md bg-slate-100 dark:bg-black/20 px-4 py-2 text-sm font-medium dark:text-white hover:bg-slate-50 dark:hover:bg-black/30 capitalize focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75'>
+          <Menu.Button className='inline-flex w-full justify-center rounded-md bg-slate-100 px-4 py-2 text-sm font-medium capitalize hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 dark:bg-black/20 dark:text-white dark:hover:bg-black/30'>
             {userTheme === ThemeModes.system ? (
               <ComputerDesktopIcon
                 className='mr-2 h-5 w-5'
@@ -62,7 +62,7 @@ export default function Example() {
           leaveFrom='transform opacity-100 scale-100'
           leaveTo='transform opacity-0 scale-95'
         >
-          <Menu.Items className='absolute right-0 t-2 w-24 origin-top-right divide-y divide-gray-100 rounded-md dark:bg-slate-800 bg-white shadow-lg ring-1 ring-black/5 focus:outline-none'>
+          <Menu.Items className='t-2 absolute right-0 w-24 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none dark:bg-slate-800'>
             <div className='px-1 py-1'>
               <Menu.Item>
                 {({ active }) => (

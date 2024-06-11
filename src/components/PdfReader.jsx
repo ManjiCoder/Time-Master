@@ -48,7 +48,7 @@ const PdfReader = () => {
 
   return (
     <div>
-      <input type="file" onChange={handleFileChange} />
+      <input type='file' onChange={handleFileChange} />
       {pdfText && (
         <div>
           <pre>{pdfText}</pre>

@@ -18,32 +18,17 @@ export default function CustomHead({ title = null, desc = null }) {
         name='keywords'
         content='MasterTime, Master Time, Time Master, TimeMaster, Time Management'
       />
-      <meta
-        name='authur'
-        content='Manji coder'
-      />
-      <meta
-        name='viewport'
-        content='width=device-width, initial-scale=1'
-      />
+      <meta name='authur' content='Manji coder' />
+      <meta name='viewport' content='width=device-width, initial-scale=1' />
       {/* <link
         rel='icon'
         href='/favicon.ico'
       /> */}
 
       {/* PWA */}
-      <link
-        rel='manifest'
-        href='manifest.json'
-      />
-      <link
-        rel='apple-touch-icon'
-        href='/icon.png'
-      />
-      <meta
-        name='theme-color'
-        content='#fff'
-      />
+      <link rel='manifest' href='manifest.json' />
+      <link rel='apple-touch-icon' href='/icon.png' />
+      <meta name='theme-color' content='#fff' />
     </Head>
   );
 }

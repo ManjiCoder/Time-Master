@@ -31,7 +31,7 @@ export default function ListBoxComp(props) {
   }, []);
 
   return (
-    <div className='max-ss:w-24 max-xs:w-28 w-36'>
+    <div className='w-36 max-xs:w-28 max-ss:w-24'>
       <Listbox
         value={selected}
         onChange={(e) => {
@@ -60,9 +60,9 @@ export default function ListBoxComp(props) {
           }
         }}
       >
-        <div className='relative text-sm w-full'>
-          <Listbox.Button className='relative w-full cursor-default rounded-lg bg-white dark:bg-slate-700 py-2.5 pl-3 pr-6 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm h-10'>
-            <span className='block capitalize truncate text-gray-900 dark:text-white text-base'>
+        <div className='relative w-full text-sm'>
+          <Listbox.Button className='relative h-10 w-full cursor-default rounded-lg bg-white py-2.5 pl-3 pr-6 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 dark:bg-slate-700 sm:text-sm'>
+            <span className='block truncate text-base capitalize text-gray-900 dark:text-white'>
               {selected.includes('Others') ? 'Others' : selected}
             </span>
             <span className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-1'>
@@ -78,7 +78,7 @@ export default function ListBoxComp(props) {
             leaveFrom='opacity-100'
             leaveTo='opacity-0'
           >
-            <Listbox.Options className='absolute text-sm mt-1 max-h-60 w-full min-w-24 right-0 overflow-auto rounded-md bg-white dark:bg-slate-700 py-1 shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm'>
+            <Listbox.Options className='absolute right-0 mt-1 max-h-60 w-full min-w-24 overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black/5 focus:outline-none dark:bg-slate-700 sm:text-sm'>
               {options.map((month, monthIdx) => (
                 <Listbox.Option
                   key={monthIdx}
@@ -115,7 +115,7 @@ export default function ListBoxComp(props) {
 
         {selected === remarkObj.others && (
           <input
-            className='outline-none mt-2 focus-within:ring-2 rounded-md shadow-md px-1 py-2 max-ss:w-24 max-xs:w-28 w-36 dark:bg-slate-700 pl-3 capitalize'
+            className='mt-2 w-36 rounded-md px-1 py-2 pl-3 capitalize shadow-md outline-none focus-within:ring-2 dark:bg-slate-700 max-xs:w-28 max-ss:w-24'
             type='search'
             onChange={(e) => setOtherNote(e.target.value)}
             placeholder='Remark'

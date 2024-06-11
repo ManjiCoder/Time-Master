@@ -14,13 +14,10 @@ export default function ListBoxFilter() {
 
   return (
     <div className=''>
-      <Listbox
-        value={selected}
-        onChange={(e) => dispatch(setSortBy(e))}
-      >
-        <div className='relative max-ss:text-xs text-sm'>
-          <Listbox.Button className='relative w-full flex items-center space-x-2 cursor-pointer rounded-lg rounded-r-none bg-slate-50 dark:bg-slate-700 py-2 pl-3 pr-1.5 text-left  focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm'>
-            <span className='block truncate dark:text-white text-gray-900 font-semibold'>
+      <Listbox value={selected} onChange={(e) => dispatch(setSortBy(e))}>
+        <div className='relative text-sm max-ss:text-xs'>
+          <Listbox.Button className='relative flex w-full cursor-pointer items-center space-x-2 rounded-lg rounded-r-none bg-slate-50 py-2 pl-3 pr-1.5 text-left focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 dark:bg-slate-700 sm:text-sm'>
+            <span className='block truncate font-semibold text-gray-900 dark:text-white'>
               {selected || filterObj.date}
             </span>
           </Listbox.Button>
@@ -30,12 +27,12 @@ export default function ListBoxFilter() {
             leaveFrom='opacity-100'
             leaveTo='opacity-0'
           >
-            <Listbox.Options className='absolute w-full z-10 text-center dark:text-white text-sm mt-1 max-h-60 min-w-20 overflow-auto rounded-md bg-white dark:bg-slate-700 py-1 shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm'>
+            <Listbox.Options className='absolute z-10 mt-1 max-h-60 w-full min-w-20 overflow-auto rounded-md bg-white py-1 text-center text-sm shadow-lg ring-1 ring-black/5 focus:outline-none dark:bg-slate-700 dark:text-white sm:text-sm'>
               {years.map((year, yearsIdx) => (
                 <Listbox.Option
                   key={yearsIdx}
                   className={({ active }) =>
-                    `relative cursor-default select-none py-2   ${
+                    `relative cursor-default select-none py-2 ${
                       active
                         ? 'bg-slate-200 dark:bg-slate-600'
                         : 'text-gray-900 dark:text-white'

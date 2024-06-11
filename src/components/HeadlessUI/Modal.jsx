@@ -13,7 +13,7 @@ export default function MyModal({
   return (
     <Transition.Root show as={Fragment}>
       <Dialog
-        className='relative z-10 '
+        className='relative z-10'
         initialFocus={cancelButtonRef}
         onClose={closeModal}
       >
@@ -42,8 +42,8 @@ export default function MyModal({
             >
               <Dialog.Panel className='relative transform overflow-hidden rounded-lg text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg'>
                 <div
-                  className={`bg-white dark:bg-slate-900 px-4 pt-5 sm:p-6 ${
-                    children === undefined ? '' : 'pb-4  sm:pb-4'
+                  className={`bg-white px-4 pt-5 dark:bg-slate-900 sm:p-6 ${
+                    children === undefined ? '' : 'pb-4 sm:pb-4'
                   }`}
                 >
                   <div className='sm:flex sm:items-start'>
@@ -77,7 +77,7 @@ export default function MyModal({
                   {children !== undefined && children}
                 </div>
                 {children === undefined && (
-                  <div className='bg-gray-50 dark:bg-slate-900 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6'>
+                  <div className='bg-gray-50 px-4 py-3 dark:bg-slate-900 sm:flex sm:flex-row-reverse sm:px-6'>
                     <button
                       type='button'
                       className='inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto'

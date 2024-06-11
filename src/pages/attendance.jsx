@@ -97,13 +97,10 @@ export default function Attendance() {
   if (attendance[year] === undefined || attendance[year][month] === undefined) {
     return (
       <main
-        className={`bg-slate-300 dark:bg-slate-900 dark:text-white text-slate-800 min-h-screen pb-16 ${inter.className}`}
+        className={`min-h-screen bg-slate-300 pb-16 text-slate-800 dark:bg-slate-900 dark:text-white ${inter.className}`}
       >
-        <TimeSpentIndicator
-          year={year}
-          month={month}
-        />
-        <h2 className='text-xl text-center mt-5'>No Data Found!</h2>
+        <TimeSpentIndicator year={year} month={month} />
+        <h2 className='mt-5 text-center text-xl'>No Data Found!</h2>
       </main>
     );
   }
@@ -149,27 +146,27 @@ export default function Attendance() {
   // console.log(data);
   return (
     <main
-      className={`bg-slate-300 dark:bg-slate-900 text-slate-800 min-h-screen pb-20 ${inter.className}`}
+      className={`min-h-screen bg-slate-300 pb-20 text-slate-800 dark:bg-slate-900 ${inter.className}`}
     >
       <TimeSpentIndicator />
-      <section className='flex font-semibold justify-between mx-2 mt-2 items-center dark:text-white'>
+      <section className='mx-2 mt-2 flex items-center justify-between font-semibold dark:text-white'>
         {/* <span>Sort By Date : </span> */}
         <div className='flex items-center'>
           <ToogleBtn />
           {data && !Object.values(data).includes(NaN) && (
             <>
               <p className='flex flex-col items-center justify-center text-center'>
-                <span className='font-bold xs:text-lg w-16'>
+                <span className='w-16 font-bold xs:text-lg'>
                   {data.hrs > 0 && data.hrs + ':'}
                   {data.mins.toString().padStart(2, '0')}:
                   {data.secs.toString().padStart(2, '0')}
                 </span>
-                <span className='text-[0.57rem] -mt-1.5'>Time Spend</span>
+                <span className='-mt-1.5 text-[0.57rem]'>Time Spend</span>
               </p>
               <p
-                className={`hidden ml-2 relative font-semibold xs:flex items-center justify-center text-white text-lg ${
+                className={`relative ml-2 hidden items-center justify-center text-lg font-semibold text-white xs:flex ${
                   Math.floor(data.percent) > 100 ? 'w-16' : 'w-14'
-                } rounded-md shadow-sm text-center from-slate-700`}
+                } rounded-md from-slate-700 text-center shadow-sm`}
                 style={{
                   background: `linear-gradient(90deg, #16a34a ${Math.floor(
                     data.percent
@@ -179,15 +176,15 @@ export default function Attendance() {
                         ? '#334155'
                         : '#475569'
                       : isOfficeMode
-                      ? '#0f172a'
-                      : '#475569'
+                        ? '#0f172a'
+                        : '#475569'
                   } ${Math.floor(data.percent)}%)`,
                 }}
               >
                 {Math.floor(data.percent)}
                 <span className='text-sm'>%</span>
                 <span
-                  className={`absolute -right-1 w-1 h-2 ${
+                  className={`absolute -right-1 h-2 w-1 ${
                     isOfficeMode ? 'bg-slate-900' : 'bg-slate-600'
                   } ${
                     isOfficeMode ? 'dark:bg-slate-700' : 'bg-slate-600'
@@ -201,9 +198,9 @@ export default function Attendance() {
 
         <div className='flex'>
           <ListBoxFilter />
-          <div className='flex pr-2 flex-col justify-center items-center rounded-lg rounded-l-none bg-slate-50 dark:bg-slate-700'>
+          <div className='flex flex-col items-center justify-center rounded-lg rounded-l-none bg-slate-50 pr-2 dark:bg-slate-700'>
             <ChevronUpIcon
-              className={`w-5 -mb-2.5 cursor-pointer ${
+              className={`-mb-2.5 w-5 cursor-pointer ${
                 order === filterOrder.ascending
                   ? 'text-gray-700 dark:text-white'
                   : 'text-gray-400 dark:text-slate-400'
@@ -223,7 +220,7 @@ export default function Attendance() {
       </section>
 
       {showDates.length === 0 && (
-        <h2 className='text-xl text-center dark:text-white mt-5'>
+        <h2 className='mt-5 text-center text-xl dark:text-white'>
           No Data Found!
         </h2>
       )}
@@ -237,16 +234,10 @@ export default function Attendance() {
       />
 
       {isDeleteOpen && (
-        <DeleteModal
-          isOpen={isDeleteOpen}
-          setIsOpen={setIsDeleteOpen}
-        />
+        <DeleteModal isOpen={isDeleteOpen} setIsOpen={setIsDeleteOpen} />
       )}
       {isEditOpen && (
-        <EditModal
-          isOpen={isEditOpen}
-          setIsOpen={setIsEditOpen}
-        />
+        <EditModal isOpen={isEditOpen} setIsOpen={setIsEditOpen} />
       )}
       <ScrollToTopBtn />
     </main>

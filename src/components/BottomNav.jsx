@@ -39,14 +39,14 @@ export default function BottomNavbar() {
       variants={pageAnimationVariants}
       initial='initial'
       animate='animate'
-      className='print:hidden fixed border-t-[1px]  bottom-0 py-2 z-10 bg-slate-200 dark:bg-slate-900 w-full dark:text-white border-white dark:border-slate-400'
+      className='fixed bottom-0 z-10 w-full border-t-[1px] border-white bg-slate-200 py-2 dark:border-slate-400 dark:bg-slate-900 dark:text-white print:hidden'
     >
-      <hr className='hidden bg-slate-200 dark:bg-white mb-2' />
-      <ul className='flex gap-2 items-center justify-evenly'>
+      <hr className='mb-2 hidden bg-slate-200 dark:bg-white' />
+      <ul className='flex items-center justify-evenly gap-2'>
         {navList.map(({ linkName, icon, href }, index) => (
           <motion.li
             key={linkName}
-            className={`font-semibold text-lg px-4`}
+            className={`px-4 text-lg font-semibold`}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             viewport={{
@@ -56,11 +56,11 @@ export default function BottomNavbar() {
           >
             <Link
               href={href}
-              className={`flex flex-col justify-center items-center text-xs ${
+              className={`flex flex-col items-center justify-center text-xs ${
                 pathname === href
                   ? 'text-slate-800 dark:text-white'
-                  : 'text-gray-400 hover:scale-110 hover:dark:text-white hover:text-slate-800'
-              }  transition-all`}
+                  : 'text-gray-400 hover:scale-110 hover:text-slate-800 hover:dark:text-white'
+              } transition-all`}
             >
               <motion.span
                 className={`${pathname === href ? 'h-8 w-8' : 'h-7 w-7'}`}

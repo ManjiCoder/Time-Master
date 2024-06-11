@@ -179,17 +179,17 @@ export default function EditModal({ isOpen, setIsOpen }) {
                 leaveFrom='opacity-100 scale-100'
                 leaveTo='opacity-0 scale-95'
               >
-                <Dialog.Panel className='w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-slate-900 p-6 text-left align-middle shadow-xl transition-all'>
+                <Dialog.Panel className='w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all dark:bg-slate-900'>
                   <Dialog.Title
                     as='h3'
-                    className='text-2xl font-medium text-center mb-3 leading-6 text-gray-900 dark:text-white'
+                    className='mb-3 text-center text-2xl font-medium leading-6 text-gray-900 dark:text-white'
                   >
                     Are you sure?
                   </Dialog.Title>
                   <button onClick={closeModal}>
-                    <XMarkIcon className='absolute top-5 right-4 w-7 text-gray-900 dark:text-white text-xl' />
+                    <XMarkIcon className='absolute right-4 top-5 w-7 text-xl text-gray-900 dark:text-white' />
                   </button>
-                  <h2 className='text-center font-medium mb-4 text-gray-900 dark:text-white'>
+                  <h2 className='mb-4 text-center font-medium text-gray-900 dark:text-white'>
                     Do you want to edit the{' '}
                     {format(
                       attendance[year][month][targetDate].date,
@@ -199,12 +199,12 @@ export default function EditModal({ isOpen, setIsOpen }) {
                   </h2>
 
                   <form
-                    className='grid grid-cols-2 text-gray-900 dark:text-white my-5 gap-4 justify-evenly items-center'
+                    className='my-5 grid grid-cols-2 items-center justify-evenly gap-4 text-gray-900 dark:text-white'
                     onSubmit={handleEdit}
                   >
-                    <div className='time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
+                    <div className='time inline-flex flex-col items-center justify-center gap-2 rounded-md bg-slate-200 p-4 shadow-md dark:bg-slate-800'>
                       <input
-                        className={`outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700 max-ss:w-24 max-xs:w-28 w-36 ${
+                        className={`w-36 rounded-md px-1 py-2 shadow-md outline-none focus-within:ring-2 dark:bg-slate-700 max-xs:w-28 max-ss:w-24 ${
                           isValidTime(loginTime, logoutTime) &&
                           'ring-2 ring-red-500'
                         }`}
@@ -225,13 +225,13 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         placeholder='hh:mm AM/PM'
                         value={loginTime}
                       />
-                      <h4 className='max-ss:text-sm xs:text-lg font-medium'>
+                      <h4 className='font-medium max-ss:text-sm xs:text-lg'>
                         Log-In
                       </h4>
                     </div>
-                    <div className='time inline-flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
+                    <div className='time inline-flex flex-col items-center justify-center gap-2 rounded-md bg-slate-200 p-4 shadow-md dark:bg-slate-800'>
                       <input
-                        className={`outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 dark:bg-slate-700 max-ss:w-24 max-xs:w-28 w-36 ${
+                        className={`w-36 rounded-md px-1 py-2 shadow-md outline-none focus-within:ring-2 dark:bg-slate-700 max-xs:w-28 max-ss:w-24 ${
                           isValidTime(loginTime, logoutTime) &&
                           'ring-2 ring-red-500'
                         }`}
@@ -251,14 +251,14 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         value={logoutTime}
                       />
 
-                      <h4 className='max-ss:text-sm xs:text-lg font-medium'>
+                      <h4 className='font-medium max-ss:text-sm xs:text-lg'>
                         Log-Out
                       </h4>
                     </div>
 
-                    <div className='time flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
+                    <div className='time flex flex-col items-center justify-center gap-2 rounded-md bg-slate-200 p-4 shadow-md dark:bg-slate-800'>
                       <input
-                        className='outline-none focus-within:ring-2 rounded-md shadow-md px-1 py-2 max-ss:w-24 max-xs:w-28 w-36 dark:bg-slate-700 text-center'
+                        className='w-36 rounded-md px-1 py-2 text-center shadow-md outline-none focus-within:ring-2 dark:bg-slate-700 max-xs:w-28 max-ss:w-24'
                         type='text'
                         onChange={(e) => setHoursTime(e.target.value)}
                         placeholder='HH:MM'
@@ -266,11 +266,11 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         value={hoursTime === '-' ? null : hoursTime}
                       />
 
-                      <h4 className='max-ss:text-sm xs:text-lg font-medium'>
+                      <h4 className='font-medium max-ss:text-sm xs:text-lg'>
                         Time-Spent
                       </h4>
                     </div>
-                    <div className='time flex flex-col justify-center items-center gap-2 p-4 rounded-md shadow-md bg-slate-200 dark:bg-slate-800'>
+                    <div className='time flex flex-col items-center justify-center gap-2 rounded-md bg-slate-200 p-4 shadow-md dark:bg-slate-800'>
                       <ListBoxComp
                         note={note.includes('Others') ? 'Others' : note}
                         loginTime={loginTime}
@@ -296,14 +296,14 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         />
                       )} */}
 
-                      <h4 className='max-ss:text-sm xs:text-lg font-medium'>
+                      <h4 className='font-medium max-ss:text-sm xs:text-lg'>
                         Remark
                       </h4>
                     </div>
 
                     <label
                       htmlFor='leave'
-                      className='flex items-center space-x-1.5 col-span-2'
+                      className='col-span-2 flex items-center space-x-1.5'
                     >
                       <input
                         type='checkbox'
@@ -316,16 +316,16 @@ export default function EditModal({ isOpen, setIsOpen }) {
                       <p className='mt-0.5 lg:-mt-0.5'>Mark as Leave?</p>
                     </label>
 
-                    <section className='flex col-span-2 mt-5'>
+                    <section className='col-span-2 mt-5 flex'>
                       <button
                         type='submit'
-                        className='col-span-2 order-1 mx-auto w-28 font-bold bg-blue-700 dark:bg-blue-500 px-4 py-2 rounded-md shadow-md text-white'
+                        className='order-1 col-span-2 mx-auto w-28 rounded-md bg-blue-700 px-4 py-2 font-bold text-white shadow-md dark:bg-blue-500'
                       >
                         Submit
                       </button>
                       <button
                         type='button'
-                        className='col-span-2 mx-auto w-28 font-bold bg-red-700 dark:bg-red-800 px-4 py-2 rounded-md shadow-md text-white'
+                        className='col-span-2 mx-auto w-28 rounded-md bg-red-700 px-4 py-2 font-bold text-white shadow-md dark:bg-red-800'
                         onClick={handleReset}
                       >
                         Reset
