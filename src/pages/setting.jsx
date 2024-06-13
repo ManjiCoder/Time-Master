@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import BugReport from '@/components/BugReport';
 import EditAmountModal from '@/components/EditAmountModal';
 import ExportData from '@/components/ExportDataBtn';
 import FeatureReq from '@/components/FeatureReq';
@@ -133,6 +134,9 @@ export default function Setting() {
         </li>
         <li className='rounded-md border border-slate-400 bg-slate-200 px-4 py-4 shadow-md dark:bg-slate-800'>
           <FeatureReq />
+        </li>
+        <li className='rounded-md border border-slate-400 bg-slate-200 px-4 py-4 shadow-md dark:bg-slate-800'>
+          <BugReport />
         </li>
       </ol>
 
