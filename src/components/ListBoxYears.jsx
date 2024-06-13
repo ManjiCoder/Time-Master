@@ -12,7 +12,7 @@ export default function ListBoxYears() {
   const years = Object.keys(attendance)
     .filter((v) => v !== 'undefined')
     .toSorted()
-    .toReversed()
+    .toReversed();
   const dispatch = useDispatch();
 
   return (

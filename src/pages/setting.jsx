@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import EditAmountModal from '@/components/EditAmountModal';
 import ExportData from '@/components/ExportDataBtn';
+import FeatureReq from '@/components/FeatureReq';
 import MyModal from '@/components/HeadlessUI/Modal';
 import ProTax from '@/components/ProTax';
 import SalaryInfo from '@/components/SalaryInfo';
@@ -65,7 +66,7 @@ export default function Setting() {
 
   return (
     <main
-      className={`min-h-screen bg-slate-300 pb-10 text-slate-800 dark:bg-slate-900 dark:text-white ${inter.className} py-4`}
+      className={`min-h-screen bg-slate-300 pb-20 text-slate-800 dark:bg-slate-900 dark:text-white ${inter.className} py-4`}
     >
       <h2 className='px-4 text-2xl font-semibold'>Settings</h2>
       <ol className='mt-4 flex flex-col text-lg'>
@@ -130,7 +131,11 @@ export default function Setting() {
             Delete
           </button>
         </li>
+        <li className='rounded-md border border-slate-400 bg-slate-200 px-4 py-4 shadow-md dark:bg-slate-800'>
+          <FeatureReq />
+        </li>
       </ol>
+
       {isOpenModal && (
         <MyModal
           title={`Delete ${clearDetails.month}-${clearDetails.year} Records`}
