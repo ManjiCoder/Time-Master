@@ -7,16 +7,16 @@ export default async function handler(req, res) {
       error: 'Method Not Allowed!',
     });
   }
-  const msg = req.body;
+  const { msg, formType } = req.body;
 
-  if (!msg) {
+  if (!msg || !formType) {
     return res.status(400).json({ error: 'Missing data.' });
   }
 
   try {
     await dbConnect();
-    const featureMsg = await FeatureReqModel.create(msg);
-    console.log(featureMsg);
+    const featureMsg = await FeatureReqModel.create(req.body);
+    // console.log(featureMsg);
     res.status(200).json({
       msg: 'Form Submitted Successfully.',
     });

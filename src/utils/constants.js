@@ -29,3 +29,9 @@ export const formatAmt = {
   minimumFractionDigits: 0,
   maximumFractionDigits: 2,
 };
+
+// For Backend
+export const formTypes = Object.freeze({
+  feature: 'Feature Request',
+  bug: 'Bug Report',
+});

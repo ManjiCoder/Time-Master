@@ -5,7 +5,6 @@ const Schema = mongoose.Schema;
 const featureReqSchema = new Schema({
   formType: {
     type: String,
-    default: 'Feature-Request',
   },
   msg: {
     type: String,

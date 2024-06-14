@@ -1,7 +1,9 @@
+import { featureRequest } from '@/apis/feedbacks';
 import { msgSchema } from '@/lib/yup';
+import { formTypes } from '@/utils/constants';
 import { LightBulbIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Formik } from 'formik';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import MyModal from './HeadlessUI/Modal';
 
 export default function FeatureReq() {
@@ -28,13 +30,24 @@ export default function FeatureReq() {
 }
 
 export function Form({ closeModal }) {
+  const inputRef = useRef(null);
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
   return (
     <Formik
       initialValues={{ msg: '' }}
       validationSchema={msgSchema}
       onSubmit={(values, { setSubmitting }) => {
+        featureRequest(
+          { formType: formTypes.feature, msg: values.msg },
+          closeModal
+        );
         setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
+          // alert(JSON.stringify(values, null, 2));
           setSubmitting(false);
         }, 400);
       }}
@@ -64,6 +77,7 @@ export function Form({ closeModal }) {
           </h1>
           <div className='relative'>
             <textarea
+              ref={inputRef}
               name='msg'
               cols='30'
               rows='3'
