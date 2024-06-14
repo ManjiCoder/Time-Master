@@ -1,7 +1,8 @@
 import { toastifyOptions } from '@/utils/toastify';
 import { toast } from 'react-toastify';
 
-let headersList = {
+const BASE_URL = process.env.BASE_URL;
+const headersList = {
   'Content-Type': 'application/json',
 };
 
@@ -9,7 +10,7 @@ export const featureRequest = async (payload, callback) => {
   const toastId = toast.loading('Please Wait...');
   try {
     let bodyContent = JSON.stringify(payload);
-    let response = await fetch('http://localhost:3000/api/feedback', {
+    let response = await fetch(`${BASE_URL}/api/feedback`, {
       method: 'POST',
       body: bodyContent,
       headers: headersList,
@@ -17,10 +18,13 @@ export const featureRequest = async (payload, callback) => {
     if (response.ok) {
       toast.update(
         toastId,
-        toastifyOptions('success', 'Form Submitted Successfully!')
+        toastifyOptions('success', `${payload.formType} Send Successfully!`)
       );
     } else {
-      toast.update(toastId, toastifyOptions('error', 'Form Submition Failed!'));
+      toast.update(
+        toastId,
+        toastifyOptions('error', `${payload.formType} Send Failed!`)
+      );
     }
 
     let data = await response.json();
