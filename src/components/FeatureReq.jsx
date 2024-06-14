@@ -42,11 +42,11 @@ export function Form({ closeModal }) {
       initialValues={{ msg: '' }}
       validationSchema={msgSchema}
       onSubmit={(values, { setSubmitting }) => {
-        featureRequest(
-          { formType: formTypes.feature, msg: values.msg },
-          closeModal
-        );
         setTimeout(() => {
+          featureRequest(
+            { formType: formTypes.feature, msg: values.msg },
+            closeModal
+          );
           // alert(JSON.stringify(values, null, 2));
           setSubmitting(false);
         }, 400);
