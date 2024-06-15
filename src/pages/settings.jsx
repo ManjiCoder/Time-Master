@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import BugReport from '@/components/BugReport';
+import DynamicHead from '@/components/DynamicHead';
 import EditAmountModal from '@/components/EditAmountModal';
 import ExportData from '@/components/ExportDataBtn';
 import FeatureReq from '@/components/FeatureReq';
@@ -69,6 +70,9 @@ export default function Setting() {
     <main
       className={`min-h-screen bg-slate-300 pb-20 text-slate-800 dark:bg-slate-900 dark:text-white ${inter.className} py-4`}
     >
+      <DynamicHead>
+        <title>Settings | MasterTime</title>
+      </DynamicHead>
       <h2 className='px-4 text-2xl font-semibold'>Settings</h2>
       <ol className='mt-4 flex flex-col text-lg'>
         <li className='rounded-md border border-slate-400 bg-slate-200 px-4 py-4 shadow-md dark:bg-slate-800'>

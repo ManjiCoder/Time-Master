@@ -26,14 +26,17 @@ const navList = [
     href: '/upload',
   },
   {
-    linkName: 'Setting',
+    linkName: 'Settings',
     icon: <CogIcon />,
-    href: '/setting',
+    href: '/settings',
   },
 ];
 
 export default function BottomNavbar() {
   const { pathname } = useRouter();
+  if (pathname === '/_error') {
+    return null;
+  }
   return (
     <motion.nav
       variants={pageAnimationVariants}
