@@ -77,7 +77,7 @@ export function ProTaxForm({ closeModal }) {
   //   inputRef.current.focus();
   // }, []);
   return (
-    <>
+    <div>
       <button onClick={closeModal}>
         <XMarkIcon className='absolute right-4 top-5 w-7 text-xl text-gray-900 dark:text-white' />
       </button>
@@ -89,7 +89,7 @@ export function ProTaxForm({ closeModal }) {
           <input
             className='rounded-md px-4 py-2.5 shadow-md outline-none focus-within:ring-2 dark:bg-slate-700'
             type='tel'
-            placeholder='₹ Enter Your Professtion Tax Amount'
+            placeholder='₹ Enter Your Tax Amount.'
             onChange={handleChange}
             value={amount ? `₹ ${amount}` : ''}
             ref={inputRef}
@@ -175,6 +175,6 @@ export function ProTaxForm({ closeModal }) {
           </motion.div>
         ))}
       </motion.section>
-    </>
+    </div>
   );
 }
