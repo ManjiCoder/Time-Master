@@ -89,7 +89,7 @@ export function ProTaxForm({ closeModal }) {
           <input
             className='rounded-md px-4 py-2.5 shadow-md outline-none focus-within:ring-2 dark:bg-slate-700'
             type='tel'
-            placeholder='₹ Enter Your Professtion Tax Amount'
+            placeholder='₹ Enter Your Tax Amount.'
             onChange={handleChange}
             value={amount ? `₹ ${amount}` : ''}
             ref={inputRef}

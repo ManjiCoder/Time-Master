@@ -79,10 +79,9 @@ export function Form({ closeModal }) {
             <textarea
               ref={inputRef}
               name='msg'
-              cols='30'
               rows='3'
               placeholder='Enter Your Message.'
-              className={`rounded-md bg-slate-100 px-5 py-3 shadow-md outline-none focus:ring-2 dark:bg-slate-950/40 ${errors.msg && 'outline-red-600'}`}
+              className={`w-full rounded-md bg-slate-100 px-5 py-3 shadow-md outline-none focus:ring-2 dark:bg-slate-950/40 ${errors.msg && 'outline-red-600 focus:ring-0'}`}
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.msg}
