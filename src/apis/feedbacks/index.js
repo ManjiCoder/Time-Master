@@ -18,12 +18,16 @@ export const featureRequest = async (payload, callback) => {
     if (response.ok) {
       toast.update(
         toastId,
-        toastifyOptions('success', `${payload.formType} Send Successfully!`)
+        toastifyOptions(
+          'success',
+          `${payload.formType} Send Successfully!`,
+          2000
+        )
       );
     } else {
       toast.update(
         toastId,
-        toastifyOptions('error', `${payload.formType} Send Failed!`)
+        toastifyOptions('error', `${payload.formType} Send Failed!`, 2000)
       );
     }
 
@@ -35,7 +39,11 @@ export const featureRequest = async (payload, callback) => {
   } catch (error) {
     toast.update(
       toastId,
-      toastifyOptions('error', 'Something Went Wrong! Please Try Again Later.')
+      toastifyOptions(
+        'error',
+        'Something Went Wrong! Please Try Again Later.',
+        2000
+      )
     );
     return false;
   }
