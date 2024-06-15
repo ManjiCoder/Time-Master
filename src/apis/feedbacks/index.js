@@ -1,7 +1,7 @@
 import { toastifyOptions } from '@/utils/toastify';
 import { toast } from 'react-toastify';
 
-const BASE_URL = process.env.BASE_URL;
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const headersList = {
   'Content-Type': 'application/json',
 };
