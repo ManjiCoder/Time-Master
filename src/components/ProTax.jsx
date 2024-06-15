@@ -77,7 +77,7 @@ export function ProTaxForm({ closeModal }) {
   //   inputRef.current.focus();
   // }, []);
   return (
-    <>
+    <div>
       <button onClick={closeModal}>
         <XMarkIcon className='absolute right-4 top-5 w-7 text-xl text-gray-900 dark:text-white' />
       </button>
@@ -175,6 +175,6 @@ export function ProTaxForm({ closeModal }) {
           </motion.div>
         ))}
       </motion.section>
-    </>
+    </div>
   );
 }

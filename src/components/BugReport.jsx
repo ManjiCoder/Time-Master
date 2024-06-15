@@ -71,7 +71,7 @@ export function Form({ closeModal }) {
               Bug Report
             </span>
             <button onClick={closeModal}>
-              <XMarkIcon className='absolute right-3 top-3 w-9' />
+              <XMarkIcon className='absolute right-3 top-3 w-8' />
             </button>
           </h1>
           <div className='relative'>
