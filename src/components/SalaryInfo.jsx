@@ -43,6 +43,7 @@ export default function SalaryInfo() {
             setIsEditModalOpen(!isEditModalOpen);
           }
         }}
+        title='SalaryInfo'
       >
         <InformationCircleIcon className='w-5 text-yellow-400' />
       </button>
@@ -216,7 +217,7 @@ export function ModalContent({ closeModal }) {
       : expectedSalaryAmount - salaryAmount;
 
   return (
-    <div className='min-h-96 text-gray-900 dark:text-white max-sm:w-[80vw]'>
+    <div className='min-h-96 text-gray-900 dark:text-white'>
       <div>
         <h2 className='text-center text-xl font-semibold dark:text-white'>
           Salary Info
