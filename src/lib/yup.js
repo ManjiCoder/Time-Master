@@ -5,5 +5,5 @@ export const msgSchema = object({
     .trim()
     .required('*required')
     .min(3, 'Should be of minimum 3 characters.')
-    .max(500, 'Should be of maximum 500 characters.'),
+    .max(1500, 'Should be of maximum 1500 characters.'),
 });
