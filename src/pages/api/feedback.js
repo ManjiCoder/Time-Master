@@ -1,4 +1,4 @@
-import FeatureReqModel from '@/models/FeatureRequest';
+import FeedbacksModel from '@/models/Feedbacks';
 import dbConnect from '@/utils/db';
 
 export default async function handler(req, res) {
@@ -14,7 +14,7 @@ export default async function handler(req, res) {
 
       try {
         await dbConnect();
-        const featureMsg = await FeatureReqModel.create(req.body);
+        const featureMsg = await FeedbacksModel.create(req.body);
         // console.log(featureMsg);
         res.status(200).json({
           msg: 'Form Submitted Successfully.',
@@ -27,19 +27,19 @@ export default async function handler(req, res) {
     case 'GET':
       try {
         await dbConnect();
-        const { sortBy, filter, page = 1, limit = 2 } = req.query;
+        const { sortBy, filter, page = 1, limit = 10 } = req.query;
         const findObj = {};
         const ignoreObj = { __v: 0, updatedAt: 0 };
         const sortObj = { createdAt: -1 };
         const skip = (page - 1) * Number(limit);
-        console.log(skip);
+        // console.log(skip);
         if (sortBy === 'oldest') {
           sortObj.createdAt = 1;
         }
         if (filter) {
           findObj.formType = filter;
         }
-        const feedbacks = await FeatureReqModel.find(findObj, ignoreObj)
+        const feedbacks = await FeedbacksModel.find(findObj, ignoreObj)
           .sort(sortObj)
           .skip(skip)
           .limit(Number(limit));
