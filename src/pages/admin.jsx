@@ -1,15 +1,15 @@
-export default function Admin() {
+export default function Admin({ feedbacks }) {
   return (
     <main
-      className={`flex min-h-screen flex-col gap-y-5 bg-slate-300 py-5 pb-10 text-slate-800 dark:bg-slate-900 dark:text-white`}
+      className={`flex min-h-screen flex-col gap-y-5 bg-slate-300 py-5 pb-20 text-slate-800 dark:bg-slate-900 dark:text-white`}
     >
       <h1 className='text-center text-2xl font-semibold'>
         MasterTime - Feedbacks
       </h1>
 
-      <div className='relative overflow-x-auto shadow-md sm:rounded-lg'>
-        <table className='mx-auto w-11/12 text-left text-sm text-gray-500 dark:text-gray-400 rtl:text-right'>
-          <thead className='bg-gray-50 text-xs uppercase text-gray-700 dark:bg-slate-800 dark:text-gray-400'>
+      <div className='relative overflow-x-auto'>
+        <table className='mx-auto w-11/12 text-left text-sm text-gray-700 dark:text-gray-400 rtl:text-right'>
+          <thead className='border-b bg-slate-50 text-xs uppercase text-gray-800 dark:border-slate-500 dark:bg-slate-800 dark:text-gray-400'>
             <tr>
               <th scope='col' className='px-6 py-3'>
                 Sr No
@@ -23,19 +23,38 @@ export default function Admin() {
             </tr>
           </thead>
           <tbody>
-            <tr className='bg-white dark:border-gray-700 dark:bg-slate-950/50'>
-              <th
-                scope='row'
-                className='whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white'
+            {feedbacks.map(({ _id, formType, msg }, idx) => (
+              <tr
+                key={_id}
+                className='border-b bg-slate-100 last:border-none dark:border-gray-700 dark:bg-slate-950/50'
               >
-                Apple MacBook
-              </th>
-              <td className='px-6 py-4'>Silver</td>
-              <td className='px-6 py-4'>Laptop</td>
-            </tr>
+                <th scope='row' className='px-6 py-4'>
+                  {++idx}
+                </th>
+                <td className='px-6 py-4'>{formType}</td>
+                <td className='px-6 py-4'>{msg}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
     </main>
   );
+}
+
+// This function gets called at build time
+export async function getStaticProps() {
+  // Call an external API endpoint to get posts
+  const res = await fetch(
+    'https://mastertime.vercel.app/api/feedback?limit=100'
+  );
+  const data = await res.json();
+  const feedbacks = data.feedbacks;
+  // By returning { props: { posts } }, the Blog component
+  // will receive `posts` as a prop at build time
+  return {
+    props: {
+      feedbacks,
+    },
+  };
 }
