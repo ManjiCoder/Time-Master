@@ -42,8 +42,8 @@ export default function Admin({ feedbacks }) {
   );
 }
 
-// This function gets called at build time
-export async function getStaticProps() {
+// This function gets called at every time
+export async function getServerSideProps() {
   // Call an external API endpoint to get posts
   const res = await fetch(
     'https://mastertime.vercel.app/api/feedback?limit=100'
