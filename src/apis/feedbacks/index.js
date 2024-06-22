@@ -10,7 +10,7 @@ export const featureRequest = async (payload, callback) => {
   const toastId = toast.loading('Please Wait...');
   try {
     let bodyContent = JSON.stringify(payload);
-    let response = await fetch(`${BASE_URL}/api/feedback`, {
+    let response = await fetch(`${BASE_URL}/api/feedbacks`, {
       method: 'POST',
       body: bodyContent,
       headers: headersList,
