@@ -46,7 +46,7 @@ export default function Admin({ feedbacks }) {
 export async function getServerSideProps() {
   // Call an external API endpoint to get posts
   const res = await fetch(
-    'https://mastertime.vercel.app/api/feedback?limit=100'
+    'https://mastertime.vercel.app/api/feedbacks?limit=100'
   );
   const data = await res.json();
   const feedbacks = data.feedbacks;
