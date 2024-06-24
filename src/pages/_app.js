@@ -14,12 +14,16 @@ export default function App({ Component, pageProps }) {
     <main className={inter.className}>
       <DynamicHead />
       <Provider store={store}>
-        <PersistGate persistor={persistor}>
-          <ThemeProvider attribute='class'>
-            <Component {...pageProps} />
-            <BottomNavbar />
-            <Toastify />
-          </ThemeProvider>
+        <PersistGate loading={null} persistor={persistor}>
+          {() => {
+            return (
+              <ThemeProvider attribute='class'>
+                <Component {...pageProps} />
+                <BottomNavbar />
+                <Toastify />
+              </ThemeProvider>
+            );
+          }}
         </PersistGate>
       </Provider>
     </main>
