@@ -1,7 +1,7 @@
 import { setYear } from '@/redux/slices/dateSlice';
 import { Listbox, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // const years = [2024, 2023];
@@ -9,10 +9,18 @@ import { useDispatch, useSelector } from 'react-redux';
 export default function ListBoxYears() {
   const { year: selected } = useSelector((state) => state.dateSlice);
   const attendance = useSelector((state) => state.attendance);
-  const years = Object.keys(attendance)
-    .filter((v) => v !== 'undefined')
-    .toSorted()
-    .toReversed();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const years = isClient
+    ? Object.keys(attendance)
+        .filter((v) => v !== 'undefined')
+        .toSorted()
+        .toReversed()
+    : [];
   const dispatch = useDispatch();
 
   return (
