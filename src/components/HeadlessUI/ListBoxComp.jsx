@@ -18,6 +18,7 @@ export default function ListBoxComp(props) {
     setLogoutTime,
     setHoursTime,
     setOtherNote,
+    handleHalfDay,
   } = props;
 
   const setFocus = () => {
@@ -52,6 +53,8 @@ export default function ListBoxComp(props) {
             setTimeout(() => {
               setFocus();
             }, 150);
+          } else if (e === remarkObj.halfDayLeave) {
+            handleHalfDay();
           } else {
             setIsLeave(false);
             setLoginTime(loginTime);
@@ -78,7 +81,7 @@ export default function ListBoxComp(props) {
             leaveFrom='opacity-100'
             leaveTo='opacity-0'
           >
-            <Listbox.Options className='absolute right-0 mt-1 max-h-60 w-full min-w-24 overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black/5 focus:outline-none dark:bg-slate-700 sm:text-sm'>
+            <Listbox.Options className='absolute right-0 mt-1 max-h-60 w-full min-w-36 overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black/5 focus:outline-none dark:bg-slate-700 sm:text-sm'>
               {options.map((month, monthIdx) => (
                 <Listbox.Option
                   key={monthIdx}

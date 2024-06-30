@@ -19,6 +19,7 @@ export const toastDuration = 1000;
 export const remarkObj = {
   leave: 'Leave',
   floatingLeave: 'Floating Leave',
+  halfDayLeave: 'Half Day Leave',
   workFromHome: 'Work From Home',
   others: 'Others',
 };

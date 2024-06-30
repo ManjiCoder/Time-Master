@@ -9,7 +9,7 @@ import {
 } from '@/utils/dateService';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/20/solid';
-import { format, getDate } from 'date-fns';
+import { addMinutes, format, getDate, parse } from 'date-fns';
 import { Fragment, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -101,13 +101,17 @@ export default function EditModal({ isOpen, setIsOpen }) {
     if (loginTime === '-' && logoutTime === '-') {
       editedData.present = '-';
     }
+    if (hoursTime === '04:30') {
+      editedData.present = '0.5';
+      editedData.leave = '0.5';
+    }
     const payload = {
       year,
       month,
       date: targetDate,
       data: editedData,
     };
-    // console.table(editedData);
+    console.table(editedData);
     dispatch(editByDate(payload));
     closeModal();
     toast.success('TimeLog Updated Successfully!');
@@ -150,6 +154,24 @@ export default function EditModal({ isOpen, setIsOpen }) {
     setLogoutTime('18:00');
     setHoursTime('09:00');
     setNote(!isLeave ? 'Leave' : '');
+  };
+
+  const handleHalfDay = () => {
+    setIsLeave(true);
+    const isLogin = loginTime !== '-';
+    const isLogout = logoutTime !== '-';
+    if (isLogin && isLogout) {
+      const time = parse(hoursTime, 'HH:mm', new Date());
+      const totalTime = addMinutes(time, 4 * 60 + 30).getHours();
+      // console.log(time, totalTime);
+      if (totalTime >= 9) {
+        setHoursTime('09:00');
+      }
+    } else {
+      setLoginTime('10:00');
+      setLogoutTime('14:30');
+      setHoursTime('04:30');
+    }
   };
 
   return (
@@ -283,6 +305,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
                         setHoursTime={setHoursTime}
                         otherNote={otherNote}
                         setOtherNote={setOtherNote}
+                        handleHalfDay={handleHalfDay}
                       />
 
                       {/* {note.includes('Others') && (
