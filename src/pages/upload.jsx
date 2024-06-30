@@ -191,7 +191,7 @@ const PdfReader = () => {
       <div className='container mx-auto mt-5 bg-slate-200 dark:bg-slate-950'>
         <div
           {...getRootProps()}
-          className={`rounded-md border-4 border-dashed p-6 ${
+          className={`cursor-pointer rounded-md border-4 border-dashed p-6 ${
             isDragActive ? 'border-green-500' : 'border-gray-400'
           }`}
         >
