@@ -32,6 +32,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
   const [logoutTime, setLogoutTime] = useState(removeAMorPM(logout));
   const [hoursTime, setHoursTime] = useState(hours === '-' ? null : hours);
   const [isLeave, setIsLeave] = useState(leave === '1' || false);
+  const [isHalfDayLeave, setIsHalfDayLeave] = useState(false);
   const [note, setNote] = useState(remark || (isLeave && 'Leave') || '');
 
   // TODO: Place inside utils file
@@ -107,8 +108,9 @@ export default function EditModal({ isOpen, setIsOpen }) {
     if (loginTime === '-' && logoutTime === '-') {
       editedData.present = '-';
     }
-    if (hoursTime === '04:30') {
+    if (isHalfDayLeave) {
       editedData.present = '0.5';
+      editedData.leave = '0.5';
     }
     const payload = {
       year,
@@ -163,6 +165,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
 
   const handleHalfDay = () => {
     setIsLeave(true);
+    setIsHalfDayLeave(true);
     const isLogin = loginTime !== '-';
     const isLogout = logoutTime !== '-';
     if (isLogin && isLogout) {

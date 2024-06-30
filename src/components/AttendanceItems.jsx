@@ -39,7 +39,7 @@ export default function AttendanceItems({
           const day = format(parseDate, 'EEEE');
           const dayNum = getDate(parseDate);
           const isHoliday = isHolidays(parseDate, dayNum);
-          const isLeave = obj.leave === '1';
+          const isLeave = obj.leave === '1' || obj.leave === '0.5';
           const isAbsent =
             date <= currentDate.setHours(0, 0, 0, 0) &&
             !isHoliday &&

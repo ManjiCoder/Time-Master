@@ -1,4 +1,5 @@
 import {
+  addMinutes,
   differenceInHours,
   differenceInMinutes,
   differenceInSeconds,
@@ -9,7 +10,7 @@ import {
   isValid,
   parse,
 } from 'date-fns';
-import { holidayDetails } from './constants';
+import { holidayDetails, remarkObj } from './constants';
 
 const officeHours = 9;
 const officeMintues = officeHours * 60;
@@ -260,8 +261,45 @@ export function getUserInfo(text) {
           ? str.slice(-2)[0]
           : str.slice(indexOfZero, indexOfZero + 5);
       let tour = str.slice(-1);
+      let remark = null;
       // console.log(str);
 
+      if (isHalfDay) {
+        const a = str.indexOf('0.5');
+        const b = str.lastIndexOf('0.5');
+        // This is confirms that user is taking halfDay leave
+        if (b !== 10) {
+          if (a === 10) {
+            hours = str.slice(13, 18);
+          } else {
+            hours = str.slice(11, 16);
+          }
+          leave = '0.5';
+          remark = remarkObj.halfDayLeave;
+          const isLogin = login !== '-';
+          const isLogout = logout !== '-';
+          if (isLogin && isLogout) {
+            const time = parse(hours, 'HH:mm', new Date());
+            const totalTime = addMinutes(time, 4 * 60 + 30);
+            const diffInMin = differenceInMinutes(
+              totalTime,
+              new Date().setHours(9, 0, 0, 0)
+            );
+            if (diffInMin > 0) {
+              hours = '09:00';
+            } else {
+              const hoursTime = format(totalTime, 'HH:mm');
+              hours = hoursTime;
+            }
+            present = '1';
+          } else {
+            login = '10:00 AM';
+            logout = '02:30 PM';
+            hours = '04:30';
+            present = '0.5';
+          }
+        }
+      }
       if (!Number.isNaN(dateInTime)) {
         userTimeLog[dateInTime] = {
           date,
@@ -277,6 +315,9 @@ export function getUserInfo(text) {
           userTimeLog[dateInTime].login = '09:00 AM';
           userTimeLog[dateInTime].logout = '06:00 PM';
           userTimeLog[dateInTime].hours = '09:00';
+        }
+        if (remark) {
+          userTimeLog[dateInTime].remark = remark;
         }
         year = format(Number(dateInTime), 'yyyy');
         month = format(Number(dateInTime), 'MMMM');
