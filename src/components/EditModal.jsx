@@ -109,7 +109,6 @@ export default function EditModal({ isOpen, setIsOpen }) {
     }
     if (hoursTime === '04:30') {
       editedData.present = '0.5';
-      editedData.leave = '0.5';
     }
     const payload = {
       year,
