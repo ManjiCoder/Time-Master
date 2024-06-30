@@ -162,10 +162,12 @@ export default function EditModal({ isOpen, setIsOpen }) {
     const isLogout = logoutTime !== '-';
     if (isLogin && isLogout) {
       const time = parse(hoursTime, 'HH:mm', new Date());
-      const totalTime = addMinutes(time, 4 * 60 + 30).getHours();
-      // console.log(time, totalTime);
-      if (totalTime >= 9) {
+      const totalTime = addMinutes(time, 4 * 60 + 30);
+      if (totalTime.getHours() >= 9) {
         setHoursTime('09:00');
+      } else {
+        const hours = format(totalTime, 'HH:mm');
+        setHoursTime(hours);
       }
     } else {
       setLoginTime('10:00');
