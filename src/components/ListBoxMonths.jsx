@@ -28,6 +28,7 @@ export default function ListBoxMonths() {
   const monthsToShow = Object.keys(monthNameToIndex).filter((_v, i) =>
     currentYear === year ? currentMonth >= i : _v
   );
+
   return (
     <div className=''>
       <Listbox
@@ -61,7 +62,7 @@ export default function ListBoxMonths() {
                   key={monthIdx}
                   className={({ active }) =>
                     `relative cursor-default select-none py-2 ${
-                      active
+                      selected === month
                         ? 'bg-slate-200 dark:bg-slate-600'
                         : 'text-gray-900 dark:text-white'
                     }`

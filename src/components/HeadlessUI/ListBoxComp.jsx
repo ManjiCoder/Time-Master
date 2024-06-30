@@ -87,7 +87,7 @@ export default function ListBoxComp(props) {
                   key={monthIdx}
                   className={({ active }) =>
                     `relative cursor-default select-none py-2 pl-3 capitalize ${
-                      active
+                      selected === month
                         ? 'bg-slate-200 dark:bg-slate-600'
                         : 'text-gray-900 dark:text-white'
                     }`

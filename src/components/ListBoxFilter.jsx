@@ -1,11 +1,11 @@
-import { Fragment } from 'react';
-import { Listbox, Transition } from '@headlessui/react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   filterObj,
   filterOptions,
   setSortBy,
 } from '@/redux/slices/UserSettings';
+import { Listbox, Transition } from '@headlessui/react';
+import { Fragment } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function ListBoxFilter() {
   const years = filterOptions;
@@ -33,7 +33,7 @@ export default function ListBoxFilter() {
                   key={yearsIdx}
                   className={({ active }) =>
                     `relative cursor-default select-none py-2 ${
-                      active
+                      selected === year
                         ? 'bg-slate-200 dark:bg-slate-600'
                         : 'text-gray-900 dark:text-white'
                     }`
