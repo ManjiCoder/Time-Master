@@ -31,7 +31,7 @@ export default function EditModal({ isOpen, setIsOpen }) {
   const [loginTime, setLoginTime] = useState(removeAMorPM(login));
   const [logoutTime, setLogoutTime] = useState(removeAMorPM(logout));
   const [hoursTime, setHoursTime] = useState(hours === '-' ? null : hours);
-  const [isLeave, setIsLeave] = useState(leave === '1' || false);
+  const [isLeave, setIsLeave] = useState(['1', '0.5'].includes(leave));
   const [isHalfDayLeave, setIsHalfDayLeave] = useState(false);
   const [note, setNote] = useState(remark || (isLeave && 'Leave') || '');
 

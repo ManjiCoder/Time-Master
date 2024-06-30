@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import { remarkObj } from './constants';
 
 export const csvToJSON = (year, csvData) => {
   const timeLog = {};
@@ -65,8 +66,14 @@ export const csvToJson = (year, csvData) => {
         const remark = payload.remark;
         if (['-', 'Holiday'].includes(remark)) {
           delete payload.remark;
-        } else if (['Leave', 'Floating Leave'].includes(remark)) {
-          payload.leave = '1';
+        } else if (
+          [
+            remarkObj.leave,
+            remarkObj.floatingLeave,
+            remarkObj.halfDayLeave,
+          ].includes(remark)
+        ) {
+          payload.leave = remark === remarkObj.halfDayLeave ? '0.5' : '1';
         }
       }
     });
