@@ -1,4 +1,5 @@
 // PdfReader.js
+import { setUserName } from '@/redux/slices/UserSettings';
 import { setPdfData } from '@/redux/slices/attendanceSlice';
 import { setMonth, setYear } from '@/redux/slices/dateSlice';
 import { setHolidays } from '@/redux/slices/holidaysSlice';
@@ -147,6 +148,7 @@ const PdfReader = () => {
                 dispatch(setPdfData(payload));
                 dispatch(setYear(payload.year));
                 dispatch(setMonth(payload.month));
+                dispatch(setUserName(payload.name));
                 setNumPages(data.numPages);
               }
 

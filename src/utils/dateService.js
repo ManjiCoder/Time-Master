@@ -198,8 +198,14 @@ export function getUserInfo(text) {
   let userTimeLog = {};
   let year;
   let month;
-
+  let name = '';
   try {
+    let nameStart = text.indexOf('User Name: ');
+    let nameEnd = text.indexOf('Attendance Date: ');
+    name = text
+      .slice(nameStart, nameEnd)
+      .replace('User Name: ', '')
+      .split(' ')[0];
     let startIndex = text.indexOf('Tour') + 5;
     let arr = text.slice(startIndex, text.length).split('\n');
 
@@ -326,6 +332,7 @@ export function getUserInfo(text) {
     const payload = {
       year,
       month,
+      name,
       data: userTimeLog,
     };
     payload.data = getTimeLogs(year, monthNameToIndex[month], userTimeLog);
@@ -334,6 +341,7 @@ export function getUserInfo(text) {
     return {
       year,
       month,
+      name,
       data: {},
     };
   }

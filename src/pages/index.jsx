@@ -11,7 +11,6 @@ import {
   format24To12,
   isLoginTime,
   isLogoutTime,
-  isValidTime,
   removeAMorPM,
 } from '@/utils/dateService';
 import { format } from 'date-fns';
@@ -19,12 +18,11 @@ import { Baloo_Bhai_2 } from 'next/font/google';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 
 export default function Home() {
-  const { isOfficeMode } = useSelector((state) => state.userSettings);
+  const { isOfficeMode, userName } = useSelector((state) => state.userSettings);
   const { isShowAmt } = useSelector((state) => state.dateSlice);
   const attendance = useSelector((state) => state.attendance);
   const currentDate = new Date().setHours(0, 0, 0, 0);
@@ -112,7 +110,7 @@ export default function Home() {
       <TimeSpentIndicator isYearMonthPickerVisible={false} />
       <div className='p-4'>
         <section className='flex items-center justify-between'>
-          <h3 className='text-xl font-medium'>Welcome </h3>
+          <h3 className='text-xl font-medium'>Welcome, {userName} </h3>
           {/* ToggleBtn */}
           <ToogleBtn loginTime={loginTime} />
         </section>

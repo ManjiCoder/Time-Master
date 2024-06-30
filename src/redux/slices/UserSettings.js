@@ -23,6 +23,7 @@ export const filterOrder = Object.freeze({
 });
 
 const initialState = {
+  userName: '',
   isOfficeMode: false,
   // isShowAmt: false,
   year: new Date().getFullYear(),
@@ -67,6 +68,9 @@ const userSettings = createSlice({
     setOverTimeMinRate: (state, action) => {
       state.overTimeMinRate = action.payload;
     },
+    setUserName: (state, action) => {
+      state.userName = action.payload;
+    },
   },
 });
 
@@ -81,6 +85,7 @@ export const {
   setSortBy,
   setSortByOrder,
   setOverTimeMinRate,
+  setUserName,
 } = userSettings.actions;
 
 export default userSettings.reducer;
