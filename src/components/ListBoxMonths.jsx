@@ -26,7 +26,7 @@ export default function ListBoxMonths() {
   const currentMonth = new Date().getMonth();
   const currentYear = new Date().getFullYear();
   const monthsToShow = Object.keys(monthNameToIndex).filter((_v, i) =>
-    currentYear === year ? currentMonth >= i : _v
+    currentYear == year ? currentMonth >= i : _v
   );
 
   return (
