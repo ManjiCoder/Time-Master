@@ -1,4 +1,5 @@
 import { setMonth } from '@/redux/slices/dateSlice';
+import { monthNameToIndex } from '@/utils/dateService';
 import { Listbox, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { Fragment, useState } from 'react';
@@ -19,10 +20,14 @@ const months = [
   'December',
 ];
 export default function ListBoxMonths() {
-  const { month } = useSelector((state) => state.dateSlice);
+  const { month, year } = useSelector((state) => state.dateSlice);
   const dispatch = useDispatch();
   const [selected, setSelected] = useState(month);
-
+  const currentMonth = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
+  const monthsToShow = Object.keys(monthNameToIndex).filter((_v, i) =>
+    currentYear === year ? currentMonth >= i : _v
+  );
   return (
     <div className=''>
       <Listbox
@@ -51,7 +56,7 @@ export default function ListBoxMonths() {
             leaveTo='opacity-0'
           >
             <Listbox.Options className='absolute right-0 z-10 mt-1 max-h-60 w-full min-w-24 overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black/5 focus:outline-none dark:bg-slate-700 sm:text-sm'>
-              {months.map((month, monthIdx) => (
+              {monthsToShow.map((month, monthIdx) => (
                 <Listbox.Option
                   key={monthIdx}
                   className={({ active }) =>
