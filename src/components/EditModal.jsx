@@ -9,7 +9,13 @@ import {
 } from '@/utils/dateService';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/20/solid';
-import { addMinutes, format, getDate, parse } from 'date-fns';
+import {
+  addMinutes,
+  differenceInMinutes,
+  format,
+  getDate,
+  parse,
+} from 'date-fns';
 import { Fragment, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -163,7 +169,11 @@ export default function EditModal({ isOpen, setIsOpen }) {
     if (isLogin && isLogout) {
       const time = parse(hoursTime, 'HH:mm', new Date());
       const totalTime = addMinutes(time, 4 * 60 + 30);
-      if (totalTime.getHours() >= 9) {
+      const diffInMin = differenceInMinutes(
+        totalTime,
+        new Date().setHours(9, 0, 0, 0)
+      );
+      if (diffInMin > 0) {
         setHoursTime('09:00');
       } else {
         const hours = format(totalTime, 'HH:mm');
