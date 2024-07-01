@@ -32,8 +32,8 @@ export default function ListBoxFilter() {
                 <Listbox.Option
                   key={yearsIdx}
                   className={({ active }) =>
-                    `relative cursor-default select-none py-2 ${
-                      selected === year
+                    `relative cursor-pointer select-none py-2 ${
+                      selected === year || active
                         ? 'bg-slate-200 dark:bg-slate-600'
                         : 'text-gray-900 dark:text-white'
                     }`

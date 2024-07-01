@@ -86,8 +86,8 @@ export default function ListBoxComp(props) {
                 <Listbox.Option
                   key={monthIdx}
                   className={({ active }) =>
-                    `relative cursor-default select-none py-2 pl-3 capitalize ${
-                      selected === month
+                    `relative cursor-pointer select-none py-2 pl-3 capitalize ${
+                      selected === month || active
                         ? 'bg-slate-200 dark:bg-slate-600'
                         : 'text-gray-900 dark:text-white'
                     }`

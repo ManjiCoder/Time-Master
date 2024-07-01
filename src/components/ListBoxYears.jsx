@@ -44,13 +44,15 @@ export default function ListBoxYears() {
             leaveFrom='opacity-100'
             leaveTo='opacity-0'
           >
-            <Listbox.Options className='absolute right-0 z-10 mt-1 max-h-60 w-full min-w-24 overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black/5 focus:outline-none dark:bg-slate-700 sm:text-sm'>
+            <Listbox.Options
+              className={`absolute right-0 z-10 mt-1 max-h-60 w-full min-w-24 overflow-auto rounded-md bg-white ${years.length > 1 && 'py-1'} text-sm shadow-lg ring-1 ring-black/5 focus:outline-none dark:bg-slate-700 sm:text-sm`}
+            >
               {years.map((year, yearsIdx) => (
                 <Listbox.Option
                   key={yearsIdx}
                   className={({ active }) =>
-                    `relative cursor-default select-none py-2 ${
-                      selected == year
+                    `relative cursor-pointer select-none py-2 ${
+                      selected == year || active
                         ? 'bg-slate-200 dark:bg-slate-600'
                         : 'text-gray-900 dark:text-white'
                     }`
