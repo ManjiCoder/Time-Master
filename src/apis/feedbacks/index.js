@@ -1,7 +1,11 @@
 import { toastifyOptions } from '@/utils/toastify';
 import { toast } from 'react-toastify';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const BASE_URL =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:3000'
+    : process.env.NEXT_PUBLIC_BASE_URL;
+
 const headersList = {
   'Content-Type': 'application/json',
 };
