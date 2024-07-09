@@ -50,7 +50,7 @@ export function Form({ closeModal }) {
       validationSchema={msgSchema}
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {
-          mutation.mutate({ formType: formTypes.feature, msg: values.msg });
+          mutation.mutate({ formType: formTypes.bug, msg: values.msg });
 
           setSubmitting(false);
         }, 400);
