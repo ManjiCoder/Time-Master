@@ -15,6 +15,12 @@ export const calculateSalary = (
   const days = 28;
   const hours = 9;
   const overTimeMultiplyer = 1;
+  const bufferTimeInMins = 30;
+
+  const hourLeftInMins = 60 * hoursLeft;
+  if (hourLeftInMins <= bufferTimeInMins) {
+    hoursLeft = 0;
+  }
 
   // const taxRates = {
   //   January: 200,
