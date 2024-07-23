@@ -1,4 +1,4 @@
-import { axiosInstance } from '@/lib/axiosInstance';
+import { api } from "@/lib/axiosInstance";
 
 export default function Admin({ feedbacks }) {
   return (
@@ -47,7 +47,7 @@ export default function Admin({ feedbacks }) {
 // This function gets called at every time
 export async function getServerSideProps() {
   // Call an external API endpoint to get posts
-  const { data } = await axiosInstance.get('/api/feedbacks?limit=100');
+  const { data } = await api.get('/api/feedbacks?limit=100');
   const feedbacks = data.feedbacks;
   // By returning { props: { posts } }, the Blog component
   // will receive `posts` as a prop at build time
