@@ -3,6 +3,7 @@ import {
   differenceInHours,
   differenceInMinutes,
   differenceInSeconds,
+  eachDayOfInterval,
   format,
   getDaysInMonth,
   isSaturday,
@@ -442,6 +443,36 @@ export const isValidTime = (loginTime, logoutTime) => {
   return Math.sign(parsedTime(logoutTime) - parsedTime(loginTime)) === -1;
 };
 
-export const generateFullMonthDates = (mm, yyyy) => {
-  console.log(mm, yyyy);
+export const generateFullMonthDates = (attendance, year, month) => {
+  // console.log(attendance[year][month]);
+  const payload = {};
+  const lastDayOfMonth = getDaysInMonth(new Date(year, month));
+  const dates = eachDayOfInterval({
+    start: new Date(year, month, 1).setHours(0, 0, 0, 0),
+    end: new Date(year, month, lastDayOfMonth).setHours(0, 0, 0, 0),
+  });
+  dates.forEach((date) => {
+    const defaultTimeLog = {
+      date: '-',
+      present: '-',
+      hours: '-',
+      login: '-',
+      logout: '-',
+      leave: '-',
+      break: '-',
+      tour: '-',
+    };
+    const timeStamp = date.setHours(0, 0, 0, 0);
+    payload[timeStamp] = {
+      date: format(date, 'dd-MM-yyyy'),
+      present: '-',
+      hours: '-',
+      login: '-',
+      logout: '-',
+      leave: '-',
+      break: '-',
+      tour: '-',
+    };
+  });
+  console.log(payload);
 };

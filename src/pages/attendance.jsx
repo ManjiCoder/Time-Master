@@ -48,7 +48,18 @@ export default function Attendance() {
   const date = currentDate.setHours(0, 0, 0, 0);
 
   useEffect(() => {
-    const data = generateFullMonthDates(monthNameToIndex[month], year);
+    const timeLogs = generateFullMonthDates(
+      attendance,
+      year,
+      monthNameToIndex[month]
+    );
+    // dispatch(
+    //   setPdfData({
+    //     year,
+    //     month,
+    //     data: timeLogs,
+    //   })
+    // );
     try {
       if (isOfficeMode && attendance[year][month][date]?.login !== '-') {
         let intervalId = setInterval(() => {
