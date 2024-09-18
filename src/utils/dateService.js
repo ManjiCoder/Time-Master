@@ -443,7 +443,8 @@ export const isValidTime = (loginTime, logoutTime) => {
   return Math.sign(parsedTime(logoutTime) - parsedTime(loginTime)) === -1;
 };
 
-export const generateFullMonthDates = (attendance, year, month) => {
+export const generateFullMonthDates = (attendance, year, monthName) => {
+  const month = monthNameToIndex[monthName];
   // console.log(attendance[year][month]);
   const payload = {};
   const lastDayOfMonth = getDaysInMonth(new Date(year, month));
@@ -463,16 +464,21 @@ export const generateFullMonthDates = (attendance, year, month) => {
       tour: '-',
     };
     const timeStamp = date.setHours(0, 0, 0, 0);
-    payload[timeStamp] = {
-      date: format(date, 'dd-MM-yyyy'),
-      present: '-',
-      hours: '-',
-      login: '-',
-      logout: '-',
-      leave: '-',
-      break: '-',
-      tour: '-',
-    };
+
+    try {
+      payload[timeStamp] = attendance[year][monthName][timeStamp];
+    } catch (error) {
+      payload[timeStamp] = {
+        date: format(date, 'yyyy-MM-dd'),
+        present: '-',
+        hours: '-',
+        login: '-',
+        logout: '-',
+        leave: '-',
+        break: '-',
+        tour: '-',
+      };
+    }
   });
-  console.log(payload);
+  return payload;
 };

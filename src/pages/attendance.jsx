@@ -11,20 +11,22 @@ import {
   filterOrder,
   setSortByOrder,
 } from '@/redux/slices/UserSettings';
-import { setCurrentTimeSpent } from '@/redux/slices/attendanceSlice';
+import {
+  setCurrentTimeSpent,
+  setPdfData,
+} from '@/redux/slices/attendanceSlice';
 import {
   calculateTimeSpent,
   format24To12,
   generateFullMonthDates,
   isHolidays,
-  monthNameToIndex,
   removeAMorPM,
 } from '@/utils/dateService';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
 import { format, getDate } from 'date-fns';
 import { useTheme } from 'next-themes';
 import { Baloo_Bhai_2 } from 'next/font/google';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
@@ -48,18 +50,6 @@ export default function Attendance() {
   const date = currentDate.setHours(0, 0, 0, 0);
 
   useEffect(() => {
-    const timeLogs = generateFullMonthDates(
-      attendance,
-      year,
-      monthNameToIndex[month]
-    );
-    // dispatch(
-    //   setPdfData({
-    //     year,
-    //     month,
-    //     data: timeLogs,
-    //   })
-    // );
     try {
       if (isOfficeMode && attendance[year][month][date]?.login !== '-') {
         let intervalId = setInterval(() => {
@@ -104,9 +94,23 @@ export default function Attendance() {
           clearInterval(intervalId);
         };
       }
-    } catch (error) {}
+    } catch (error) {
+      // console.log(error);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOfficeMode, year, month]);
+
+  useLayoutEffect(() => {
+    const timeLogs = generateFullMonthDates(attendance, year, month);
+    dispatch(
+      setPdfData({
+        year,
+        month,
+        data: timeLogs,
+      })
+    );
+    //eslint-disable-next-line
+  }, [month, year]);
 
   if (attendance[year] === undefined || attendance[year][month] === undefined) {
     return (
