@@ -453,18 +453,7 @@ export const generateFullMonthDates = (attendance, year, monthName) => {
     end: new Date(year, month, lastDayOfMonth).setHours(0, 0, 0, 0),
   });
   dates.forEach((date) => {
-    const defaultTimeLog = {
-      date: '-',
-      present: '-',
-      hours: '-',
-      login: '-',
-      logout: '-',
-      leave: '-',
-      break: '-',
-      tour: '-',
-    };
     const timeStamp = date.setHours(0, 0, 0, 0);
-
     try {
       payload[timeStamp] = attendance[year][monthName][timeStamp];
     } catch (error) {
