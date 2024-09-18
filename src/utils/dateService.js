@@ -441,3 +441,7 @@ export const parsedTime = (timeStr) => {
 export const isValidTime = (loginTime, logoutTime) => {
   return Math.sign(parsedTime(logoutTime) - parsedTime(loginTime)) === -1;
 };
+
+export const generateFullMonthDates = (mm, yyyy) => {
+  console.log(mm, yyyy);
+};

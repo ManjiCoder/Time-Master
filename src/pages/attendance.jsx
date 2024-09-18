@@ -15,7 +15,9 @@ import { setCurrentTimeSpent } from '@/redux/slices/attendanceSlice';
 import {
   calculateTimeSpent,
   format24To12,
+  generateFullMonthDates,
   isHolidays,
+  monthNameToIndex,
   removeAMorPM,
 } from '@/utils/dateService';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
@@ -46,6 +48,7 @@ export default function Attendance() {
   const date = currentDate.setHours(0, 0, 0, 0);
 
   useEffect(() => {
+    const data = generateFullMonthDates(monthNameToIndex[month], year);
     try {
       if (isOfficeMode && attendance[year][month][date]?.login !== '-') {
         let intervalId = setInterval(() => {
