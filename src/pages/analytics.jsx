@@ -1,5 +1,5 @@
 import { monthNameToIndex } from '@/utils/dateService';
-import { ArcElement, Chart as ChartJS, PieController } from 'chart.js';
+import { ArcElement, Chart as ChartJS, PieController, Tooltip } from 'chart.js';
 import { Baloo_Bhai_2 } from 'next/font/google';
 import { Pie } from 'react-chartjs-2';
 
@@ -13,15 +13,12 @@ const data = {
       label: 'My First Dataset',
       data: [55, 30, 15, 5],
       borderColor: 'rgb(75, 192, 192, 0.6)',
-      backgroundColor: 'red',
-      backgroundColor: 'cyan',
-      backgroundColor: 'lime',
-      backgroundColor: 'navy',
+      backgroundColor: ['gold', 'lime', 'purple', 'tomato'],
     },
   ],
 };
 
-ChartJS.register(PieController, ArcElement);
+ChartJS.register(PieController, ArcElement, Tooltip);
 export default function Analytics() {
   return (
     <main
