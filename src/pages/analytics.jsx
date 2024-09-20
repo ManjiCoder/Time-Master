@@ -39,9 +39,15 @@ export default function Analytics() {
     labels: chartData.map(({ monthName }) => monthName.slice(0, 3)),
     datasets: [
       {
-        label: 'Attendace',
+        label: 'Present',
         data: chartData.map(({ days }) => days),
         backgroundColor: isDarkTheme ? 'gold' : 'blue',
+        borderRadius: 4,
+      },
+      {
+        label: 'Absent',
+        data: chartData.map(({ absentDays }) => absentDays),
+        backgroundColor: 'tomato',
         borderRadius: 4,
       },
     ],

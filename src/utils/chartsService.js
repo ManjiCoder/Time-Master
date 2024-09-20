@@ -1,4 +1,4 @@
-import { monthNameToIndex } from './dateService';
+import { isHolidays, monthNameToIndex } from './dateService';
 
 export const generateChartData = (data, year) => {
   const payload = {};
@@ -6,6 +6,7 @@ export const generateChartData = (data, year) => {
     const initialState = {
       monthName,
       days: 0,
+      absentDays: 0,
     };
     payload[monthName] = initialState;
   });
@@ -19,14 +20,23 @@ export const generateChartData = (data, year) => {
       const attendance = {
         monthName,
         days: 0,
+        absentDays: 0,
       };
       const monthlyRecords = Object.keys(data[year][monthName]);
       monthlyRecords.filter((timeStamp) => {
+        timeStamp = parseInt(timeStamp);
         const isPresent = !['-'].includes(
           data[year][monthName][timeStamp].present
         );
+        const isHoliday = isHolidays(
+          new Date(timeStamp),
+          new Date(timeStamp).getDate()
+        );
+
         if (isPresent) {
           attendance.days += 1;
+        } else if (!isHoliday) {
+          attendance.absentDays += 1;
         }
       });
 
