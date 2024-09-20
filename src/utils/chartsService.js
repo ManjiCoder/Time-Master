@@ -29,13 +29,18 @@ export const generateChartData = (data, year) => {
         const isPresent =
           ['1', '0.5'].includes(timeLog.present) ||
           ['1', '0.5'].includes(timeLog.leave);
+        const isHalfDay = timeLog.present === '0.5' || timeLog.leave === '0.5';
         const isHoliday = isHolidays(
           new Date(timeStamp),
           new Date(timeStamp).getDate()
         );
 
         if (isPresent) {
-          attendance.days += 1;
+          if (isHalfDay) {
+            attendance.days += 0.5;
+          } else {
+            attendance.days += 1;
+          }
         } else if (!isHoliday) {
           attendance.absentDays += 1;
         }
