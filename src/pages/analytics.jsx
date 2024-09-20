@@ -4,8 +4,10 @@ import {
   BarElement,
   CategoryScale,
   Chart as ChartJS,
+  Legend,
   LinearScale,
   PointElement,
+  Title,
   Tooltip,
 } from 'chart.js';
 import { useTheme } from 'next-themes';
@@ -15,7 +17,15 @@ import { useSelector } from 'react-redux';
 
 const inter = Baloo_Bhai_2({ subsets: ['latin'] });
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, Tooltip);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  PointElement,
+  Tooltip,
+  Title,
+  Legend
+);
 
 export default function Analytics() {
   const attendance = useSelector((state) => state.attendance);
@@ -29,7 +39,7 @@ export default function Analytics() {
     labels: chartData.map(({ monthName }) => monthName.slice(0, 3)),
     datasets: [
       {
-        // label: 'Full Year Attendace Representation.',
+        label: 'Attendace',
         data: chartData.map(({ days }) => days),
         backgroundColor: isDarkTheme ? 'gold' : 'blue',
         borderRadius: 4,
