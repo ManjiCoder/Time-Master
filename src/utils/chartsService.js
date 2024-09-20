@@ -25,7 +25,7 @@ export const generateChartData = (data, year) => {
       const monthlyRecords = Object.keys(data[year][monthName]);
       monthlyRecords.filter((timeStamp) => {
         timeStamp = parseInt(timeStamp);
-        const isPresent = !['-'].includes(
+        const isPresent = ['1', '0.5'].includes(
           data[year][monthName][timeStamp].present
         );
         const isHoliday = isHolidays(
