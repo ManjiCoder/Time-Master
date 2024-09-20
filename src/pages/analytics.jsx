@@ -21,6 +21,7 @@ export default function Analytics() {
   const { year } = useSelector((state) => state.dateSlice);
 
   const chartData = generateChartData(attendance, year);
+
   const data = {
     labels: chartData.map(({ monthName }) => monthName.slice(0, 3)),
     datasets: [

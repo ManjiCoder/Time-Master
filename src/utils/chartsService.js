@@ -1,7 +1,14 @@
 import { monthNameToIndex } from './dateService';
 
 export const generateChartData = (data, year) => {
-  const payload = new Set();
+  const payload = {};
+  Object.keys(monthNameToIndex).map((monthName) => {
+    const initialState = {
+      monthName,
+      days: 0,
+    };
+    payload[monthName] = initialState;
+  });
   try {
     const months = Object.keys(data[year])
       .map((month) => monthNameToIndex[month])
@@ -22,8 +29,13 @@ export const generateChartData = (data, year) => {
           attendance.days += 1;
         }
       });
-      payload.add(attendance);
+
+      payload[monthName] = attendance;
     });
   } catch (error) {}
-  return Array.from(payload);
+  // console.table(payload);
+  const sortedPayload = Object.values(payload).sort(
+    (a, b) => monthNameToIndex[a] - monthNameToIndex - b
+  );
+  return sortedPayload;
 };
