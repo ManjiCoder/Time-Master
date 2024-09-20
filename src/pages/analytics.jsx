@@ -54,7 +54,7 @@ export default function Analytics() {
   };
   return (
     <main
-      className={`min-h-screen bg-slate-300 pb-10 text-slate-800 dark:bg-slate-900 dark:text-white ${inter.className} p-4`}
+      className={`min-h-screen bg-slate-300 pb-20 text-slate-800 dark:bg-slate-900 dark:text-white ${inter.className} p-4`}
     >
       <DynamicHead>
         <title>Settings | MasterTime</title>
@@ -65,6 +65,13 @@ export default function Analytics() {
         <Bar
           options={{
             responsive: true,
+            plugins: {
+              title: {
+                display: true,
+                text: 'Full Year Attendance Representation.',
+                position: 'bottom',
+              },
+            },
           }}
           data={data}
           className='rounded-md bg-slate-100 p-3 dark:bg-slate-800'
