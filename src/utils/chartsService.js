@@ -53,5 +53,6 @@ export const generateChartData = (data, year) => {
   const sortedPayload = Object.values(payload).sort(
     (a, b) => monthNameToIndex[a] - monthNameToIndex - b
   );
+  // console.count('chart');
   return sortedPayload;
 };

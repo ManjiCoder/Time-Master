@@ -12,6 +12,7 @@ import {
 } from 'chart.js';
 import { useTheme } from 'next-themes';
 import { Baloo_Bhai_2 } from 'next/font/google';
+import { useMemo } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
 
@@ -33,7 +34,10 @@ export default function Analytics() {
   const { resolvedTheme } = useTheme();
   const isDarkTheme = resolvedTheme === 'dark';
 
-  const chartData = generateChartData(attendance, year);
+  const chartData = useMemo(
+    () => generateChartData(attendance, year),
+    [attendance, year]
+  );
 
   const data = {
     labels: chartData.map(({ monthName }) => monthName.slice(0, 3)),
