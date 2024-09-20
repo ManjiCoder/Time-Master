@@ -8,6 +8,7 @@ import {
   PointElement,
   Tooltip,
 } from 'chart.js';
+import { useTheme } from 'next-themes';
 import { Baloo_Bhai_2 } from 'next/font/google';
 import { Bar } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
@@ -19,6 +20,8 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, Tooltip);
 export default function Analytics() {
   const attendance = useSelector((state) => state.attendance);
   const { year } = useSelector((state) => state.dateSlice);
+  const { resolvedTheme } = useTheme();
+  const isDarkTheme = resolvedTheme === 'dark';
 
   const chartData = generateChartData(attendance, year);
 
@@ -28,7 +31,8 @@ export default function Analytics() {
       {
         // label: 'Full Year Attendace Representation.',
         data: chartData.map(({ days }) => days),
-        backgroundColor: 'gold',
+        backgroundColor: isDarkTheme ? 'gold' : 'blue',
+        borderRadius: 4,
       },
     ],
   };
