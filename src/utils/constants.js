@@ -13,16 +13,16 @@ export const holidayDetails = {
   1730399400000: { date: '01-Nov-2024', desc: 'Diwali' },
   1735065000000: { date: '25-Dec-2024', desc: 'Christmas' },
   // 2025
-  1735689600000: { date: '01-Jan-2025', desc: 'New Year’s Day' },
-  1741910400000: { date: '14-Mar-2025', desc: 'Holi' },
-  1743379200000: { date: '31-Mar-2025', desc: 'Ramzan Eid' },
-  1746057600000: { date: '01-May-2025', desc: 'Maharashtra Day' },
-  1755216000000: { date: '15-Aug-2025', desc: 'Independence Day' },
-  1756348800000: { date: '27-Aug-2025', desc: 'Ganesh Chaturthi' },
-  1757356800000: { date: '09-Aug-2025', desc: 'Raksha Bandhan' },
-  1759776000000: { date: '02-Oct-2025', desc: 'Gandhi Jayanti' },
-  1760918400000: { date: '20-Oct-2025', desc: 'Diwali' },
-  1766611200000: { date: '25-Dec-2025', desc: 'Christmas' },
+  [new Date('2025-01-01').setHours(0, 0, 0, 0)]: { date: '01-Jan-2025', desc: 'New Year’s Day' },
+  [new Date('2025-03-14').setHours(0, 0, 0, 0)]: { date: '14-Mar-2025', desc: 'Holi' },
+  [new Date('2025-03-31').setHours(0, 0, 0, 0)]: { date: '31-Mar-2025', desc: 'Ramzan Eid' },
+  [new Date('2025-05-01').setHours(0, 0, 0, 0)]: { date: '01-May-2025', desc: 'Maharashtra Day' },
+  [new Date('2025-08-15').setHours(0, 0, 0, 0)]: { date: '15-Aug-2025', desc: 'Independence Day' },
+  [new Date('2025-08-27').setHours(0, 0, 0, 0)]: { date: '27-Aug-2025', desc: 'Ganesh Chaturthi' },
+  [new Date('2025-08-09').setHours(0, 0, 0, 0)]: { date: '09-Aug-2025', desc: 'Raksha Bandhan' },
+  [new Date('2025-10-02').setHours(0, 0, 0, 0)]: { date: '02-Oct-2025', desc: 'Gandhi Jayanti' },
+  [new Date('2025-10-20').setHours(0, 0, 0, 0)]: { date: '20-Oct-2025', desc: 'Diwali' },
+  [new Date('2025-12-25').setHours(0, 0, 0, 0)]: { date: '25-Dec-2025', desc: 'Christmas' },
 };
 
 export const toastDuration = 1000;
