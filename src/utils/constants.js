@@ -14,7 +14,7 @@ export const holidayDetails = {
   1735065000000: { date: '25-Dec-2024', desc: 'Christmas' },
   // 2025
   [new Date('2025-01-01').setHours(0, 0, 0, 0)]: { date: '01-Jan-2025', desc: 'New Year’s Day' },
-  [new Date('2024-01-26').setHours(0, 0, 0, 0)]: { date: '26-Jan-2024', desc: 'Republic Day' },
+  [new Date('2025-01-26').setHours(0, 0, 0, 0)]: { date: '26-Jan-2024', desc: 'Republic Day' },
   [new Date('2025-03-14').setHours(0, 0, 0, 0)]: { date: '14-Mar-2025', desc: 'Holi' },
   [new Date('2025-03-31').setHours(0, 0, 0, 0)]: { date: '31-Mar-2025', desc: 'Ramzan Eid' },
   [new Date('2025-05-01').setHours(0, 0, 0, 0)]: { date: '01-May-2025', desc: 'Maharashtra Day' },
