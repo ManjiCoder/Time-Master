@@ -1,5 +1,6 @@
 // Holidays List
 export const holidayDetails = {
+  // 2024
   1706207400000: { date: '26-Jan-2024', desc: 'Republic Days' },
   1711305000000: { date: '25-Mar-2024', desc: 'Holi' },
   1712773800000: { date: '11-Apr-2024', desc: 'Ramzan Eid' },
@@ -11,6 +12,17 @@ export const holidayDetails = {
   1728671400000: { date: '12-Oct-2024', desc: 'Dussehra' },
   1730399400000: { date: '01-Nov-2024', desc: 'Diwali' },
   1735065000000: { date: '25-Dec-2024', desc: 'Christmas' },
+  // 2025
+  1735689600000: { date: '01-Jan-2025', desc: 'New Year’s Day' },
+  1741910400000: { date: '14-Mar-2025', desc: 'Holi' },
+  1743379200000: { date: '31-Mar-2025', desc: 'Ramzan Eid' },
+  1746057600000: { date: '01-May-2025', desc: 'Maharashtra Day' },
+  1755216000000: { date: '15-Aug-2025', desc: 'Independence Day' },
+  1756348800000: { date: '27-Aug-2025', desc: 'Ganesh Chaturthi' },
+  1757356800000: { date: '09-Aug-2025', desc: 'Raksha Bandhan' },
+  1759776000000: { date: '02-Oct-2025', desc: 'Gandhi Jayanti' },
+  1760918400000: { date: '20-Oct-2025', desc: 'Diwali' },
+  1766611200000: { date: '25-Dec-2025', desc: 'Christmas' },
 };
 
 export const toastDuration = 1000;
